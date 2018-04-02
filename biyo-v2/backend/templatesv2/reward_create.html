@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+<thead>
+  <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+  <th class="divider">/</th>
+  <th><a href="{% url 'reward_list' %}">{% trans "Rewards" %}</a></th>
+  <th class="divider">/</th>
+  <th>{% trans  "Add Reward Compaign"  %}</th>
+</thead>
+
+<div class="table-responsive">
+        {% if form.errors %}
+            <div class="alert alert-warning">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+  <form method="post" enctype="multipart/form-data">
+    <div class="panel col-md-6 offset-md-3 create-update-form">
+        <h3 class="panel-title">
+           New Reward Campaign
+        </h3>
+        {% csrf_token %}
+        <table class="table" id="editableUser">
+             <div class="col-md-4">
+                <tr>
+                  <td>{% bootstrap_field form.name %}</td>
+                  <td>{% bootstrap_field form.store %}</td>
+                </tr>
+                 <tr>
+                  <td>{% bootstrap_field form.points_redeem %}</td>
+                  <td>{% bootstrap_field form.discount %}</td>
+                </tr>
+                 <tr>
+                     <td>{% bootstrap_field form.discount_type %}</td>
+                     <td>{% bootstrap_field form.discount_value %}</td>
+                </tr>
+                 <tr>
+                  <td>{% bootstrap_field form.discount_type_item %}</td>
+                  <td>{% bootstrap_field form.reward_type %}</td>
+                </tr>
+                 <tr>
+                  <td colspan="5" class="discount-text">{% bootstrap_field form.discount_text %}</td>
+                </tr>
+             </div>
+        </table>
+        <div>
+            <button type="submit" class="btn btn-success waves-effect form-table-button">Add new Reward Compaign</button>
+        </div>
+    </div>
+  </form>
+</div>
+
+
+{% endblock content %}
+{% block scripts %}
+	{{ block.super }}
+	<script type="text/javascript">
+        $('form').find("#id_reward_type,#id_discount_value, #id_discount_text,#id_discount_type_item,#id_discount_type").parent().parent().hide();
+            $( window ).load(function() {
+                if ($(this).find("#id_discount").val()=="Discount"){
+                        $(this).find("#id_discount_type").parent().parent().show();
+                        $(this).find("#id_discount_text").parent().parent().hide();
+
+                        if ($(this).find("#id_discount_type").val()=="Item"){
+                            $(this).find("#id_discount_type_item,#id_reward_type,#id_discount_value").parent().parent().show();
+                            $(this).find("#id_discount_text").parent().parent().hide()
+                        }else if ($(this).find("#id_discount_type").val()=="Invoice"){
+                            $(this).find("#id_discount_type_item").parent().parent().hide();
+                            $(this).find("#id_discount_value").parent().parent().show()
+                        }
+            }else if ($(this).find("#id_discount").val()=="Text"){
+                $(this).find("#id_discount_value,#id_discount_type, #id_discount_type_item,#id_reward_type").parent().parent().hide();
+                $(this).find("#id_discount_text").parent().parent().show()
+            }
+
+
+        $('form').on('change',function(e){
+
+            if ($(this).find("#id_discount").val()=="Discount"){
+                        $(this).find("#id_discount_type").parent().parent().show();
+                        $(this).find("#id_discount_text").parent().parent().hide();
+
+                        if ($(this).find("#id_discount_type").val()=="Item"){
+                            $(this).find("#id_discount_type_item,#id_reward_type,#id_discount_value").parent().parent().show();
+                            $(this).find("#id_discount_text").parent().parent().hide()
+                        }else if ($(this).find("#id_discount_type").val()=="Invoice"){
+                           $(this).find("#id_discount_type_item, #id_reward_type").parent().parent().hide();
+                            $(this).find("#id_discount_value").parent().parent().show()
+                        }
+            }else if ($(this).find("#id_discount").val()=="Text"){
+                $(this).find("#id_discount_value,#id_discount_type, #id_discount_type_item,#id_reward_type").parent().parent().hide();
+                $(this).find("#id_discount_text").parent().parent().show()
+            }
+});
+    });
+	</script>
+{% endblock %}

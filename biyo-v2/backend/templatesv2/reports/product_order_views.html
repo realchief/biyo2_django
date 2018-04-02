@@ -1,0 +1,82 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load tz %}
+{% load panel_tags %}
+{% load humanize %}
+
+<div class="row clearfix">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">{% trans "Orders of" %}:{{ product }}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-5">
+        {% include 'reports/includes/filter.html' %}
+    </div>
+    <div class="hidden-md-up" style="height: 50px;">
+    </div>
+    <div class="col-sm-12 col-md-4">
+        <div class="pull-md-right" aria-label="Add Order" >
+        </div>
+    </div>
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+    {% if object_list %}
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="m-b-15">
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover table-striped" cellspacing="0" id="exampleFixedHeader">
+            <thead>
+                <tr>
+                    <th>{% trans "Order #" %}</th>
+                    <th>{% trans "Order Total" %}</th>
+                    {% if not custom_product %}
+                        <th>{% trans "Quantity" %}</th>
+                    {% endif %}
+                    <th>{% trans "Sold By" %}</th>
+                    {% if custom_product %}
+                        <th>{% trans "Item" %}</th>
+                    {% else %}
+                    {% endif %}
+                    <th>{% trans "Open Date" %}</th>
+                    <th>{% trans "Close Date" %}</th>
+                    <th>{% trans "Order Status" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for order in object_list %}
+                <tr class="selectable">
+                <td class="center"><a href="{% url 'order-detail' pk=order.pk %}">{{ order.pk }}</a></td>
+                <td class="center">${{ order.grand_total|floatformat:2|default:"0.00"|intcomma }}</td>
+                {% if not custom_product %}
+                    <td class="center">{{ order.items_qty|intcomma }}</td>
+                {% endif %}
+                <td class="center">{{ order.emp_open }}</td>
+                <td class="center">{{ order.open_date|timezone:tz|date:"m-d-Y h:i A" }}</td>
+                <td class="center">{{ order.close_date|timezone:tz|date:"m-d-Y h:i A" }}</td>
+                {% if order.get_status_display == "Open" %}
+                    <td class="tag  tag-danger w-50px">{{ order.get_status_display }}</td>
+                {% elif order.get_status_display == "Hold" %}
+                    <td class="tag  tag-warning w-50px">{{ order.get_status_display }}</td>
+                {% else %}
+                    <td class="tag  tag-success w-50px">{{ order.get_status_display }}</td>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <div align="center">
+        {% include "includes/paginator.html" %}
+        </div>
+    {% else %}
+        {% include 'reports/includes/empty.html' %}
+    {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

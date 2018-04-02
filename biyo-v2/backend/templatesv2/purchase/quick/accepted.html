@@ -1,0 +1,74 @@
+{% extends base_template %}
+{% load i18n %}
+
+{% block javascript %}
+<script type="text/javascript">
+    $(function() {
+        window.setInterval("$.get('')", 60000); // every 60 seconds
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="separator bottom"></div>
+<div class="heading-buttons">
+    <h3>{% trans "Accepted screen" %}</h3>
+
+    <div class="clearfix"></div>
+</div>
+<div class="separator bottom"></div>
+
+<div class="innerLR">
+    <div class="widget">
+        <pre>
+            Document number: {{ object.document_number }}
+            Employee: {{ object.employee_created.name }}
+            Notes: {{ object.note }}
+        </pre>
+
+        <hr>
+        <table id="formset" class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+            {% for item in object.purchase_items.all %}
+            {% if forloop.first %}
+            <thead>
+            <tr>
+                <th>{% trans "Product name" %}</th>
+                <th>{% trans "Shipped" %}</th>
+                <th>{% trans "Received" %}</th>
+                <th>{% trans "Difference" %}</th>
+                <th>{% trans "Current stock" %}</th>
+                <th>{% trans "Total" %}</th>
+            </tr>
+            </thead>
+            {% endif %}
+            <tr class="{% cycle row1,row2 %}">
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.entered_stock }}</td>
+                <td>{{ item.accepted_stock }}</td>
+                <td>{{ item.difference_stock }}</td>
+                <td>{{ item.product.stock }}</td>
+                <td>{{ item.total }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+            <div class="separator bottom"></div>
+    </div>
+</div>
+{% endblock content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+{% load panel_tags %}
+{% block content %}
+
+
+<ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reports_home' %}">{% trans "Reports" %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Discount summary" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Reports" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="row">
+<div class="offset1">
+{% with 'discount_summary' as active %}
+        {% include "reports/includes/filter.html" %}
+{% endwith %}
+            {% if number_of_orders and discounts_total and amounts_deducted %}
+                <table class="table">
+                    <tbody>
+
+{#							<tr><td>{% trans 'Orders' %}</td><td class="right">{{ number_of_orders }}</td></tr>#}
+                             {% url 'discounted_orders' as the_url %}
+                            <tr><td><a href="{{ the_url|get_current_date_period_from_url:current_date }}">{% trans 'Discounted Orders' %}</a></td><td class="right">{{ discounts_total }}</td></tr>
+							<tr><td>{% trans 'Total Ducted Amount ' %}</td>
+                                <td class="right">${{ amounts_deducted|floatformat:2|default:"0.00"|intcomma }}</td>
+                            </tr>
+
+
+                    </tbody>
+                </table>
+    {% else %}
+                {% include 'reports/includes/empty.html' %}
+{% endif %}
+
+            </div>
+
+        </div>
+    <div class="innerLR">
+    </div>
+
+{% endblock %}

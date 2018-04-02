@@ -1,0 +1,21 @@
+{% extends 'account/base.html' %}
+{% load i18n %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.pin.errors }}
+    <label class="strong">PIN</label>
+    <input type="text" class="input-block-level" placeholder="PIN number" name="pin" tabindex="1"/>
+
+    <div class="row-fluid">
+        <div class="separator"></div>
+        <div class="span5 center">
+            <button class="btn btn-block btn-primary" style="margin-left:128px;" type="submit" tabindex="4">{% trans "Login" %}
+            </button>
+        </div>
+
+
+    </div>
+</form>
+{% endblock %}

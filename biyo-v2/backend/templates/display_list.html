@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Display" %}</li>
+        <li class="divider"></li>
+    <li><a href="{% url 'box_create' %}" class="glyphonicons home"><i></i>{% trans 'Create new box' %}</a></li>
+        <li class="divider"></li>
+    <li><a href="{% url 'element_create' %}" class="glyphonicons home"><i></i>{% trans 'Create new element' %}</a></li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Displays" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+		<div class="btn-right">
+      		<a class="btn" href="{% url 'display_create' %}"><i class="icon-plus"></i> Add display</a>
+            <a class="btn" href="{% url 'box_create' %}"><i class="icon-plus"></i> Add Box</a>
+    	</div>
+		<div class="separator bottom"></div>
+
+        <div class="widget">
+            <table class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+                <thead>
+                    <tr>
+                        <th>{% trans "Name" %}</th>
+                        <th>{% trans "Manage Boxes" %}</th>
+                        <th>{% trans "Action for Display" %}</th>
+                    </tr>
+                </thead>
+                <tbody data-link="row" class="rowlink">
+                    {% for object in object_list %}
+                        <tr>
+                            <td class="center"><a href="{% url 'display_detail' pk=object.pk %}">{{object.name}}</a></td>
+                                                   <td class="center">
+                                                   {% for boxes in  object.boxes.all%}
+                                                       <a href="{% url 'box_update' pk=boxes.id %} ">Edit  {{boxes}}</a>|
+                                                       <a href="{% url 'box_delete' pk=boxes.id %} ">Delete  {{boxes}}</a>
+                                                       <br/>
+                                                   {% endfor %}
+                                                   </td>
+
+							<td class="center"><a class="modal-edit" href="{% url 'display_update' pk=object.pk %}">Edit</a></td>
+                        </tr>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include "includes/paginator.html" %}
+        </div>
+    </div>
+
+
+{% endblock content %}

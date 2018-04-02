@@ -1,0 +1,583 @@
+{% extends "base.html" %}
+
+
+{% block content_OLD %}
+
+    <table>
+    <thead>
+        <th>Data dodania</th>
+        <th>Wygodniejsze niz tradycyjne menu?</th>
+        <th>W milotab najbardziej podoba mi sie ( menu/ gry / wszystko )?</th>
+        <th>Restauracja miotab stala sie atrakcynieszja?</th>
+        <th>Informacje od uzytkownika</th>
+        <th></th>
+    </thead>
+    <tbody>
+        {% for rv in reviews %}
+            <tr>
+                <td class="left">{{ rv.add_date|date:"Y/m/d H:i" }}</td>
+                <td>
+                    {% ifequal rv.ans1 1 %} Tak {% endifequal %}
+                    {% ifequal rv.ans1 2 %} Nie {% endifequal %}
+                    {% ifequal rv.ans1 3 %} - {% endifequal %}
+                </td>
+                <td>
+                    {% ifequal rv.ans2 1 %} Menu {% endifequal %}
+                    {% ifequal rv.ans2 2 %} Gry {% endifequal %}
+                    {% ifequal rv.ans2 3 %} Wszystko {% endifequal %}
+                </td>
+                <td>
+                    {% ifequal rv.ans3 1 %} Tak {% endifequal %}
+                    {% ifequal rv.ans3 2 %} Nie {% endifequal %}
+                    {% ifequal rv.ans3 3 %} - {% endifequal %}
+
+                </td>
+                <td>
+                    {{ rv.msg }}
+                </td>
+                <td>
+                    <a href="{% url 'review_delete' rv.id %}">delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+{% endblock %}
+
+
+
+{% block content %}
+<!-- Breadcrumb -->
+<ul class="breadcrumb">
+	<li><a href="/" class="glyphicons home"><i></i>Strona główna</a></li>
+	<li class="divider"></li>
+	<li>Ankiety</li>
+</ul>
+<!-- // Breadcrumb END -->
+
+<h3 class="heading-mosaic">Ankiety</h3>
+<div class="innerLR">
+
+<div class="row-fluid row-merge">    
+	<div class="span4">  
+    	<div class="innerAll">
+        <!-- Widget -->
+        <div class="widget">
+            
+            <!-- Widget heading -->
+            <div class="widget-head">
+                <h4 class="heading">Wygodniejsze niz tradycyjne menu?</h4>
+            </div>
+            <!-- // Widget heading END -->
+            
+            <div class="widget-body">
+    
+                <!-- Ordered bars Chart -->
+                <div id="review_1" style="height: 250px;"></div>
+            </div>
+        </div>
+        <!-- // Widget END -->
+        </div>
+    </div>
+    <div class="span4">
+    	<div class="innerAll">
+        <!-- Widget -->
+        <div class="widget">
+        
+            <!-- Widget heading -->
+            <div class="widget-head">
+                <h4 class="heading">W milotab najbardziej podoba mi sie?</h4>
+            </div>
+            <!-- // Widget heading END -->
+            
+            <div class="widget-body">
+            
+                <!-- Donut Chart -->
+                <div id="review_2" style="height: 250px;"></div>
+            </div>
+        </div>
+        <!-- // Widget END -->
+    	</div>
+    </div>
+    <div class="span4">
+    	<div class="innerAll">
+    		<!-- Widget -->
+	<div class="widget">
+	
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h4 class="heading">Restauracja miotab stala sie atrakcynieszja?</h4>
+		</div>
+		<!-- // Widget heading END -->
+		
+		<div class="widget-body">
+		
+			<!-- Stacked bars Chart -->
+			<div id="review_3" style="height: 250px;"></div>
+		</div>
+	</div>
+	<!-- // Widget END -->
+    	</div>
+    </div>
+</div>	
+
+	<div class="widget">
+
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h4 class="heading glyphicons list"><i></i>Szczegóły ankiety</h4>
+		</div>
+		<!-- // Widget heading END -->
+
+		<div class="widget-body">
+
+        
+        
+<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center" id="reviews-table">
+    <thead>
+    	<th style="width: 1%;" class="uniformjs"><input type="checkbox" /></th>
+        <th>Data</th>
+        <th>Wygodniejsze niz tradycyjne menu?</th>
+        <th>W milotab najbardziej podoba mi sie ( menu/ gry / wszystko )?</th>
+        <th>Restauracja miotab stala sie atrakcynieszja?</th>
+        <th>Informacje od uzytkownika</th>
+    </thead>
+    <tbody>
+        {% for rv in reviews %}
+            <tr>
+            	<td class="center uniformjs"><input type="checkbox" /></td>
+                <td class="left">{{ rv.add_date|date:"Y/m/d H:i" }}</td>
+                <td>
+                    {% ifequal rv.ans1 1 %} Tak {% endifequal %}
+                    {% ifequal rv.ans1 2 %} Nie {% endifequal %}
+                    {% ifequal rv.ans1 3 %} - {% endifequal %}
+                </td>
+                <td>
+                    {% ifequal rv.ans2 1 %} Menu {% endifequal %}
+                    {% ifequal rv.ans2 2 %} Gry {% endifequal %}
+                    {% ifequal rv.ans2 3 %} Wszystko {% endifequal %}
+                </td>
+                <td>
+                    {% ifequal rv.ans3 1 %} Tak {% endifequal %}
+                    {% ifequal rv.ans3 2 %} Nie {% endifequal %}
+                    {% ifequal rv.ans3 3 %} - {% endifequal %}
+
+                </td>
+                <td>
+                    {{ rv.msg }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+    </div>
+    </div>
+		
+</div>	
+
+
+{% endblock %}
+
+{% block js %}
+
+<!-- JQuery -->
+
+	
+	<!-- JQueryUI -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery-ui/js/jquery-ui-1.9.2.custom.min.js"></script>
+	
+	<!-- JQueryUI Touch Punch -->
+	<!-- small hack that enables the use of touch events on sites using the jQuery UI user interface library -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+	<!-- Modernizr -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/modernizr.js"></script>
+	
+	<!-- Bootstrap -->
+	<script src="{{ STATIC_URL }}common/bootstrap/js/bootstrap.min.js"></script>
+	
+	<!-- SlimScroll Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/jquery-slimScroll/jquery.slimscroll.min.js"></script>
+	
+	<!-- Common Demo Script -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/demo/common.js?1369414384"></script>
+	
+	<!-- Holder Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/holder/holder.js"></script>
+	
+	<!-- Uniform Forms Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/forms/pixelmatrix-uniform/jquery.uniform.min.js"></script>
+	
+	<!-- PrettyPhoto -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/gallery/prettyphoto/js/jquery.prettyPhoto.js"></script>
+	
+	<!-- Global -->
+	<script>
+	var basePath = '{{ STATIC_URL }}common/';
+	</script>
+
+	<!-- Bootstrap Extended -->
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-select/bootstrap-select.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-toggle-buttons/static/js/jquery.toggle.buttons.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/jasny-bootstrap/js/bootstrap-fileupload.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootbox.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-wysihtml5/js/wysihtml5-0.3.0_rc2.min.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-wysihtml5/js/bootstrap-wysihtml5-0.0.2.js"></script>
+	
+	<!-- Google Code Prettify -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/google-code-prettify/prettify.js"></script>
+	
+	<!-- Gritter Notifications Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/notifications/Gritter/js/jquery.gritter.min.js"></script>
+	
+	<!-- Notyfy Notifications Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/notifications/notyfy/jquery.notyfy.js"></script>
+	
+	<!-- MiniColors Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/color/jquery-miniColors/jquery.miniColors.js"></script>
+	
+	<!-- DateTimePicker Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/forms/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
+	<!-- Cookie Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery.cookie.js"></script>
+	
+	<!-- Colors -->
+	<script>
+	var primaryColor = '#e25f39',
+		dangerColor = '#bd362f',
+		successColor = '#609450',
+		warningColor = '#ab7a4b',
+		inverseColor = '#45484d';
+	</script>
+	
+	<!-- Themer -->
+	<script>
+	var themerPrimaryColor = primaryColor;
+	</script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/demo/themer.js"></script>
+	
+	<!-- Twitter Feed -->
+	
+	<!-- Easy-pie Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/easy-pie/jquery.easy-pie-chart.js"></script>
+	
+	<!-- Sparkline Charts Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/sparkline/jquery.sparkline.min.js"></script>
+	
+	<!-- Ba-Resize Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/jquery.ba-resize.js"></script>
+	
+	
+	<!-- Google JSAPI -->
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		
+	<!--  Flot Charts Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.pie.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.tooltip.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.selection.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.resize.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.orderBars.js"></script>
+	
+	<!-- Charts Helper Demo Script -->
+	
+	
+	<!-- Charts Page Demo Script -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/demo/charts.js?1369414384"></script>
+    
+    	<!-- DataTables Tables Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/tables/DataTables/media/js/jquery.dataTables.min.js"></script>
+    <script src="{{ STATIC_URL }}common/theme/scripts/plugins/tables/DataTables/media/js/ColumnFilterWidgets.js"></script>
+    <script src="{{ STATIC_URL }}common/theme/scripts/plugins/tables/DataTables/media/js/jquery.dataTables.rowGrouping.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/tables/DataTables/media/js/DT_bootstrap.js"></script>
+	
+	<!-- Tables Demo Script -->
+    
+	<script src="{{ STATIC_URL }}common/theme/scripts/demo/tables.js"></script>
+	
+	
+	<!-- Optional Resizable Sidebars -->
+	<!--[if gt IE 8]><!--><script src="{{ STATIC_URL }}common/theme/scripts/demo/resizable.js?1369414384"></script><!--<![endif]-->
+    
+    
+    <script>	
+
+var charts = 
+{
+	// init charts on finances page
+	initFinances: function()
+	{
+		// init simple chart
+		this.chart_simple.init();
+	},
+	
+	// init charts on Charts page
+	initCharts: function()
+	{
+
+
+		// init donut chart
+		this.review_1.init();
+		this.review_2.init();
+		this.review_3.init();
+
+	},
+	
+	// init charts on dashboard
+	initIndex: function()
+	{
+		// chart_ordered_bars
+		this.chart_ordered_bars.init();
+
+		// init traffic sources pie
+		this.traffic_sources_pie.init();
+	},
+
+	// utility class
+	utility:
+	{
+		chartColors: [ themerPrimaryColor, "#444", "#777", "#999", "#DDD", "#EEE" ],
+		chartBackgroundColors: ["#fff", "#fff"],
+
+		applyStyle: function(that)
+		{
+			that.options.colors = charts.utility.chartColors;
+			that.options.grid.backgroundColor = { colors: charts.utility.chartBackgroundColors };
+			that.options.grid.borderColor = charts.utility.chartColors[0];
+			that.options.grid.color = charts.utility.chartColors[0];
+		},
+		
+		// generate random number for charts
+		randNum: function()
+		{
+			return (Math.floor( Math.random()* (1+40-20) ) ) + 20;
+		}
+	},
+
+	
+
+	
+
+	
+	
+
+	
+
+// REVIEW 1
+	review_1:
+	{
+		// chart data
+		
+		/*EXAMPLE
+		data: [
+		    { label: "TAK",  data: 38 },
+		    { label: "NIE",  data: 23 },
+		    { label: "Nie Wim",  data: 15 },
+		],
+		*/
+		
+		
+		data: {{ data1|safe }},
+
+
+		// will hold the chart object
+		plot: null,
+
+		// chart options
+		options: 
+		{
+			series: {
+				pie: { 
+					show: true,
+					innerRadius: 0.4,
+					highlight: {
+						opacity: 0.1
+					},
+					radius: 1,
+					stroke: {
+						color: '#fff',
+						width: 8
+					},
+					startAngle: 2,
+				    combine: {
+	                    color: '#EEE',
+	                    threshold: 0.05
+	                },
+	                label: {
+	                    show: true,
+	                    radius: 1,
+	                    formatter: function(label, series){
+	                        return '<div class="label label-inverse">'+label+'&nbsp;'+Math.round(series.percent)+'%</div>';
+	                    }
+	                }
+				},
+				grow: {	active: false}
+			},
+			legend:{show:false},
+			grid: {
+	            hoverable: true,
+	            clickable: true,
+	            backgroundColor : { }
+	        },
+	        colors: [],
+	        tooltip: true,
+			tooltipOpts: {
+				content: "%s : %y",
+				shifts: {
+					x: -30,
+					y: -50
+				},
+				defaultTheme: false
+			}
+		},
+		
+		// initialize
+		init: function()
+		{
+			// apply styling
+			charts.utility.applyStyle(this);
+			
+			this.plot = $.plot($("#review_1"), this.data, this.options);
+		}
+	},
+	
+// REVIEW 2
+	review_2:
+	{
+		// chart data
+		data: {{ data2|safe }},
+
+		// will hold the chart object
+		plot: null,
+
+		// chart options
+		options: 
+		{
+			series: {
+				pie: { 
+					show: true,
+					innerRadius: 0.4,
+					highlight: {
+						opacity: 0.1
+					},
+					radius: 1,
+					stroke: {
+						color: '#fff',
+						width: 8
+					},
+					startAngle: 2,
+				    combine: {
+	                    color: '#EEE',
+	                    threshold: 0.05
+	                },
+	                label: {
+	                    show: true,
+	                    radius: 1,
+	                    formatter: function(label, series){
+	                        return '<div class="label label-inverse">'+label+'&nbsp;'+Math.round(series.percent)+'%</div>';
+	                    }
+	                }
+				},
+				grow: {	active: false}
+			},
+			legend:{show:false},
+			grid: {
+	            hoverable: true,
+	            clickable: true,
+	            backgroundColor : { }
+	        },
+	        colors: [],
+	        tooltip: true,
+			tooltipOpts: {
+				content: "%s : %y",
+				shifts: {
+					x: -30,
+					y: -50
+				},
+				defaultTheme: false
+			}
+		},
+		
+		// initialize
+		init: function()
+		{
+			// apply styling
+			charts.utility.applyStyle(this);
+			
+			this.plot = $.plot($("#review_2"), this.data, this.options);
+		}
+	},
+	
+	
+// REVIEW 2
+	review_3:
+	{
+		// chart data
+		data: {{ data3|safe }},
+		// will hold the chart object
+		plot: null,
+
+		// chart options
+		options: 
+		{
+			series: {
+				pie: { 
+					show: true,
+					innerRadius: 0.4,
+					highlight: {
+						opacity: 0.1
+					},
+					radius: 1,
+					stroke: {
+						color: '#fff',
+						width: 8
+					},
+					startAngle: 2,
+				    combine: {
+	                    color: '#EEE',
+	                    threshold: 0.05
+	                },
+	                label: {
+	                    show: true,
+	                    radius: 1,
+	                    formatter: function(label, series){
+	                        return '<div class="label label-inverse">'+label+'&nbsp;'+Math.round(series.percent)+'%</div>';
+	                    }
+	                }
+				},
+				grow: {	active: false}
+			},
+			legend:{show:false},
+			grid: {
+	            hoverable: true,
+	            clickable: true,
+	            backgroundColor : { }
+	        },
+	        colors: [],
+	        tooltip: true,
+			tooltipOpts: {
+				content: "%s : %y",
+				shifts: {
+					x: -30,
+					y: -50
+				},
+				defaultTheme: false
+			}
+		},
+		
+		// initialize
+		init: function()
+		{
+			// apply styling
+			charts.utility.applyStyle(this);
+			
+			this.plot = $.plot($("#review_3"), this.data, this.options);
+		}
+	}
+};
+</script>
+{% endblock %}

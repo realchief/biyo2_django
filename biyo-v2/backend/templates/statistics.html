@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<ul class="breadcrumb">
+	<li><a href="/" class="glyphicons home"><i></i>Strona główna</a></li>
+	<li class="divider"></li>
+	<li>Statystyki</li>
+</ul>
+<!-- // Breadcrumb END -->
+
+<h3 class="heading-mosaic">Statystyki</h3>
+<div class="innerLR">
+
+	
+	<!-- Widget -->
+	<div class="widget">
+	
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h4 class="heading">Klienci i sprzedaż</h4>
+		</div>
+		<!-- // Widget heading END -->
+		
+		<div class="widget-body">
+		
+			<!-- Chart with lines and fill with no points -->
+			<div id="chart_lines_fill_nopoints" style="height: 250px;"></div>
+		</div>
+	</div>
+	<!-- // Widget END -->
+	
+<div class="row-fluid row-merge">    
+	<div class="span4">  
+    	<div class="innerAll">
+        <!-- Widget -->
+        <div class="widget">
+            
+            <!-- Widget heading -->
+            <div class="widget-head">
+                <h4 class="heading">Sprzedaż (12h)</h4>
+            </div>
+            <!-- // Widget heading END -->
+            
+            <div class="widget-body">
+    
+                <!-- Ordered bars Chart -->
+                <div id="chart_ordered_bars" style="height: 250px;"></div>
+            </div>
+        </div>
+        <!-- // Widget END -->
+        </div>
+    </div>
+    <div class="span4">
+    	<div class="innerAll">
+        <!-- Widget -->
+        <div class="widget">
+        
+            <!-- Widget heading -->
+            <div class="widget-head">
+                <h4 class="heading">Sprzedaż wg kategorii</h4>
+            </div>
+            <!-- // Widget heading END -->
+            
+            <div class="widget-body">
+            
+                <!-- Donut Chart -->
+                <div id="chart_donut" style="height: 250px;"></div>
+            </div>
+        </div>
+        <!-- // Widget END -->
+    	</div>
+    </div>
+    <div class="span4">
+    	<div class="innerAll">
+    		<!-- Widget -->
+	<div class="widget">
+	
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h4 class="heading">Aktywność tabletów (12h)</h4>
+		</div>
+		<!-- // Widget heading END -->
+		
+		<div class="widget-body">
+		
+			<!-- Stacked bars Chart -->
+			<div id="chart_stacked_bars" style="height: 250px;"></div>
+		</div>
+	</div>
+	<!-- // Widget END -->
+    	</div>
+    </div>
+</div>	
+	
+	
+
+	
+
+		
+</div>	
+
+
+{% endblock %}
+
+{% block js %}
+<!-- JQuery -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery.min.js"></script>
+	
+	<!-- JQueryUI -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery-ui/js/jquery-ui-1.9.2.custom.min.js"></script>
+	
+	<!-- JQueryUI Touch Punch -->
+	<!-- small hack that enables the use of touch events on sites using the jQuery UI user interface library -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+	<!-- Modernizr -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/modernizr.js"></script>
+	
+	<!-- Bootstrap -->
+	<script src="{{ STATIC_URL }}common/bootstrap/js/bootstrap.min.js"></script>
+	
+	<!-- SlimScroll Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/jquery-slimScroll/jquery.slimscroll.min.js"></script>
+	
+	<!-- Common Demo Script -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/demo/common.js?1369414384"></script>
+	
+	<!-- Holder Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/holder/holder.js"></script>
+	
+	<!-- Uniform Forms Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/forms/pixelmatrix-uniform/jquery.uniform.min.js"></script>
+	
+	<!-- PrettyPhoto -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/gallery/prettyphoto/js/jquery.prettyPhoto.js"></script>
+	
+	<!-- Global -->
+	<script>
+	var basePath = '{{ STATIC_URL }}common/';
+	</script>
+
+	<!-- Bootstrap Extended -->
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-select/bootstrap-select.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-toggle-buttons/static/js/jquery.toggle.buttons.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/jasny-bootstrap/js/bootstrap-fileupload.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootbox.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-wysihtml5/js/wysihtml5-0.3.0_rc2.min.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-wysihtml5/js/bootstrap-wysihtml5-0.0.2.js"></script>
+	
+	<!-- Google Code Prettify -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/google-code-prettify/prettify.js"></script>
+	
+	<!-- Gritter Notifications Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/notifications/Gritter/js/jquery.gritter.min.js"></script>
+	
+	<!-- Notyfy Notifications Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/notifications/notyfy/jquery.notyfy.js"></script>
+	
+	<!-- MiniColors Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/color/jquery-miniColors/jquery.miniColors.js"></script>
+	
+	<!-- DateTimePicker Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/forms/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
+	<!-- Cookie Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery.cookie.js"></script>
+	
+	<!-- Colors -->
+	<script>
+	var primaryColor = '#e25f39',
+		dangerColor = '#bd362f',
+		successColor = '#609450',
+		warningColor = '#ab7a4b',
+		inverseColor = '#45484d';
+	</script>
+	
+	<!-- Themer -->
+	<script>
+	var themerPrimaryColor = primaryColor;
+	</script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/demo/themer.js"></script>
+	
+	<!-- Twitter Feed -->
+	
+	<!-- Easy-pie Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/easy-pie/jquery.easy-pie-chart.js"></script>
+	
+	<!-- Sparkline Charts Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/sparkline/jquery.sparkline.min.js"></script>
+	
+	<!-- Ba-Resize Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/jquery.ba-resize.js"></script>
+	
+	
+	<!-- Google JSAPI -->
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		
+	<!--  Flot Charts Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.pie.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.tooltip.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.selection.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.resize.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.orderBars.js"></script>
+	
+	<!-- Charts Helper Demo Script -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/demo/charts.helper.js?1369414384"></script>
+	
+	<!-- Charts Page Demo Script -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/demo/charts.js?1369414384"></script>
+	
+	
+	<!-- Optional Resizable Sidebars -->
+	<!--[if gt IE 8]><!--><script src="{{ STATIC_URL }}common/theme/scripts/demo/resizable.js?1369414384"></script><!--<![endif]-->
+{% endblock %}

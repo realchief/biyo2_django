@@ -1,0 +1,801 @@
+{% load i18n %}
+{% load panel_tags %}
+{% load staticfiles%}
+<!DOCTYPE html>
+<html class="no-js css-menubar" lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>Biyo Point of Sale | Dashboard</title>
+    <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-extend.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/site.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-datepicker/bootstrap-datepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+
+    <!-- Plugins -->
+    <link rel="stylesheet" href="{% static 'vendor/animsition/animsition.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/asscrollable/asScrollable.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/switchery/switchery.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/intro-js/introjs.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/slidepanel/slidePanel.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/flag-icon-css/flag-icon.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/waves/waves.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/chartist-js/dist/chartist.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/jvectormap/jquery-jvectormap.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.css' %}">
+    <link rel="stylesheet" href="{% static 'examples/css/dashboard/v1.css' %}">
+    <link rel="stylesheet" href="{% static 'common/multiple-select/multiple-select.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-select/bootstrap-select.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-sweetalert/sweetalert.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/dropzone/dropzone.min.css' %}">
+
+    <link href="{{ STATIC_URL }}common/bootstrap/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}common/theme/scripts/plugins/forms/pixelmatrix-uniform/css/uniform.default.css" rel="stylesheet" />
+    <!-- Page Style -->
+
+    {% block style %} {% endblock %}
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="{% static 'fonts/material-design/material-design.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/brand-icons/brand-icons.min.css' %}">
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+    <link rel="stylesheet" href="{% static 'common/theme/css/glyphicons.css' %}" />
+    <!--[if lt IE 9]>
+          <script src="{% static 'vendor/html5shiv/html5shiv.min.js' %}"></script>
+          <![endif]-->
+    <!--[if lt IE 10]>
+          <script src="{% static 'vendor/media-match/media.match.min.js' %}"></script>
+          <script src="{% static 'vendor/respond/respond.min.js' %}"></script>
+          <![endif]-->
+    <!-- Scripts -->
+    <script src="{% static 'vendor/breakpoints/breakpoints.js' %}"></script>
+    <script>
+        Breakpoints();
+    </script>
+</head>
+
+
+
+<body class="animsition site-navbar-small dashboard">
+<!--[if lt IE 8]>
+              <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+          <![endif]-->
+
+<nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega navbar-inverse toggled-navbar" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler hamburger hamburger-close navbar-toggler-left hided" data-toggle="menubar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="hamburger-bar"></span>
+        </button>
+        <button type="button" class="navbar-toggler collapsed" data-target="#site-navbar-collapse" data-toggle="collapse">
+            <i class="icon md-more" aria-hidden="true"></i>
+        </button>
+        {% url 'dashboard' as the_url %}
+        <a class="navbar-brand navbar-brand-center" href="{{ the_url }}{{ saved_url }}">
+            <img class="navbar-brand-logo navbar-brand-logo-normal" src="{% static '/static/images/biyo-logo_white.svg' %}" title="Biyo">
+            <img class="navbar-brand-logo navbar-brand-logo-special" src="{% static '/static/images/biyo-logo_white.svg' %}" title="Biyo">
+        </a>
+
+    </div>
+    {% block header_buttons %}
+        <div class="navbar-container container-fluid">
+            <!-- Navbar Collapse -->
+            <div class="collapse navbar-collapse navbar-collapse-toolbar" id="site-navbar-collapse">
+                <!-- Navbar Toolbar -->
+                <ul class="nav navbar-toolbar">
+                    <li class="nav-item hidden-float" id="toggleMenubar">
+                        <a class="nav-link" data-toggle="menubar" href="#" role="button">
+                            <i class="icon hamburger hamburger-arrow-left">
+                                <span class="sr-only">Toggle menubar</span>
+                                <span class="hamburger-bar"></span>
+                            </i>
+                        </a>
+                    </li>
+                    <li class="nav-item hidden-sm-down" id="toggleFullscreen">
+                        <a class="nav-link icon icon-fullscreen" data-toggle="fullscreen" href="#" role="button">
+                            <span class="sr-only">Toggle fullscreen</span>
+                        </a>
+                    </li>
+
+
+                </ul>
+                <!-- End Navbar Toolbar -->
+                <!-- Navbar Toolbar Right -->
+
+                <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">
+                    {% get_current_language as LANGUAGE_CODE %}
+                    <li class="nav-item dropdown" id="lang" data-setlang-url="{% url 'set_language' %}">
+                        <a class="nav-link" data-toggle="dropdown" href="#" data-animation="scale-up" aria-expanded="false" role="button">
+                            <span class="flag-icon flag-icon-{{ LANGUAGE_CODE }}"></span>
+                        </a>
+                        <div class="dropdown-menu language-dropdown" role="menu">
+                            {% get_language_info_list for LANGUAGES as languages %}
+                            {% for language in languages %}
+                                <a class="dropdown-item" href="#" role="menuitem" title="{{ language.name_local }}" data-lang="{{ language.code }}">
+                                    <span class="flag-icon flag-icon-{{ language.code }}"></span>
+                                    {{ language.name_local }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </li>
+                    {% if messages %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" title="Notifications" aria-expanded="false" data-animation="scale-up" role="button">
+                                <i class="icon md-notifications" aria-hidden="true"></i>
+                                {% if message.tags %}
+                                    <span class="tag tag-pill tag-danger up">{{ message.tags }}</span>
+                                {% endif %}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-media" role="menu">
+                                <div class="dropdown-menu-header">
+                                    <h5>{% trans "NOTIFICATIONS" %}</h5>
+                                </div>
+                                <div class="dropdown-menu-footer">
+                                    {% for message in messages %}
+                                        {{ message }}
+                                    {% endfor %}
+                                    <a class="dropdown-menu-footer-btn" href="javascript:void(0)" role="button">
+                                        <i class="icon md-settings" aria-hidden="true"></i>
+                                    </a>
+                                    <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                                        All notifications
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    {% endif %}
+
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link navbar-avatar" data-toggle="dropdown" href="#" aria-expanded="false" data-animation="scale-up" role="button">
+                        <span class="avatar avatar-online">
+                            {% if user.photo %}
+                                <img src="/media/{{ user.photo }}" alt="">
+                                <i></i>
+                            {% else %}
+                                <img src="{% static 'images/default-user.png' %}">
+                                <i></i>
+                            {% endif %}
+                        </span>
+                        </a>
+                        <div class="dropdown-menu avatar-dropdown" role="menu">
+                            <a class="dropdown-item" href="{% url 'employee_detail' pk=user.pk %}" role="menuitem"><i class="icon md-account" aria-hidden="true"></i>{% trans 'Profile' %} </a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon md-card" aria-hidden="true"></i>{% trans 'Billing' %} </a>
+                            <a class="dropdown-item" href="{% url 'employee_update' pk=user.pk %}" role="menuitem"><i class="icon md-settings" aria-hidden="true"></i> {% trans 'Settings' %}</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'logout' %}" role="menuitem"><i class="icon md-power" aria-hidden="true"></i> {% trans 'Logout' %}</a>
+                        </div>
+                    </li>
+
+                </ul>
+                <!-- End Navbar Toolbar Right -->
+            </div>
+            <!-- End Navbar Collapse -->
+            <!-- Site Navbar Seach -->
+            <div class="collapse navbar-search-overlap" id="site-navbar-search">
+                <form role="search">
+                    <div class="form-group">
+                        <div class="input-search">
+                            <i class="input-search-icon md-search" aria-hidden="true"></i>
+                            <input type="text" class="form-control" name="site-search" placeholder="Search...">
+                            <button type="button" class="input-search-close icon md-close" data-target="#site-navbar-search" data-toggle="collapse" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- End Site Navbar Seach -->
+        </div>
+    {% endblock %}
+
+    <div class="navbar-container site-menubar hidden-print second-line-navbar">
+        {% block menu %}
+            <div class="site-menubar-body toggled-navbar">
+                <div>
+                    <div>
+                        <ul class="site-menu" data-plugin="menu">
+                            <li class="site-menu-category">{% trans "Sales Performance" %}</li>
+                            <li class="dropdown site-menu-item has-sub ">
+                                {% url 'dashboard' as the_url %}
+                                <a data-toggle="dropdown" href="{{ the_url }}{{ saved_url }}" data-dropdown-toggle="false">
+                                    <i class="site-menu-icon md-view-compact" aria-hidden="true"></i>
+                                    <span class="site-menu-title">{% trans "Dashboard" %}</span>
+                                </a>
+
+                            </li>
+                            <li class="dropdown site-menu-item has-sub ">
+                                <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
+                                    <i class="site-menu-icon md-receipt" aria-hidden="true"></i>
+                                    <span class="site-menu-title">{% trans "Orders" %}</span>
+                                    <span class="site-menu-arrow"></span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="site-menu-scroll-wrap is-list">
+                                        <div>
+                                            <div>
+                                                <ul class="site-menu-sub site-menu-normal-list">
+                                                    <li class="site-menu-item ">
+                                                        {% url 'order-list' as ord_url %}
+                                                        <a class="animsition-link" href="{{ ord_url }}{{ saved_url }}">
+                                                            <span class="site-menu-title">{% trans "Sales Orders" %}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="site-menu-item">
+                                                        {% url 'quick:choice_order' as the_url %}
+                                                        <a class="animsition-link" href="{{ the_url }}">
+                                                            <span class="site-menu-title">{% trans "Purchase Orders" %}</span>
+                                                        </a>
+                                                    </li>
+
+
+
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </li>
+
+                            <li class="dropdown site-menu-item has-sub ">
+                                <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
+                                    <i class="site-menu-icon md-chart" aria-hidden="true"></i>
+                                    <span class="site-menu-title">{% trans "Reports" %}</span>
+                                    <span class="site-menu-arrow"></span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="site-menu-scroll-wrap is-list">
+                                        <div>
+                                            <div>
+                                                <ul class="site-menu-sub site-menu-normal-list">
+
+                                                    <h6 class="dropdown-header text-white">{% trans "Product Reports" %}</h6>
+
+                                                    <li class="site-menu-item ">
+                                                        {% url 'item_sales' as item_url %}
+                                                        <a class="animsition-link" href="{{ item_url}}{{ saved_url }}">
+                                                            <span class="site-menu-title">{% trans "Item Sales" %}</span>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="site-menu-item">
+                                                        {% url 'accountant_summary' as acc_url %}
+                                                        <a class="animsition-link" href="{{ acc_url}}{{ saved_url }}">
+                                                            <span class="site-menu-title">{% trans "Category Summary" %}</span>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="site-menu-item">
+                                                        {% url 'price_adjustment' as p_adj_url %}
+                                                        <a class="animsition-link" href="{{ p_adj_url}}{{ saved_url }}">
+                                                            <span class="site-menu-title">{% trans "Price Adjustments" %}</span>
+                                                        </a>
+                                                    </li>
+
+
+
+                                                    <h6 class="dropdown-header text-white">{% trans "Sales Reports" %}</h6>
+
+                                                    <li class="site-menu-item">
+                                                        {% url 'sales_summary' as sal_sum_url %}
+                                                        <a class="animsition-link" href="{{ sal_sum_url}}{{ saved_url }}">
+                                                            <span class="site-menu-title">{% trans "Sales Summary" %}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="site-menu-item">
+                                                        {% url 'hourly_sales' as hour_url %}
+                                                        <a class="animsition-link" href="{{ hour_url}}{{ saved_url }}">
+                                                            <span class="site-menu-title">{% trans "Hourly Sales" %}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="site-menu-item">
+                                                        {% url 'payouts_orders' as payout_url %}
+                                                        <a class="animsition-link" href="{{ payout_url }}{{ saved_url }}">
+                                                            <span class="site-menu-title">{% trans "Shifts & Payouts" %}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="site-menu-item">
+                                                        {% url 'discount_summary' as disc_url %}
+                                                        <a class="animsition-link" href="{{ disc_url}}{{ saved_url }}">
+                                                            <span class="site-menu-title">{% trans "Discount Summary" %}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="site-menu-item">
+                                                        {% url 'order_gross_profit' as ord_gros_url %}
+                                                        <a class="animsition-link" href="{{ ord_gros_url}}{{ saved_url }}">
+                                                            <span class="site-menu-title">{% trans "Order Gross Profit" %}</span>
+                                                        </a>
+                                                    </li>
+
+
+
+                                                    <h6 class="dropdown-header text-white">{% trans "User Reports" %}</h6>
+
+                                                    <li class="site-menu-item">
+                                                        {% url 'employee_hour_summary' as emp_hour_url %}
+                                                        <a class="animsition-link" href="{{ emp_hour_url}}{{ saved_url }}">
+                                                            <span class="site-menu-title">{% trans "Employee Hours" %}</span>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="site-menu-item">
+                                                        {% url 'time_card_weekly' as card_url %}
+                                                        <a class="animsition-link" href="{{ card_url}}{{ saved_url }}">
+                                                            <span class="site-menu-title">{% trans "Time Card Weekly" %}</span>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="site-menu-item">
+                                                        {% url 'top_customers' as top_cust_url %}
+                                                        <a class="animsition-link" href="{{ top_cust_url}}{{ saved_url }}">
+                                                            <span class="site-menu-title">{% trans "Top Customers" %}</span>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="site-menu-item">
+                                                        {% url 'customer-report-view' as c_rep_url %}
+                                                        <a class="animsition-link" href="{{ c_rep_url}}{{ saved_url }}">
+                                                            <span class="site-menu-title">{% trans "Customer Account Balance" %}</span>
+                                                        </a>
+                                                    </li>
+
+
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+
+                            <li class="site-menu-category">{% trans "Management" %}</li>
+                            <li class="dropdown site-menu-item has-sub">
+                                <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
+                                    <i class="site-menu-icon md-widgets" aria-hidden="true"></i>
+                                    <span class="site-menu-title">{% trans "Products" %}</span>
+                                    <span class="site-menu-arrow"></span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="site-menu-scroll-wrap is-list">
+                                        <div>
+                                            <div>
+                                                <ul class="site-menu-sub site-menu-normal-list">
+                                                    {% url 'category_list' as pc_url %}
+                                                    <li class="site-menu-item">
+                                                        <a class="animsition-link" href="{{ pc_url }}">
+                                                            <span class="site-menu-title">{% trans "Categories" %}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="site-menu-item">
+                                                        {% url 'product_list' as pr_url %}
+                                                        <a class="animsition-link" href="{{ pr_url }}">
+                                                            <span class="site-menu-title">{% trans "Products" %}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="site-menu-item">
+                                                        <a class="animsition-link" href="/modifiergroup">
+                                                            <span class="site-menu-title">{% trans "Modifiers" %}</span>
+                                                        </a>
+                                                    </li>
+                                                    {% url 'discount' as the_url %}
+                                                    <li class="site-menu-item">
+                                                        <a class="animsition-link" href="/discount">
+                                                            <span class="site-menu-title">{% trans "Discounts" %}</span>
+                                                        </a>
+                                                    </li>
+
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+
+                            <li class="dropdown site-menu-item has-sub">
+                                <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
+                                    <i class="site-menu-icon md-accounts" aria-hidden="true"></i>
+                                    <span class="site-menu-title">{% trans "Users" %}</span>
+                                    <span class="site-menu-arrow"></span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="site-menu-scroll-wrap is-list">
+                                        <div>
+                                            <div>
+                                                <ul class="site-menu-sub site-menu-normal-list">
+                                                    <li class="site-menu-item">
+                                                        {% url 'employee_list' as e_url %}
+                                                        <a class="animsition-link" href="{{ e_url }}">
+                                                            <span class="site-menu-title">{% trans "Employees" %}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="site-menu-item">
+                                                        {% url 'customer_list' as cus_url %}
+                                                        <a class="animsition-link" href="{{ cus_url }}">
+                                                            <span class="site-menu-title">{% trans "Customers" %}</span>
+                                                        </a>
+                                                    </li>
+                                                    {#                                                <li class="site-menu-item">#}
+                                                    {#                                                {% url 'supplier_list' as sup_url %}#}
+                                                    {#                                                    <a class="animsition-link" href="{{ sup_url }}">#}
+                                                    {#                                                        <span class="site-menu-title">{% trans "Suppliers" %}</span>#}
+                                                    {#                                                    </a>#}
+                                                    {#                                                </li>#}
+
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            {#                        <li class="dropdown site-menu-item has-sub">#}
+                            {#                            <a data-toggle="dropdown" href="/display" data-dropdown-toggle="false">#}
+                            {#                                <i class="site-menu-icon md-image-alt" aria-hidden="true"></i>#}
+                            {#                                <span class="site-menu-title text">{% trans "Digital Displays" %}</span>#}
+                            {#                                <span class="site-menu-arrow"></span>#}
+                            {#                            </a>#}
+                            {##}
+                            {#                        </li>#}
+                            <li class="dropdown site-menu-item has-sub">
+                                <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
+                                    <i class="site-menu-icon md-settings-square" aria-hidden="true"></i>
+                                    <span class="site-menu-title text">{% trans "Configure" %}</span>
+                                    <span class="site-menu-arrow"></span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="site-menu-scroll-wrap is-list">
+                                        <div>
+                                            <div>
+                                                <ul class="site-menu-sub site-menu-normal-list">
+                                                    <li class="site-menu-item">
+                                                        <a class="animsition-link" href="/store">
+                                                            <span class="site-menu-title">{% trans "General" %}</span>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="site-menu-item">
+                                                        {% url 'taxrate_list' as the_url %}
+                                                        <a class="animsition-link" href="{{ the_url }}">
+                                                            <span class="site-menu-title">{% trans "Sales Taxes" %}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="site-menu-item">
+                                                        <a class="animsition-link" href="/reward">
+                                                            <span class="site-menu-title">{% trans "Rewards & Loyalty" %}</span>
+                                                        </a>
+                                                    </li>
+
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    </div>
+</nav>
+
+<div class="page">
+    <div class="page-content container-fluid">
+
+        {% block content %} {% endblock %}
+
+    </div>
+</div>
+<!-- Footer Start -->
+<footer class="site-footer">
+    <div class="site-footer-legal">© 2017 <a href="http://biyopos.com">Biyo LLC.,</a></div>
+    <div class="site-footer-right">
+        {% trans "Made with" %} <i class="red-600 icon md-favorite"></i> 2.0.1</a>
+    </div>
+</footer>
+<!-- Footer End -->
+
+
+<!-- Core  -->
+<script src="{% static 'common/theme/scripts/plugins/tables/DataTables/docs/media/js/jquery.js' %}"></script>
+<script src="{% static 'vendor/babel-external-helpers/babel-external-helpers.js' %}"></script>
+<script src="{% static 'vendor/jquery/jquery.js' %}"></script>
+<script src="{% static 'vendor/tether/tether.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/bootstrap.js' %}"></script>
+<script src="{% static 'vendor/animsition/animsition.js' %}"></script>
+<script src="{% static 'vendor/mousewheel/jquery.mousewheel.js' %}"></script>
+<script src="{% static 'vendor/asscrollbar/jquery-asScrollbar.js' %}"></script>
+<script src="{% static 'vendor/asscrollable/jquery-asScrollable.js' %}"></script>
+<script src="{% static 'vendor/waves/waves.js' %}"></script>
+<!-- Plugins -->
+<script src="{% static 'vendor/switchery/switchery.min.js' %}"></script>
+<script src="{% static 'vendor/intro-js/intro.js' %}"></script>
+<script src="{% static 'vendor/screenfull/screenfull.js' %}"></script>
+<script src="{% static 'vendor/slidepanel/jquery-slidePanel.js' %}"></script>
+<script src="{% static 'vendor/chartist-js/dist/chartist.js' %}"></script>
+<script src="{% static 'vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.min.js' %}"></script>
+<script src="{% static 'vendor/chartist-plugin-axistitle/chartist-plugin-axistitle.min.js' %}"></script>
+<script src="{% static 'vendor/chartist-plugin-legend/chartist-plugin-legend.js' %}"></script>
+<script src="{% static 'vendor/jvectormap/jquery-jvectormap.min.js' %}"></script>
+<script src="{% static 'vendor/jvectormap/maps/jquery-jvectormap-world-mill-en.js' %}"></script>
+<script src="{% static 'vendor/matchheight/jquery.matchHeight-min.js' %}"></script>
+<script src="{% static 'vendor/peity/jquery.peity.min.js' %}"></script>
+<script src="{% static 'examples/js/dashboard/v1.min.js' %}"></script>
+<script src="{% static 'vendor/dropzone/dropzone.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap-autohidingnavbar/dist/jquery.bootstrap-autohidingnavbar.js' %}"></script>
+<!-- Scripts -->
+<script src="{% static 'js/State.js' %}"></script>
+<script src="{% static 'js/Component.js' %}"></script>
+<script src="{% static 'js/Plugin.js' %}"></script>
+<script src="{% static 'js/Base.js' %}"></script>
+<script src="{% static 'js/Config.js' %}"></script>
+<script src="{% static 'js/Section/Menubar.js' %}"></script>
+<script src="{% static 'js/Section/Sidebar.js' %}"></script>
+<script src="{% static 'js/Section/PageAside.js' %}"></script>
+<script src="{% static 'js/Plugin/menu.js' %}"></script>
+<!-- Config -->
+<script src="{% static 'js/config/colors.js' %}"></script>
+<script src="{% static 'js/config/tour.js' %}"></script>
+<script>
+    Config.set('assets', '/static');
+</script>
+<!-- Page -->
+<script src="{% static 'js/Site.js' %}"></script>
+<script src="{% static 'vendor/bootstrap-datepicker/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'js/Plugin/asscrollable.js' %}"></script>
+<script src="{% static 'js/Plugin/slidepanel.js' %}"></script>
+<script src="{% static 'js/Plugin/switchery.js' %}"></script>
+<script src="{% static 'js/Plugin/matchheight.js' %}"></script>
+<script src="{% static 'js/Plugin/jvectormap.js' %}"></script>
+<script src="{% static 'js/Plugin/peity.js' %}"></script>
+<script src="{% static 'common/multiple-select/multiple-select.js' %}"></script>
+<script src="{% static 'vendor/bootstrap-select/bootstrap-select.js' %}"></script>
+<script src="{% static 'vendor/bootstrap-sweetalert/sweet-alert.js' %}"></script>
+
+{% block scripts %} {% endblock %}
+
+
+
+</body>
+{##}
+<script type="text/javascript">
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                // Only send the token to relative URLs i.e. locally.
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        }
+    });
+
+    $( window ).load(function() {
+
+        $("#lang").find("div a").on('click', function() {
+            var lang = $(this).data('lang');
+            var lang_url = $('#lang').data('setlang-url');
+            console.log("Set language", lang);
+            $.ajax({
+                url: lang_url,
+                type: 'POST',
+                dataType: 'html',
+                data: {language: lang},
+                success: function(data){
+                    window.location.reload();
+                },
+                error: function(){
+                    console.error("Failed to switch language: ", arguments);
+                }
+            });
+            return false;
+        });
+
+    });
+
+
+    $(window).load(function() {
+      var start_date_picker = $('#start_date').datepicker({
+        format: 'MM dd, yyyy',
+      });
+
+      var end_date_picker = $('#end_date').datepicker({
+        format: 'MM dd, yyyy',
+      });
+      end_date_picker.change(applyFilter);
+
+      // getting previous date
+      let startDate = localStorage.getItem('start');
+      let endDate = localStorage.getItem('end');
+
+      const startIndex = location.search.indexOf('start');
+      const endIndex = location.search.indexOf('end');
+
+      if (startDate && endDate) {
+        if (startIndex === -1 && endIndex === -1) {
+          start_date_picker.val(startDate);
+          end_date_picker.val(endDate).trigger('change');
+        }
+      }
+
+      if (vals && vals.start && vals.end) {
+        const decodedStart = decodeURIComponent(vals.start);
+        const decodedEnd = decodeURIComponent(vals.end);
+
+        start_date_picker.val(formatDate(new Date(decodedStart.slice(0, decodedStart.indexOf('12:00AM')))));
+        end_date_picker.val(formatDate(new Date(decodedEnd.slice(0, decodedEnd.indexOf('11:59PM')))));
+        if (startIndex === -1 && endIndex === -1) {
+            end_date_picker.trigger('change')
+          }
+      }
+
+        $(".toggled-navbar").autoHidingNavbar({
+            'hideOffset': 60,
+            'showOnBottom': false,
+            'showOnUpscroll': false,
+            'animationDuration': 300
+        });
+        $(window).scroll(function (event) {
+            var scroll = $(window).scrollTop();
+            if (scroll == 0) {
+                $('.toggled-navbar').autoHidingNavbar('show');
+            }
+        });
+    });
+
+
+    function formatDate(date) {
+      var monthNames = [
+        "January", "February", "March",
+        "April", "May", "June", "July",
+        "August", "September", "October",
+        "November", "December"
+      ];
+
+      var day = date.getDate();
+      var monthIndex = date.getMonth();
+      var year = date.getFullYear();
+
+      return monthNames[monthIndex] +  ' ' + day  + ', ' + year;
+    }
+
+    function dateControl(){
+        var endDate = $('#end_date').val();
+        if(endDate) $('#end_date').change();
+    }
+
+    function dateEndStart(){
+        $('#start_date').val($('#end_date').val());
+        $('#end_date').change();
+    }
+
+    var start = $('#start_date').val();
+    var end = $('#end_date').val();
+
+    var applyFilter = function(evt){
+
+        evt.stopPropagation();
+        var start = '';
+        var end = '';
+        var reservationTime = $('.datetimepicker').val();
+        if (reservationTime != 'Day' && reservationTime != 'All'){
+            start = $('#start_date').val().split(" ").join("")
+            end = $('#end_date').val().split(" ").join("")
+        }
+
+        var option = $('.ranges ul li.active').index();
+        if ((start && end)!=''){
+            path = '?start='+start+'12:00AM&end='+end+'11:59PM&option='+option;
+
+            // set next date
+            localStorage.setItem('start', $('#start_date').val());
+            localStorage.setItem('end', $('#end_date').val());
+            location.href = location.pathname+path;
+        }
+    }
+    if(location.search){
+        var params = location.search.split('?')[1].split('&')
+        var vals = {}
+        for (i=0; i<params.length; i++){
+            key = params[i].split('=')[0];
+            val = params[i].split('=')[1];
+            vals[key] = val
+        }
+    }
+    function getURLParameters(paramName)
+    {
+        var sURL = window.document.URL.toString();
+        if (sURL.indexOf("?") > 0)
+        {
+            var arrParams = sURL.split("?");
+            var arrURLParams = arrParams[1].split("&");
+            var arrParamNames = new Array(arrURLParams.length);
+            var arrParamValues = new Array(arrURLParams.length);
+            var i = 0;
+            for (i=0;i<arrURLParams.length;i++)
+            {
+                var sParam =  arrURLParams[i].split("=");
+                arrParamNames[i] = sParam[0];
+                if (sParam[1] != "")
+                    arrParamValues[i] = unescape(sParam[1]);
+                else
+                    arrParamValues[i] = "No Value";
+            }
+
+            for (i=0;i<arrURLParams.length;i++)
+            {
+                if(arrParamNames[i] == paramName){
+                    //alert("Param:"+arrParamValues[i]);
+                    return arrParamValues[i];
+                }
+            }
+            return "No Parameters Found";
+        }
+        var dateRanges = {
+            'Day': [moment('12:00 AM', 'h:mm A'), moment('11:59 PM', 'h:mm A')],
+            'Week': [moment('12:00 AM', 'h:mm A').startOf('week'), moment('11:59 PM', 'h:mm A').endOf('week')],
+            'Month': [moment('12:00 AM', 'h:mm A').startOf('month'), moment('11:59 PM', 'h:mm A').endOf('month')],
+            'Year': [moment('12:00 AM', 'h:mm A').startOf('year'), moment('11:59 PM', 'h:mm A').endOf('year')]
+        };
+
+    }
+    $('.datetimepicker').on('apply.daterangepicker', function(evt, picker) {
+        applyFilter(evt);
+    });
+
+</script>
+</html>

@@ -1,0 +1,236 @@
+{% extends "base.html" %} {% block style %}
+
+{% load static %}
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+{% load panel_tags %}
+<link rel="stylesheet" href="{% static '/static/vendor/select2/select2.css' %}"> {% endblock %} {% block content %}
+<!-- body burdan basliyo -->
+<div class="path-to-product">
+    <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+    <th class="divider">/</th>
+    <th><a href="{% url 'product_list' %}">{% trans "Products" %}</a></th>
+    <th class="divider">/</th>
+    <th>{{ object.name }}</th>
+</div>
+
+<div class="col-md-9">
+    {% if object.image  %}
+    <div class="avatar avatar-lg" style="width: 120px">
+         <img src="/media/{{ object.image }}" alt="...">
+    </div>
+    {% else %}
+    <div class="avatar avatar-lg" style="width: 120px">
+         <img src="/static/images/standard-product-image.gif" alt="...">
+    </div>
+    {% endif %}
+    <h1 class="product-name">{% trans 'Product ' %} "{{ object.name }}"</h1>
+</div>
+<div class="col-md-3 product-detail-buttons">
+    <a href="{% url 'product_view_orders' pk=object.pk  %}{{ saved_url }}" >
+        <button type="button" class="btn btn-primary waves-effect"> {% trans "View Orders for this product" %} </button>
+    </a>
+    <a href="{% url 'product_update' pk=object.pk %}">
+        <button type="button" class="btn btn-warning waves-effect">{% trans "Edit" %}</button>
+    </a>
+    <a href="{% url 'product_delete' pk=object.pk %}">
+        <button type="button" class="btn btn-danger waves-effect"> {% trans "Delete" %}</button>
+    </a>
+</div>
+
+<div class="separator bottom"></div>
+
+
+<div class="clearfix" style="height: 20px;"></div>
+{#<div class="panel">#}
+{#    <div class="center"><h1 class="panel-title"><strong>{{ object.name }}</strong></h1></div>#}
+{#    <div class="panel-body">#}
+        <!---->
+        <div class="col-sm-12">
+            <div class="col-sm-6">
+            <div class="panel">
+            <div class="center"><h1 class="panel-title"><strong>{{ object.name }}</strong></h1></div>
+            <div class="col product-description">{{ product.description }}</div>
+            <div class="panel-body">
+
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong>Price</strong>
+                            </td>
+                            <td class="text-xs-right">
+                                {{ object.price }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Cost</strong>
+                            </td>
+                            <td class="text-xs-right">
+                                {{ object.cost }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Color</strong>
+                            </td>
+                            <td class="text-xs-right">
+                                {{ object.get_color_display }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Barcode</strong>
+                            </td>
+                            <td class="text-xs-right">
+                                {{ object.barcode }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Stock</strong>
+                            </td>
+                            <td class="text-xs-right">
+                                {{ object.stock }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Tax Rate111</strong>
+                            </td>
+                            <td class="text-xs-right">
+                                {{ object.tax_rate }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Tax Status</strong>
+                            </td>
+                            {% if object.tax_status == 1 %}
+                                <td class="text-xs-right">
+                                    <span class="tag  tag-danger w-75px">{{ object.get_tax_status_display }}</span>
+                                </td>
+                            {% else %}
+                                <td class="text-xs-right">
+                                    <span class="tag  tag-success w-75px">{{ object.get_tax_status_display }}</span>
+                                </td>
+                            {% endif %}
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Active</strong>
+                            </td>
+                            {% if object.active == True %}
+                                <td class="text-xs-right">
+                                    <span class="tag  tag-success w-75px">{% trans "Active" %}</span>
+                                </td>
+                            {% else %}
+                                <td class="text-xs-right">
+                                    <span class="tag  tag-danger w-75px">{% trans "Disable" %}</span>
+                                </td>
+                            {% endif %}
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Ask price everytime?</strong>
+                            </td>
+                            <td class="text-xs-right">
+                                {{ object.get_price_adjust_display }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Print to Kitchen</strong>
+                            </td>
+                            <td class="text-xs-right">
+                                {{ object.get_print_to_display }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Which Printer</strong>
+                            </td>
+                            <td class="text-xs-right">
+                                {{ object.printer }}
+                            </td>
+                        </tr>
+                        <tr class="alert-warning">
+                            <td>
+                                <strong>{% trans "Categories:" %}</strong>
+                            </td>
+                            <td></td>
+                        </tr>
+                        {% for category in object.categories.all %}
+                        <tr>
+                            <td class="text-xs-center">
+                                {{ category }}
+                            </td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+
+
+                        <tr class="table-active">
+                            <td><strong>{% trans "Modifiers:" %}</strong></td>
+                            {% if object.modifier_groups.all.count %}
+                                {% for modifier_group in object.modifier_groups.all %}
+                                    <td class="text-xs-center">{{ modifier_group }}</td>
+                                {% endfor %}
+                            {% else %}
+                                <td class="text-xs-center">{% trans "No modifiers selected" %}</td>
+                            {% endif %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            </div>
+
+
+            <div class="col-sm-6">
+            <div class="panel" >
+{#            <div class="center"><h1 class="panel-title"><strong>{{ object.name }}</strong></h1></div>#}
+            <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th><h4>{% trans "Product history" %}</h4></th>
+                        <th></th>
+                    </tr>
+                        <tr>
+                          <th scope="col" class="table-active">{% trans 'Date/time' %}</th>
+                          <th scope="col" class="table-active">{% trans 'Changed by' %}</th>
+                          <th scope="col" class="table-active">{% trans 'Cost' %}</th>
+                          <th scope="col" class="table-active">{% trans 'Price' %}</th>
+                          <th scope="col" class="table-active">{% trans 'Stock' %}</th>
+                          <th scope="col" class="table-active">{% trans 'Stock Change' %}</th>
+                          <th scope="col" class="table-active">{% trans 'Comment' %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for hist in object.history.all|slice:":25" %}
+                        <tr>
+                          <td>{{ hist.history_date|date:"d M Y, h:i A" }}</td>
+                          <td>{{ hist.history_user.name }}</td>
+                          <td>$ {{ hist.cost }}</td>
+                          <td>$ {{ hist.price }}</td>
+                          <td>{{ hist.stock }}</td>
+                          <td>{{ hist.stock_change }}</td>
+                          <td>{{ hist.change_reason|default:hist.get_history_type_display|product_order_link|safe }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %} {% block scripts %}
+
+<script src="{% static '/static/js/Plugin/select2.js' %}"></script>
+<script src="{% static '/static/vendor/select2/select2.full.min.js' %}"></script>
+{% endblock %}

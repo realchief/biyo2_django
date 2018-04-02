@@ -1,0 +1,92 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load tz %}
+{% load panel_tags %}
+{% load humanize %}
+
+<thead>
+  <th><a href="{% url 'dashboard' %}{{ saved_url }}"><i></i>{% trans 'Home' %}</a></th>
+  <th class="divider">/</th>
+  {% url 'discount_summary' as disc_url %}
+  <th><a href="{{ disc_url }}{{ saved_url }}">{% trans "Discount Summary" %}</a></th>
+  <th class="divider">/</th>
+  <th>{% trans "Discount summary" %}</th>
+</thead>
+
+  <div class="row clearfix">
+                <div class="col-sm-12 col-md-3">
+                  <h1 class="page-title">{% trans "Reports: Discounted Orders" %}</h1>
+                </div>
+                <div class="hidden-md-up" style="height: 10px;">
+                </div>
+                <div class="col-sm-12 col-md-5">
+                  {% include 'reports/includes/filter.html' %}
+                </div>
+                <div class="hidden-md-up" style="height: 50px;">
+                </div>
+                <div class="col-sm-12 col-md-4">
+                </div>
+              </div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel" style="max-width: 100%; overflow-x: auto">
+<div class="panel-body" style="max-width: 100%; overflow-x: auto">
+<div class="row">
+  <div class="col-xs-12 col-md-6">
+    <div class="m-b-15">
+    </div>
+  </div>
+</div>
+<table class="table table-hover table-striped" cellspacing="0" id="exampleFixedHeader">
+  <thead>
+    <tr>
+      <th>{% trans "Deduction Type" %}</th>
+      <th>{% trans "Order" %}</th>
+      <th>{% trans "Employee" %}</th>
+      <th>{% trans "Discounted" %}</th>
+      <th>{% trans "Close date" %}</th>
+      <th>{% trans "Terminal #" %}</th>
+      <!-- <th>Total</th> -->
+    </tr>
+
+  </thead>
+  <tbody>
+    {% for order in orders %}
+              <tr class="selectable">
+                <td class="center">
+                    {% ifequal order.discount_orders Null %}
+                        Item
+                    {% else %}
+                        Order
+                    {% endifequal %}
+                </td>
+                <td class="center">
+                    <a href="{% url 'order-detail' pk=order.pk %}">
+                        {% trans 'Order' %}# {{order.id}}
+                    </a>
+                </td>
+                <td class="center">
+                    {{ order.emp_open }}
+                </td>
+                <td class="center">
+                    (${{ order.discount_total|floatformat:2|default:"0.00"|intcomma}})
+                </td>
+                <td class="center">
+                    {{ order.close_date|timezone:tz|date:"m-d-Y h:i A" }}
+                </td>
+                <td class="center">
+                    <a href="{% url 'terminal_detail' pk=order.terminal_id %}">
+                        {{ order.terminal_id }}
+                    </a>
+                </td>
+
+    {% endfor %}
+
+
+
+  </tbody>
+</table>
+</div>
+</div>
+
+{% endblock content %}

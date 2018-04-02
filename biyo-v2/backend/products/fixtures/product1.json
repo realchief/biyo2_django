@@ -1,0 +1,29 @@
+[
+    {
+        "fields":
+            {
+                "stock_change": 0,
+                "archived": false,
+                "sorting": 0,
+                "name": "Custom",
+                "price_adjust": 0,
+                "color": 1,
+                "print_to": false,
+                "image": "",
+                "barcode": null,
+                "categories": [],
+                "tax_status": 1,
+                "cost": 0.0,
+                "tax_rate": 1,
+                "change_reason": "",
+                "active": true,
+                "modifier_groups": [],
+                "suppliers": [],
+                "price": 0.0,
+                "printer": null,
+                "stock": 0
+            },
+        "model": "products.product",
+        "pk": -1
+    }
+]

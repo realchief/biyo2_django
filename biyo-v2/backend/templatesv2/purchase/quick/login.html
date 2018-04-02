@@ -1,0 +1,29 @@
+{% extends 'account/base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="page animsition vertical-align text-center" align="center" data-animsition-in="fade-in" data-animsition-out="fade-out" style="animation-duration: 800ms; opacity: 1; ">&gt;
+    <div class="page-content vertical-align-middle">
+      <div class="panel">
+        <div class="panel-body">
+          <div class="brand" >
+            <img class="brand-img" src="{{ STATIC_URL }}images/biyo_logo.png" alt="..." style="width: 100%">
+            <h2 class="brand-text font-size-18"></h2>
+          </div>
+          <form method="post">
+          {% csrf_token %}
+          {{ form.pin.errors }}
+            <div class="form-group form-material floating">
+                <input type="text" class="form-control" placeholder="PIN number" name="pin" tabindex="1"/>
+                <label class="floating-label">PIN</label>
+            </div>
+            <button type="submit" tabindex="4" class="btn btn-primary btn-block btn-lg margin-top-40">{% trans "Login" %}</button>
+          </form>
+        </div>
+      </div>
+      <footer class="page-copyright page-copyright-inverse">
+        <p>© 2017. All RIGHT RESERVED.</p>
+      </footer>
+    </div>
+  </div>
+{% endblock %}

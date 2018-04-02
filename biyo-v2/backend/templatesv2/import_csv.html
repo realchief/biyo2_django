@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load humanize %}
+    <form action="{% url 'import_csv' %}" class="dropzone" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="fallback">
+            <input name="group_csv" type="file"/>
+        </div>
+    </form>
+{% endblock content %}

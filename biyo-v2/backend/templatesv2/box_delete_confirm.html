@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<thead>
+  <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+  <th class="divider">/</th>
+  <th><a href="{% url 'display_list' %}">{% trans "Displays" %}</a></th>
+  <th class="divider">/</th>
+  <th><a href="{% url 'box_list' %}">{% trans "Boxes" %}</a></th>
+  <th class="divider">/</th>
+  <th>{% trans 'Delete' %} {{ object.name }}</th>
+</thead>
+
+<div class="separator bottom"></div>
+<div class="col-sm-12 col-md-3">
+   <h3>{% trans 'Delete' %} {{ object.name }} </h3>
+</div>
+<div class="separator bottom"></div>
+
+<div class="table-responsive">
+   <form method="post" enctype="multipart/form-data">
+     <div class="panel">
+         <h3 class="panel-title">
+            Are you sure you want to delete {{ object.name }}?
+         </h3>
+         {% csrf_token %}
+     </div>
+     <div>
+       <a href="{% url 'box_list' %}" class="btn btn-primary waves-effect">Cancel</a>
+       <button type="submit" class="btn btn-danger waves-effect">Delete</button>
+     </div>
+   </form>
+</div>
+
+{%  endblock content %}

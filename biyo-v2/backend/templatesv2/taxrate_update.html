@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load panel_tags %}
+{% load bootstrap3 %}
+{% block content %}
+
+<thead>
+    <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+    <th class="divider">/</th>
+    <th><a href="{% url 'taxrate_list' %}">{% trans "Tax rates" %}</a></th>
+    <th class="divider">/</th>
+    <th><a href="{% url 'taxrate_detail' pk=object.pk %}">{{ object.name }}</a></th>
+    <th class="divider">/</th>
+    <th>{% trans "Update" %} {{ object.name }}</th>
+</thead>
+
+<div class="table-responsive">
+        {% if form.errors %}
+            <div class="alert alert-warning">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+      <form method="post" enctype="multipart/form-data">
+        <div class="panel col-md-4 offset-md-4">
+            <h3 class="panel-title">
+               {{ object.name }}
+            </h3>
+            {% csrf_token %}
+            <table class="table" id="editableUser">
+                 <div class="col-md-4">
+                    <tr>
+                      <td>{% bootstrap_field form.name  %}</td>
+                    </tr>
+                     <tr>
+                      <td>{% bootstrap_field form.rate  %}</td>
+                    </tr>
+                 </div>
+            </table>
+            <div>
+                <button type="submit" class="btn btn-success waves-effect form-table-button">Save changes</button>
+            </div>
+        </div>
+      </form>
+</div>
+
+{% endblock content %}
+

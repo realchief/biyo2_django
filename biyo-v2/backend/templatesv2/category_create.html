@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+<thead>
+  <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+  <th class="divider">/</th>
+  <th><a href="{% url 'category_list' %}">{% trans "Categorys" %}</a></th>
+  <th class="divider">/</th>
+  <th>{% trans "Add new category" %}</th>
+</thead>
+
+<div class="table-responsive">
+        {% if form.errors %}
+            <div class="alert alert-warning">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+  <form method="post" enctype="multipart/form-data">
+    <div class="panel col-md-4 offset-md-4 create-update-form">
+        <h3 class="panel-title">
+           New Category
+        </h3>
+        {% csrf_token %}
+        <table class="table" id="editableUser">
+             <div class="col-md-4">
+                  <tr>
+                      <td>{% bootstrap_field form.name %}</td>
+                  </tr>
+                 <tr>
+                     <td>{% bootstrap_field form.parent %}</td>
+                 </tr>
+                  <tr>
+                      <td><p>Color</p>{{ form.color }}</td>
+                  </tr>
+                 <tr>
+                     <td>{% bootstrap_field form.sorting %}</td>
+                 </tr>
+                  <tr>
+                      <td>
+                          <div>Image</div>
+                          <label class="btn btn-secondary btn-file employee-add-photo-button">Browse
+                            <input id="id_image" name="image" title="" type="file" hidden>
+                          </label>
+                      </td>
+                  </tr>
+             </div>
+        </table>
+        <div>
+            <button type="submit" class="btn btn-success waves-effect form-table-button">Add new Category</button>
+        </div>
+    </div>
+  </form>
+</div>
+
+<div id="colorpicker" style="display: none">
+	<select name="colorpicker">
+	    <option value="#e56d3b">Orange</option>
+	    <option value="#459b99">Aqua</option>
+	    <option value="#744a17">Brown</option>
+	    <option value="#009d13">Green</option>
+	    <option value="#00b2d8">Cyan</option>
+	    <option value="#8f1758">Maroon</option>
+	    <option value="#b93aab">Pink</option>
+	</select>
+</div>
+
+
+
+{% block scripts %}
+	{{ block.super }}
+
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker-glyphicons.css"/>
+	<script type="text/javascript">
+		var colors = {
+			'#e56d3b': 0,
+			'#459b99': 1,
+			'#744a17': 2,
+			'#009d13': 3,
+			'#00b2d8': 4,
+			'#8f1758': 5,
+			'#b93aab': 6
+		};
+		$("#id_color_0").prop("checked", true);
+		$('#colorpicker select').appendTo($('#id_color').parent());
+		$('select[name="colorpicker"]').simplecolorpicker({theme: 'glyphicons'})
+				.on('change', function(){
+					var val = $('select[name="colorpicker"]').val();
+					id = colors[val];
+					$("#id_color_" + id).prop("checked", true);
+				});
+		$('#id_color').hide();
+	</script>
+{% endblock %}
+
+{% endblock content %}

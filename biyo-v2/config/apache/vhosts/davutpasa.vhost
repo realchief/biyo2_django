@@ -1,0 +1,15 @@
+
+# This file was auto-generated
+
+<VirtualHost *>
+    ServerName davutpasa.dashboard.center
+    SetEnv DJANGO_SETTINGS_MODULE settings.store_davutpasa.settings
+
+    CustomLog /home/mys5107/logs/user/davutpasa/apache-access.log combined
+    ErrorLog /home/mys5107/logs/user/davutpasa/apache-error.log
+
+    WSGIDaemonProcess davutpasa_pulsewallet processes=1 threads=2 python-path=/home/mys5107/webapps/pulsewallet/backend:/home/mys5107/webapps/pulsewallet/venv/lib/python2.7:/home/mys5107/webapps/pulsewallet/venv/lib/python2.7/site-packages
+    WSGIProcessGroup davutpasa_pulsewallet
+    WSGIScriptAlias / /home/mys5107/webapps/pulsewallet/backend/wsgi.py
+</VirtualHost>
+

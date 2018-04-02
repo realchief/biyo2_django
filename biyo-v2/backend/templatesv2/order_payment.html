@@ -1,0 +1,69 @@
+{% load bootstrap3 %}
+
+<form id="payment-form-toggle" class="specialprices">
+    {% for field in form.hidden_fields %}
+        {% bootstrap_field field show_label=False %}
+    {% endfor %}
+
+    <div class="col-sm-12">
+        <div class="col-sm-12 col-md-6" style="overflow: visible;max-width: 100%; overflow-x: auto">
+            <table class="table" style="overflow: visible;">
+                    <tbody>
+                        <tr>
+                            {% bootstrap_field form.amount show_label=False %}
+                        </tr>
+                        <tr>
+                            {% for c in currency %}
+                                <td><button type="button" class="btn btn-primary waves-effect currency-btn" data-value="{{ c }}">{{ c }}$</button></td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <table class="table">
+                <tbody>
+                    {% comment "Disabled credit card" %}
+                    <tr><td id="id-pay-with-credit" class="span2 col-md-4 btn btn-success" data-toggle="tooltip" title="Under maintenance." style="position: relative;"><span>Credit
+                        <div class="glyphicons credit_card col-sm-12 col-md-4" style="position: absolute; top: 5px; right: 0;"><i></i></div>
+                    </span></td></tr>
+                    {% endcomment %}
+                    <tr><td id="id-pay-with-cash" class="span2 col-sm-12 col-md-4 btn btn-primary" style="position: relative;"><span>Cash
+                        <div class="glyphicons usd col-sm-12 col-md-4" style="position: absolute; top: 5px; right: 0;"><i></i></div>
+                    </span></td></tr>
+                    <tr><td class=" span2 pay-with-account col-sm-12 col-md-4 btn" data-toggle="tooltip" title="" style="position: relative;"><span>Account
+                        <div class="glyphicons user col-sm-12 col-md-4" style="position: absolute; top: 5px; right: 0;"><i></i></div>
+                    </span></td></tr>
+                    <tr><td class="span2 pay-with-check col-sm-12 col-md-4 btn" data-toggle="tooltip" title="" style="position: relative;"><span>Check
+                        <div class="glyphicons tag col-sm-12 col-md-4" style="position: absolute; top: 5px; right: 0;"><i></i></div>
+                    </span></td></tr>
+                </tbody>
+            </table>
+
+            <div class="col-sm-12 col-md-4 alert-success"><span><strong>Change:</strong></span>
+                <div class="pull-md-right">$ <span id="id-change-amount-label">0.00</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="checkpay-modal xhidden modal fade modalform" tabindex='-1'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="fa fa-times">Close</span></button>
+                <h4 class="modal-title">Pay by Check</h4>
+            </div>
+            <div class="modal-body">
+                <h4>You are about to pay $<strong><span class="pay-amount text-success"></span></strong> by check</h4>
+                <label>Enter check No: </label>
+                <input type="text" class="form-control check-no" name="checkno" value=""/>
+                <p><small class="text-error">Error Text</small></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success checkpay-btn">Pay by Check</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+{#</div>#}

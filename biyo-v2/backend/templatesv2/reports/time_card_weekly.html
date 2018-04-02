@@ -1,0 +1,82 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load humanize %}
+
+
+
+<div class="row ">
+    <div>
+        <h1 class="page-title">{% trans "Time Card Weekly" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-6 offset-md-3">
+            {% include "reports/includes/filter.html" %}
+    </div>
+
+
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+
+        <div class="row">
+
+
+            <div class="col-sm-12">
+
+                <table class="table span12 time_card_weekly">
+
+
+
+                    <tbody>
+                        {% for employee in employees %}
+                            {% if forloop.counter0|divisibleby:4 %}
+                                {% if not forloop.first %}
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                            {% endif %}
+
+                            <td class="employee-card span3">
+                                {% if employee != '-EMPTY-' %}
+                                    <span class="employee-name">{{ employee.name }}</span>
+                                    <table class="table table-bordered text-center">
+                                        <tbody>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>{% trans "In" %}</td>
+                                            <td>{% trans "Out" %}</td>
+                                            <td>{% trans "Hours" %}</td>
+                                        </tr>
+                                        {% for r in employee.report %}
+                                        <tr>
+                                            <td class="text-nowrap"><small>{{ r.date|date:'D' }}</small> {{ r.date|date:'m/d' }}</td>
+                                            <td>{{ r.tin|date:'h:i' }}&nbsp;<small>{{ r.tin|date:'A' }}</small></td>
+                                            <td>{{ r.tout|date:'h:i' }}&nbsp;<small>{{ r.tout|date:'A' }}</small></td>
+                                            <td>{{ r.hours|floatformat:'2' }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% else %}
+                                    &nbsp;
+                                {% endif %}
+                            </td>
+
+                            {% if forloop.last %}
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+  <ul class="breadcrumb">
+    <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+
+     </ul>
+  <div class="separator bottom"></div>
+  <div class="heading-buttons">
+
+  </div>
+  <div class="separator bottom"></div>
+
+  <div class="innerLR">
+    <div class="widget">
+      {% if form.errors or error%}
+        <div class="alert alert-warning">
+          {{ form.errors }}
+
+            {{ error }}
+
+        </div>
+      {% endif %}
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+          {{ form.as_table }}
+        </table>
+        <div class="separator bottom"></div>
+        <div>
+          <input type="submit" class="btn btn-primary" value="Save changes"/>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock content %}

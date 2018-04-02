@@ -1,0 +1,15 @@
+
+# This file was auto-generated
+
+<VirtualHost *>
+    ServerName saman.dashboard.center
+    SetEnv DJANGO_SETTINGS_MODULE settings.store_saman.settings
+
+    CustomLog /home/mys5107/logs/user/saman/apache-access.log combined
+    ErrorLog /home/mys5107/logs/user/saman/apache-error.log
+
+    WSGIDaemonProcess saman_pulsewallet processes=1 threads=2 python-path=/home/mys5107/webapps/pulsewallet/backend:/home/mys5107/webapps/pulsewallet/venv/lib/python2.7:/home/mys5107/webapps/pulsewallet/venv/lib/python2.7/site-packages
+    WSGIProcessGroup saman_pulsewallet
+    WSGIScriptAlias / /home/mys5107/webapps/pulsewallet/backend/wsgi.py
+</VirtualHost>
+

@@ -1,0 +1,85 @@
+{% extends base_template %}
+{% load i18n %}
+
+{% block javascript %}
+<script type="text/javascript">
+    $(function() {
+        window.setInterval("$.get('')", 60000); // every 60 seconds
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="separator bottom"></div>
+<div class="heading-buttons">
+    <h3>{% trans "Shipped screen" %}</h3>
+
+    <div class="clearfix"></div>
+</div>
+<div class="separator bottom"></div>
+
+<div class="innerLR">
+    <div class="widget">
+        <pre>
+            Document number: {{ object.document_number }}
+            Employee: {{ object.employee_created.name }}
+            Notes: {{ object.note }}
+        </pre>
+
+        <hr>
+        <form action="{% url "quick:order_shipped_items" pk=object.id %}" method="post">
+        {% csrf_token %}
+        {{ purchase_items.management_form }}
+        {{ purchase_items.non_form_errors.as_ul }}
+        <table id="formset" class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+            {% for form in purchase_items.forms %}
+            {% if forloop.first %}
+            <thead>
+            <tr>
+                <th>{% trans "Product name" %}</th>
+                <th>{% trans "Shipped" %}</th>
+                <th>{% trans "Received" %}</th>
+                <th>{% trans "Difference" %}</th>
+                <th>{% trans "Current stock" %}</th>
+                <th>{% trans "Total" %}</th>
+            </tr>
+            </thead>
+            {% endif %}
+            <tr class="{% cycle row1,row2 %}">
+                <td>{{ form.instance.product.name }}</td>
+                <td>{{ form.instance.entered_stock }}</td>
+                {% for field in form.visible_fields %}
+                <td>
+                    {% if forloop.first %}{% for hidden in form.hidden_fields %}{{ hidden }}{% endfor %}{% endif %}
+                    {{ field.errors.as_ul }}
+                    {{ field }}
+                </td>
+                <td>{{ form.instance.difference_stock }}</td>
+                <td>{{ form.instance.product.stock }}</td>
+                <td>{{ form.instance.total }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+            <input type="submit" class="btn btn-primary" value="Save changes">
+        </form>
+
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <button name="action" class="btn btn-primary" value="accepted">Accept order</button>
+        </form>
+            <hr>
+            <div class="separator bottom"></div>
+    </div>
+</div>
+{% endblock content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+</body>
+</html>

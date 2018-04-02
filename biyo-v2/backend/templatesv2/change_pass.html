@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+  <!-- Page -->
+{#<body class="page-register layout-full page-dark">#}
+{#          <div class="brand" align="center">#}
+{#            <div class="avatar avatar-lg" style="width: 100px">#}
+{#                <img src="/static/portraits/{{ object.id }}.jpg" alt="{{ object.name }}avatar">#}
+{#            </div>#}
+{#            <h2 class="brand-text">{{ user.name }}</h2>#}
+{#          </div>#}
+          <div align="center">
+          <div class="page-content vertical-align-middle">
+          <div class="brand">
+            <h2 class="brand-text">Change password </h2>
+          </div>
+          {% if form.errors or error%}
+            <div class="alert alert-warning">
+                {{ form.errors }}
+                {{ error }}
+            </div>
+          {% endif %}
+          <form method="post" role="form" enctype="multipart/form-data">
+          {% csrf_token %}
+            <div class="form-group">
+                {{ form.old_password }}
+            </div>
+            <div class="form-group">
+                {{  form.new_password }}
+            </div>
+            <div class="form-group">
+                {{ form.confirm_password }}
+            </div>
+          <div class="separator bottom"></div>
+          <div>
+              <button type="submit" class="btn btn-primary btn-block">Save changes</button>
+          </div>
+          </form>
+        </div>
+       </div>
+{#</body>#}
+{% endblock content %}

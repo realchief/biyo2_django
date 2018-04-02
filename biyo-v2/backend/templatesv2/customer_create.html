@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <thead>
+        <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+        <th class="divider">/</th>
+        <th><a href="{% url 'customer_list' %}">{% trans "Customers" %}</a></th>
+        <th class="divider">/</th>
+        <th>{% trans "Add New Customer" %}</th>
+    </thead>
+    <div class="separator bottom"></div>
+
+    <div class="table-responsive">
+        {% if form.errors %}
+            <div class="alert alert-warning">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+            <div class="panel col-md-6 offset-md-3 create-update-form">
+                <h2 class="panel-title">
+                   {% trans "Create customer" %}
+                </h2>
+                {% csrf_token %}
+                <table class="table" id="editableUser">
+                    <div class="col-md-4">
+                   <tr>
+                     <td>{% bootstrap_field form.first_name show_label=True %}</td>
+                     <td>{% bootstrap_field form.last_name show_label=True %}</td>
+                   </tr>
+                    <tr>
+                     <td>{% bootstrap_field form.email show_label=True %}</td>
+                     <td>{% bootstrap_field form.phone show_label=True %}</td>
+                   </tr>
+                    <tr>
+                     <td>{% bootstrap_field form.address show_label=True %}</td>
+                     <td>{% bootstrap_field form.rewards_points show_label=True %}</td>
+                   </tr>
+                    <tr>
+                        <td>{% bootstrap_field form.account_number show_label=True %}</td>
+                        <td>{% bootstrap_field form.city show_label=True %}</td>
+                   </tr>
+                    <tr>
+                        <td>{% bootstrap_field form.state show_label=True %}</td>
+                        <td>{% bootstrap_field form.zipcode show_label=True %}</td>
+                   </tr>
+                    <tr>
+                        <td>{% bootstrap_field form.group show_label=True %}</td>
+                        <td>{% bootstrap_field form.notes show_label=True %}</td>
+                    </tr>
+                    </div>
+                </table>
+                <div>
+                    <button type="submit" class="btn btn-success waves-effect form-table-button">Add Customer</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

@@ -1,0 +1,445 @@
+{% extends "base.html" %}{% block content %}
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+{% load panel_tags %}
+
+
+<thead>
+    <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+    <th class="divider">/</th>
+    <th><a href="{% url 'customer_list' %}">{% trans "Customers" %}</a></th>
+    <th class="divider">/</th>
+    <th>{% trans "Customer Payment" %}</th>
+</thead>
+{#<div class="separator bottom"></div>#}
+
+<div class="page-header">
+  <h2>{% trans "Customer Payment" %}</h2>
+</div>
+<div class="separator bottom"></div>
+
+    <form method="POST" class="form-horizontal" onkeypress="if(event.keyCode==13) return false">
+            {% csrf_token %}
+            <div class="panel">
+                <div class="row">
+                <div class="col-lg-6">
+                <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+
+                    <div class="form-group">
+                        <label for="{{ form.customer.id_for_label }}" class="cal-sm-3 control-label"><strong>{{ form.customer.label }}</strong></label>
+                        <div class="cal-sm-9 controls">
+                           {{ form.customer }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.amount.id_for_label }}" class="cal-sm-3 control-label"><strong>{{ form.amount.label }}</strong></label>
+                        <div class="cal-sm-9 controls">
+                            {{ form.amount }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.payment_method.id_for_label }}" class="control-label"><strong>{{ form.payment_method.label }}</strong></label>
+                        <div class="controls">
+                            {{ form.payment_method }}
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div class="col-lg-6">
+                <div class="example-wrap">
+                <div class="panel-body">
+                        <div class="span12">
+                            <span><strong>{% trans 'Customer Balance' %}</strong></span>
+                            <span class="span1"></span>
+                            <span class="xpull-right">
+                                <strong class="customer-balance"></strong>
+                            </span>
+                        </div>
+                        <h1></h1>
+                    <div class="form-group">
+                        <label for="{{ form.payment_date.id_for_label }}" class="control-label"><strong>{{ form.payment_date.label }}</strong></label>
+                        <div class="controls">
+                            {{ form.payment_date }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.check_number.id_for_label }}" class="control-label"><strong>{{ form.check_number.label }}</strong></label>
+                        <div class="controls">
+                            {{ form.check_number }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            
+
+
+            <div class="clearfix">&nbsp;</div>
+
+            <div class="panel" style="max-width: 100%; overflow-x: auto">
+                <div class="panel-body">
+                <table class="table table-bordered table-striped table-condensed table-striped table-primary, table-vertical-center">
+                    <thead>
+                        <tr>
+                            <th class="center" width="1%"><span class="glyphicons check">&nbsp;</span></th>
+                            <th class="center">{% trans "Date" %}</th>
+                            <th class="center">{% trans "Order ID" %}</th>
+                            <th class="center">{% trans "Grand Total" %}</th>
+                            <th class="center">{% trans "Balance Remaining" %}</th>
+                            <th class="center">{% trans "Payment" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody data-link="row" class="rowlink order-list">
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3">
+                                <span class="pull-right" >{% trans 'Totals' %}</span>
+                            </th>
+                            <td>
+                                <span class="pull-right grand-total"></span>
+                            </td>
+                            <td>
+                                <span class="pull-right total-balance-remaining"></span>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6">
+                        <strong>{% trans 'AMOUNT FOR SELECTED INVOICES' %}</strong>
+                        <br />
+                        <hr />
+                        <span>{% trans 'AMOUNT DUE' %}</span>
+                        <span class="pull-right">
+                            <strong class="amount-due"></strong>
+                        </span>
+                        <br />
+                        <br />
+                        <span>{% trans 'APPLIED' %}</span>
+                        <span class="pull-right">
+                            <strong class="applied-amount">0.0</strong>
+                        </span>
+                        <h1></h1>
+                        <div>
+                            <button type="submit" class="btn btn-success waves-effect">{% trans 'Save' %}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </form>
+
+
+
+{% block scripts %}
+    {{ block.super }}
+
+{#    <script src="{{ STATIC_URL }}vendor/jquery/jquery.min.js"></script>#}
+{#    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>#}
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/theme/scripts/plugins/forms/bootstrap-datetimepicker/css/datetimepicker.css">
+    <script src="{{ STATIC_URL }}common/theme/scripts/plugins/forms/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+{#    <script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>#}
+    <script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+    <script type="text/javascript">
+
+
+        function calculateBalances(amount, excludeId) {
+
+            var balances = $(".balance-remaining:checked");
+            var totalBalance = 0;
+            var totalPayment = 0;
+            var appliedAmount = amount;
+            $.each(balances, function(index, element) {
+                var balance = parseFloat($(element).data("value"));
+                var orderId = $(element).data("id");
+
+                if(excludeId !== orderId) {
+                    if(amount >= balance) {
+                        totalBalance += balance;
+                        balance = parseFloat(Math.round(balance * 100) / 100).toFixed(2);
+                        $("#id_payment_" + orderId).val(balance);
+                        $("#id_payment_" + orderId).attr("disabled", false);
+                        amount -= balance;
+                        
+                    }
+                    else if(amount > 0 && amount <= balance) {
+                        totalBalance += balance;
+                        
+                        amount = parseFloat(Math.round(amount * 100) / 100).toFixed(2);
+                        $("#id_payment_" + orderId).val(amount);
+                        $("#id_payment_" + orderId).attr("disabled", false);
+                        // amount -= balance;
+                        // if amount
+                        // if(amount <= 0) {
+                        //     console.log("balance: " + balance + " || amount: " + amount);
+                        //     $("#checked_payment_" + orderId).attr("checked", false);
+                        //     $("#id_payment_" + orderId).attr("disabled", true);
+                        // }
+                        amount = 0;
+                    }
+                    else {
+                        $("#checked_payment_" + orderId).attr("checked", true);
+                        $("#id_payment_" + orderId).attr("disabled", true);
+                    }
+                }
+            });
+
+            $.each($(".balance_payment"), function(index, element) {
+                // totalPayment += parseFloat($(element).val()).toFixed(2);
+                totalPayment = totalPayment + parseFloat($(element).val());
+            });
+
+            totalPayment = parseFloat(Math.round(totalPayment * 100) / 100).toFixed(2);
+            $("#id_amount").val(totalPayment);
+
+            totalBalance = Math.round(totalBalance * 100) / 100;
+            $(".amount-due").html(totalBalance);
+
+            $(".applied-amount").html(totalPayment);
+        }
+
+
+        function processBalanceRemaining() {
+            $.each($(".balance-remaining"), function(index, element) {
+                var orderId = $(element).data("id");
+                if(!$(element).is(":checked")) {
+                    $("#id_payment_" + orderId).val(0.00);
+                    $("#id_payment_" + orderId).attr("disabled", "disabled");
+                }
+                else {
+                    $("#id_payment_" + orderId).removeAttr("disabled");
+                }
+            });
+        }
+
+
+        function activatePaymentHandlers() {
+            $(".balance-remaining").on("change", function() {
+                // zero out payment field first if unchecked
+                var orderId = $(this).data("id");
+                if(!$(this).is(":checked")) {
+                    $("#id_payment_" + orderId).val(0.00);
+                    $("#id_payment_" + orderId).attr("disabled", "disabled");
+                }
+                else {
+                    $("#id_payment_" + orderId).removeAttr("disabled");
+                }
+
+                var amount = $("#id_amount").val();
+                calculateBalances(amount);
+            });
+
+            $(".balance_payment").on("blur", function() {
+                var balanceId = $(this).data("id");
+                var payment = parseFloat($(this).val()) || 0;
+                var balance = parseFloat($(this).data("balance-remaining")) || 0;
+                var amount = parseFloat($("#id_amount").val()) || 0;
+                console.log(payment);
+                if(payment > balance) {
+                    $(this).val(balance);
+                    amount -= balance;
+                    $("#checked_payment_" + balanceId).attr("checked", true);
+                }
+                else if(payment === 0) {
+                    $(this).val(0);
+                    $("#checked_payment_" + balanceId).attr("checked", false);
+                    $(this).attr("disabled", true);
+                }
+                else {
+                    amount -= payment;
+                    $("#checked_payment_" + balanceId).attr("checked", true);
+                }
+                calculateBalances(amount, balanceId);
+            });
+        }
+
+
+        function createOrderCheckbox(order) {
+            var td = document.createElement("td");
+            var checkbox = document.createElement("input");
+            $(checkbox).attr("type", "checkbox");
+            $(checkbox).addClass("balance-remaining");
+            $(checkbox).attr("id", "checked_payment_" + order.id);
+            $(checkbox).attr("data-id", order.id);
+            $(checkbox).attr("data-value", order.balance_remaining);
+            $(td).append(checkbox);
+            return td;
+        }
+
+
+        function createOrderDate(order) {
+            var td = document.createElement("td");
+            $(td).addClass("center");
+            $(td).html(order.open_date);
+            return td;
+        }
+
+
+        function createOrderId(order) {
+            var td = document.createElement("td");
+            $(td).addClass("center");
+            $(td).html(order.id);
+            return td;
+        }
+
+        function createGrandTotal(order) {
+            var td = document.createElement("td");
+            var span = document.createElement("span");
+            $(span).addClass("pull-right");
+            $(span).html(order.grand_total);
+            $(td).append(span);
+            return td;
+        }
+
+
+        function createBalanceRemaining(order) {
+            var td = document.createElement("td");
+            var span = document.createElement("span");
+            $(span).addClass("pull-right");
+            $(span).html(order.balance_remaining);
+            $(td).append(span);
+            return td;
+        }
+
+
+        function createPaymentInput(order) {
+            var td = document.createElement("td");
+            var input = document.createElement("input");
+            var div = document.createElement("div");
+
+            $(td).addClass("center");
+            $(div).addClass("controls");
+            $(input).attr("type", "number");
+            $(input).addClass("balance_payment");
+            $(input).attr("id", "id_payment_" + order.id);
+            $(input).attr("name", "balance_payment_" + order.id);
+            $(input).attr("step", "0.01");
+            $(input).attr("data-id", order.id);
+            $(input).attr("data-balance-remaining", order.balance_remaining);
+            $(div).append(input);
+            $(td).append(div);
+            return td;
+        }
+
+
+        function processOrders(orders) {
+            $.each(orders, function(index, order) {
+                var row = document.createElement("tr");
+                var orderCheckbox = createOrderCheckbox(order);
+                var orderDate = createOrderDate(order);
+                var orderId = createOrderId(order);
+                var grandTotal = createGrandTotal(order);
+                var balanceRemaining = createBalanceRemaining(order);
+                var paymentInput = createPaymentInput(order);
+                $(row).append(orderCheckbox);
+                $(row).append(orderDate);
+                $(row).append(orderId);
+                $(row).append(grandTotal);
+                $(row).append(balanceRemaining);
+                $(row).append(paymentInput);
+                $(".order-list").append(row);
+
+                processBalanceRemaining();
+                activatePaymentHandlers();
+            });
+        }
+
+          function check_check(show){
+             if (show==true)
+             {
+                $("#id_check_number").show();
+             }else{
+                $("#id_check_number").hide();
+             }
+             }
+
+
+        function updateCustomerData(customerId) {
+            $.ajax({
+                url: "/reports/ajax-customer-orders/" + customerId,
+                type: "GET",
+                success: function(response) {
+                    clearOrderList();
+                    processOrders(response.orders);
+                    $(".customer-balance").html(response.total.balance_remaining);
+                    $(".amount-due").html(response.total.balance_remaining);
+                    $(".grand-total").html(response.total.grand_total);
+                    $(".total-balance-remaining").html(response.total.balance_remaining);
+                }
+            });
+        }
+
+
+        function clearOrderList() {
+            $(".order-list").children().remove();
+        }
+
+
+        $(function() {
+
+         check_check(false);
+
+            $("#id_payment_date").datetimepicker({format: "mm-dd-yyyy HH:ii P"});
+
+            var defaultAmount = $("#id_amount").val();
+            var defaultPaymentMethod = $("#id_payment_method").val();
+            var defaultPaymentDate = $("#id_payment_date").val();
+            var defaultCheckNumber = $("#id_check_number").val();
+
+            if($("#id_customer").val() !== "") {
+                var customerId = $("#id_customer").val();
+                updateCustomerData(customerId);
+            }
+
+            processBalanceRemaining();
+
+            // ----------- EVENT HANDLERS ----------- //
+
+            activatePaymentHandlers();
+
+            $("#id_customer").on("change", function() {
+                var customerId = $("#id_customer").val();
+                if(customerId !== "") {
+                    $("#id_amount").val(defaultAmount);
+                    $("#id_payment_method").val(defaultPaymentMethod);
+                    $("#id_payment_date").val(defaultPaymentDate);
+                    $("#id_check_number").val();
+                    $(".applied-amount").html("0.00");
+                    updateCustomerData(customerId);
+                }
+            });
+
+
+              $("#id_payment_method").on("change", function(){
+                if($("#id_payment_method").val() !== "Check"){
+                    check_check(false)
+                    }else{
+                    check_check(true)
+                    }
+
+            });
+
+            $("#id_amount").on("blur", function() {
+                var amount = $(this).val();
+                $(".balance-remaining").attr("checked", true);
+
+                calculateBalances(amount);
+            });
+        });
+
+    </script>
+{% endblock %}
+{% endblock content %}

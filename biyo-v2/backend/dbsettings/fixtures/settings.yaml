@@ -1,0 +1,190 @@
+- model: dbsettings.DBSettings
+  pk: 1
+  fields:
+    name: displayHost
+    value:
+- model: dbsettings.DBSettings
+  pk: 2
+  fields:
+    name: displayTimeout
+    value: 4000
+- model: dbsettings.DBSettings
+  pk: 3
+  fields:
+    name: displayLongPollingTimeout
+    value: 60000
+- model: dbsettings.DBSettings
+  pk: 4
+  fields:
+    name: bluetooth_display_timeout
+    value: 6000
+- model: dbsettings.DBSettings
+  pk: 5
+  fields:
+    name: computer_mode
+    value: true/false
+- model: dbsettings.DBSettings
+  pk: 6
+  fields:
+    name: hid_mode
+    value:
+- model: dbsettings.DBSettings
+  pk: 7
+  fields:
+    name: touch_emulation
+    value: true/false
+- model: dbsettings.DBSettings
+  pk: 8
+  fields:
+    name: cc_value
+    value: 0.00
+- model: dbsettings.DBSettings
+  pk: 9
+  fields:
+    name: show_tip
+    value: false
+- model: dbsettings.DBSettings
+  pk: 10
+  fields:
+    name: reciept_printer_name
+    value:
+- model: dbsettings.DBSettings
+  pk: 11
+  fields:
+    name: print_to_file
+    value:
+- model: dbsettings.DBSettings
+  pk: 12
+  fields:
+    name: min_receipt_lines
+    value: 10
+- model: dbsettings.DBSettings
+  pk: 13
+  fields:
+    name: sms_test
+    value:
+- model: dbsettings.DBSettings
+  pk: 14
+  fields:
+    name: drawer_code
+    value:
+- model: dbsettings.DBSettings
+  pk: 15
+  fields:
+    name: printer_name
+    value:
+- model: dbsettings.DBSettings
+  pk: 16
+  fields:
+    name: card_screen
+    value: true/false
+- model: dbsettings.DBSettings
+  pk: 17
+  fields:
+    name: mobile_api_domain
+    value:
+- model: dbsettings.DBSettings
+  pk: 18
+  fields:
+    name: domain
+    value:
+- model: dbsettings.DBSettings
+  pk: 19
+  fields:
+    name: xweb_timeout
+    value: 30000
+- model: dbsettings.DBSettings
+  pk: 20
+  fields:
+    name: mobile_timeout
+    value: 30000
+- model: dbsettings.DBSettings
+  pk: 21
+  fields:
+    name: hand_rotated
+    value:
+- model: dbsettings.DBSettings
+  pk: 22
+  fields:
+    name: side_cc
+    value: true/false
+- model: dbsettings.DBSettings
+  pk: 23
+  fields:
+    name: manual_cc
+    value: true/false
+- model: dbsettings.DBSettings
+  pk: 24
+  fields:
+    name: shift_lock
+    value: true/false
+- model: dbsettings.DBSettings
+  pk: 25
+  fields:
+    name: cash_start
+    value: 0.00
+- model: dbsettings.DBSettings
+  pk: 26
+  fields:
+    name: rewards
+    value: true/false
+- model: dbsettings.DBSettings
+  pk: 27
+  fields:
+    name: sensor_image_handon
+    value:
+- model: dbsettings.DBSettings
+  pk: 28
+  fields:
+    name: sensor_image_handhover
+    value:
+- model: dbsettings.DBSettings
+  pk: 29
+  fields:
+    name: sensor_image_nohand
+    value:
+- model: dbsettings.DBSettings
+  pk: 30
+  fields:
+    name: crashPath
+    value:
+- model: dbsettings.DBSettings
+  pk: 31
+  fields:
+    name: fake_vein
+    value:
+- model: dbsettings.DBSettings
+  pk: 32
+  fields:
+    name: usaepay_key
+    value:
+- model: dbsettings.DBSettings
+  pk: 33
+  fields:
+    name: usaepay_pin
+    value:
+- model: dbsettings.DBSettings
+  pk: 34
+  fields:
+    name: usaepay_url
+    value:
+- model: dbsettings.DBSettings
+  pk: 35
+  fields:
+    name: account_mode
+    value: true/false
+- model: dbsettings.DBSettings
+  pk: 36
+  fields:
+    name: bluetooth_device
+    value:
+- model: dbsettings.DBSettings
+  pk: 37
+  fields:
+    name: use_ingenico
+    value: true/false
+- model: dbsettings.DBSettings
+  pk: 38
+  fields:
+    name: logToFile
+    value:  True / false*

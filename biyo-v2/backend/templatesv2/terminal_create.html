@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+{% block content %}
+
+<thead>
+  <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+  <th class="divider">/</th>
+  <th><a href="{% url 'terminal_list' %}">{% trans "Terminals" %}</a></th>
+  <th class="divider">/</th>
+  <th>{% trans "Add new terminal" %}</th>
+</thead>
+<div class="page-header">
+  <h3>{% trans 'Create new Terminal' %}</h3>
+</div>
+<div class="separator bottom"></div>
+<div class="separator bottom"></div>
+
+<div class="table-responsive">
+      {% if form.errors %}
+          <div class="alert alert-warning">
+              {% bootstrap_form_errors form %}
+          </div>
+      {% endif %}
+      <form method="post" enctype="multipart/form-data">
+        <div class="panel">
+            <h3 class="panel-title">
+               New Terminal
+            </h3>
+            {% csrf_token %}
+            <table class="table table-bordered table-striped" id="editableUser">
+                <div class="col-md-4">
+                   <tr>
+                     <td>{% bootstrap_form form layout='horizontal' %}</td>
+                   </tr>
+                </div>
+            </table>
+            <h3 class="panel-title"></h3>
+        </div>
+        <div class="separator bottom"></div>
+        <div>
+          <button type="submit" class="btn btn-success waves-effect">Add new terminal</button>
+        </div>
+      </form>
+</div>
+
+{% endblock content %}

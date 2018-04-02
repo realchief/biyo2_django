@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reward_list' %}">{% trans "Reward Campaigns" %}</a></li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans 'Update' %} {{ object.name }}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+        <div class="widget">
+            {% if form.errors %}
+                <div class="alert alert-warning">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    {{ form.as_table }}
+                </table>
+                <div class="separator bottom"></div>
+                <div>
+                    <input type="submit" class="btn btn-primary" value="Save changes"/>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $('form').find("#id_reward_type,#id_discount_value, #id_discount_text,#id_discount_type_item,#id_discount_type").parent().parent().hide()
+        $( document ).ready(function() {
+            if ($(this).find("#id_discount").val()=="Discount"){
+                    $(this).find("#id_discount_type").parent().parent().show()
+                    $(this).find("#id_discount_text").parent().parent().hide()
+
+                    if ($(this).find("#id_discount_type").val()=="Item"){
+                        $(this).find("#id_discount_type_item,#id_reward_type,#id_discount_value").parent().parent().show()
+                        $(this).find("#id_discount_text").parent().parent().hide()
+                    }else if ($(this).find("#id_discount_type").val()=="Invoice"){
+                        $(this).find("#id_discount_type_item").parent().parent().hide()
+                        $(this).find("#id_discount_value").parent().parent().show()
+                    }
+                }else if ($(this).find("#id_discount").val()=="Text"){
+                    $(this).find("#id_discount_value,#id_discount_type, #id_discount_type_item,#id_reward_type").parent().parent().hide()
+                    $(this).find("#id_discount_text").parent().parent().show()
+                }
+
+
+            $('form').on('change',function(e){
+
+                if ($(this).find("#id_discount").val()=="Discount"){
+                    $(this).find("#id_discount_type").parent().parent().show()
+                    $(this).find("#id_discount_text").parent().parent().hide()
+
+                    if ($(this).find("#id_discount_type").val()=="Item"){
+                        $(this).find("#id_discount_type_item,#id_reward_type,#id_discount_value").parent().parent().show()
+                        $(this).find("#id_discount_text").parent().parent().hide()
+                    }else if ($(this).find("#id_discount_type").val()=="Invoice"){
+                        $(this).find("#id_discount_type_item, #id_reward_type").parent().parent().hide()
+                        $(this).find("#id_discount_value").parent().parent().show()
+                    }
+                }else if ($(this).find("#id_discount").val()=="Text"){
+                    $(this).find("#id_discount_value,#id_discount_type, #id_discount_type_item,#id_reward_type").parent().parent().hide()
+                    $(this).find("#id_discount_text").parent().parent().show()
+                }
+
+
+
+            });
+        });
+    </script>
+{% endblock %}

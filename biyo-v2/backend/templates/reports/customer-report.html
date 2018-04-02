@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+{% load panel_tags %}
+
+
+{% block content %}
+
+        <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reports_home' %}">{% trans "Reports" %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Item sales" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Reports" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+        <div class="row">
+            <div class="separator bottom"></div>
+            <div class="offset1">
+                {% with 'item_sales' as active %}
+				    {% include "reports/includes/filter.html" with show_all_button=True %}
+				{% endwith %}
+
+
+                <div class="customer-filter">
+                    <select name="customers" id="customers">
+                        <option value="-1">Select a Customer</option>
+                        {% for customer in dropdown_customers %}
+                            <option value="{{ customer.id }}"{% if customer.selected %} selected="selected"{% endif %}>{{ customer.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+
+                {% for customer in customers %}
+{#                         <a href="{% url 'customer_detail' pk=customer.id %}">#}
+
+                     <div class="row">
+                        <strong>{{ customer.get_full_name }}</strong>
+                     </div>
+{#                        </a>#}
+                     <div class="row">
+
+                {% if customer.report_orders %}
+                    {% for order in customer.report_orders %}
+                      <div class="table-reports">
+                        <div class="span4-report" style="padding: 10px">
+                            <a href="{% url 'order-detail' pk=order.id %}">{{ order }}</a>
+                        </div>
+                        <div class="span4-report" style="padding: 10px">
+                            Open date: {{ order.open_date }}
+                        </div>
+                        <div class="span4-report" style="padding: 10px">
+                            Close date: {{ order.close_date }}
+                        </div>
+                        <div class="span4-report">
+                            Grand Total: ${{ order.grand_total|floatformat:2 }}
+                        </div>
+                      </div>
+                    {% endfor %}
+                         <div class="row">
+                         <div class="span3 offset10">Balance: ${{customer.bal|floatformat:2  }}</div>
+                    </div>
+                {% else %}
+                    {% include 'reports/includes/empty.html' %}
+                {% endif %}
+                     </div>
+
+                    <hr/>
+
+                {% endfor %}
+
+
+
+            </div>
+        </div>
+    <div class="innerLR">
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+        $(document).ready(function()
+        {
+            $('#customers').on('change', function(event)
+            {
+                var selectedCustomer = $(this).val();
+                if(selectedCustomer != -1) {
+                    if(location.search == "")
+                    {
+                        params = "?customer=" + selectedCustomer;
+                        location.href = location.pathname + params;
+                    }
+                    else
+                    {
+                        params = "&customer=" + selectedCustomer;
+                        location.href = location.pathname + location.search + params;
+                    }
+                }
+                else
+                {
+                    location.href = location.pathname;
+                }
+            });
+        });
+    </script>
+{% endblock %}

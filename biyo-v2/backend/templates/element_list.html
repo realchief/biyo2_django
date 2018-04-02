@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Element" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Elements" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+		<div class="btn-right">
+      		<a class="btn" href="{% url 'element_create' %}"><i class="icon-plus"></i> Add Element</a>
+    	</div>
+		<div class="separator bottom"></div>
+
+        <div class="widget">
+            <table class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+                <thead>
+                    <tr>
+                        <th>{% trans "Id" %}</th>
+                    </tr>
+                </thead>
+                <tbody data-link="row" class="rowlink">
+                    {% for object in object_list %}
+                        <tr>
+                            <td class="center"><span>{{object.id}}</span></td>
+                        </tr>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include "includes/paginator.html" %}
+        </div>
+    </div>
+
+{% endblock content %}
+

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <thead>
+        <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+        <th class="divider">/</th>
+        <th><a href="{% url 'employee_list' %}">{% trans "Employees" %}</a></th>
+        <th class="divider">/</th>
+        <th>{% trans "Add new employee" %}</th>
+    </thead>
+
+    <div class="table-responsive">
+        {% if form.errors %}
+            <div class="alert alert-warning">
+                {% bootstrap_form_errors form %}
+            </div>
+        {% endif %}
+        <div class="col-md-3"></div>
+        <form method="post" enctype="multipart/form-data">
+            <div class="panel col-md-6 employee-create-table">
+                <h2 class="panel-title">
+                   {% trans "Create employee" %}
+                </h2>
+                {% csrf_token %}
+                <table class="table create-employee-form create-update-form" id="editableUser">
+                    <div class="col-md-4">
+                        <tr>
+                            <td>{% bootstrap_field form.name show_label=True %}</td>
+                            <td>{% bootstrap_field form.email show_label=True %}</td>
+                        </tr>
+                        <tr>
+                            <td>{% bootstrap_field form.password show_label=True %}</td>
+                            <td>
+                                <div>Photo</div>
+                                <label class="btn btn-secondary btn-file employee-add-photo-button">Browse
+                                    <input id="id_photo" name="photo" title="" type="file" hidden>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{% bootstrap_field form.address show_label=True %}</td>
+                            <td>{% bootstrap_field form.address2 show_label=True %}</td>
+                        </tr>
+                        <tr>
+                            <td>{% bootstrap_field form.city show_label=True %}</td>
+                            <td>{% bootstrap_field form.state show_label=True %}</td>
+                        </tr>
+                        <tr>
+                            <td>{% bootstrap_field form.zipcode show_label=True %}</td>
+                            <td>{% bootstrap_field form.phone show_label=True %}</td>
+                        </tr>
+                        <tr>
+                            <td>{% bootstrap_field form.pin show_label=True %}</td>
+                            <td>{% bootstrap_field form.hourly_rate show_label=True %}</td>
+                        </tr>
+                        <tr>
+                            <td>{% bootstrap_field form.role show_label=True %}</td>
+                            <td>{% bootstrap_field form.store show_label=True %}</td>
+                        </tr>
+                    </div>
+                </table>
+                <button type="submit" class="btn btn-success waves-effect add-employee-button">Add Employee</button>
+                <div class="separator bottom"></div>
+                <h3 class="panel-title"></h3>
+            </div>
+            <div class="col-md-5">
+            </div>
+        </form>
+    </div>
+{% endblock content %}

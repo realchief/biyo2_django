@@ -1,0 +1,25 @@
+[
+{
+    "fields": {
+        "status": 1,
+        "tax_total": 0.0,
+        "grand_total": 0.0,
+        "description": null,
+        "emp_close": null,
+        "emp_open": null,
+        "shift": null,
+        "terminal_id": null,
+        "number": "-1",
+        "hold_date": null,
+        "customer": null,
+        "discount_total": 0.0,
+        "close_date": null,
+        "discount_orders": null,
+        "balance_remaining": null,
+        "open_date": null,
+        "subtotal": 0.0
+    },
+    "model": "order.order",
+    "pk": -1
+}
+]

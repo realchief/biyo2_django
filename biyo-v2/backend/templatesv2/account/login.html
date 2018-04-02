@@ -1,0 +1,150 @@
+{% block content %}
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="bootstrap admin template">
+    <meta name="author" content="">
+
+    <title>Biyo Point of Sale - Dashboard</title>
+
+    <link rel="apple-touch-icon" href="{{ STATIC_URL }}images/apple-touch-icon.png">
+    <link rel="shortcut icon" href="{{ STATIC_URL }}images/favicon.ico">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-extend.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/site.min.css?v2.2.0">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+
+
+    <!-- Plugins -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/animsition/animsition.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/asscrollable/asScrollable.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/switchery/switchery.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/intro-js/introjs.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/slidepanel/slidePanel.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/flag-icon-css/flag-icon.min.css?v2.2.0">
+
+    <!-- Page -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}examples/css/pages/login-v2.min.css?v2.2.0">
+
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}fonts/web-icons/web-icons.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}fonts/brand-icons/brand-icons.min.css?v2.2.0">
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+
+
+    <!-- Scripts -->
+    <script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/modernizr.js"></script>
+</head>
+<body class="page-login-v2 layout-full page-dark">
+<!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+
+<!-- Page -->
+<div class="page animsition" data-animsition-in="fade-in" data-animsition-out="fade-out" style="animation-duration: 1800ms; opacity: 1;">
+    <div class="page-content">
+        <div class="page-brand-info">
+            <p id="login-phrase__name" class="font-size-30"></p>
+            <p id="login-phrase__company"> </p>
+
+            <p id="login-phrase__text"></p>
+        </div>
+
+        <div class="page-login-main">
+            <div class="brand visible-xs offset-md-2">
+                <img class="brand-img" src="{{ STATIC_URL }}images/biyo_logo.png" style="max-width: 200px" alt="">
+            </div>
+            <h3 class="font-size-24">Sign In</h3>
+
+            <form method="post">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <p class='form-errors' style="color: #9a5e5c;">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </p>
+                {% endif %}
+                <div class="form-group">
+                    <label class="sr-only" for="inputEmail">Email</label>
+                    <input class="form-control" id="inputEmail" name="username" placeholder="Email" type="email">
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="inputPassword">Password</label>
+                    <input class="form-control" id="inputPassword" name="password" placeholder="Password" type="password">
+                </div>
+
+                <div class="form-group clearfix">
+                    <div class="checkbox-custom checkbox-inline checkbox-primary pull-left">
+                        <input id="inputCheckbox" name="remember" value="remember-me" type="checkbox">
+                        <label class="checkbox" for="inputCheckbox">Remember me</label>
+                    </div>
+                    <a class="pull-right" href="{% url 'password_reset' %}">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+            </form>
+
+            <footer class="page-copyright">
+                <p>© 2017. All RIGHT RESERVED.</p>
+            </footer>
+        </div>
+
+    </div>
+</div>
+<!-- End Page -->
+
+
+<!-- Core  -->
+  <script src="{{ STATIC_URL }}vendor/jquery/jquery.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/bootstrap/bootstrap.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/animsition/animsition.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/asscrollable/jquery-asScrollable.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/mousewheel/jquery.mousewheel.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/asscrollable/jquery-asScrollable.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/ashoverscroll/jquery-asHoverScroll.min.js"></script>
+
+<!-- Plugins -->
+  <script src="{{ STATIC_URL }}vendor/switchery/switchery.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/intro-js/intro.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/screenfull/screenfull.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/slidepanel/jquery-slidePanel.min.js"></script>
+
+<!-- Plugins For This Page -->
+  <script src="{{ STATIC_URL }}vendor/jquery-placeholder/jquery.placeholder.min.js"></script>
+
+<!-- Scripts -->
+  <script src="{{ STATIC_URL }}js/Site.min.js"></script>
+
+  <script src="{{ STATIC_URL }}js/Plugin/menu.min.js"></script>
+  <script src="{{ STATIC_URL }}js/Section/Menubar.min.js"></script>
+  <script src="{{ STATIC_URL }}js/Section/Sidebar.min.js"></script>
+
+  <script>
+      $(document).ready(function() {
+        $.ajax({
+            url: 'https://wisdomapi.herokuapp.com/v1/random',
+            type: 'GET',
+            dataType: 'jsonp',
+            beforeSend: function(xhr){
+               xhr.withCredentials = true;
+            },
+            success: function(response) {
+              $('#login-phrase__name').text(response.author.name);
+              $('#login-phrase__company').text(response.author.company);
+              $('#login-phrase__text').text(`"${response.content}"`);
+            }
+        });
+
+        localStorage.removeItem('start');
+        localStorage.removeItem('end');
+      });
+  </script>
+
+</body>
+{% endblock %}

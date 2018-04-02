@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load humanize %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Product" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Products" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+        <div style="padding-bottom: 15px">
+            <form method="post" id='sort-form' enctype="multipart/form-data" class="navbar-form pull-left">
+                {% csrf_token %}
+                <input type="text" value="{{ filter_tag }}" name="filter_tag" placeholder="Search by Name or Barcode" />
+                <input type="submit" class="btn btn-primary" value="Filter"/>
+                <a  class="btn btn-primary" style="margin-top: 5px" href="{% url 'clearfilterproduct' %}">Clear Filter</a>
+        </div>
+
+        <div class="right">
+            {% csrf_token %}
+            Sort By:
+            {# TODO: implement django forms here #}
+            <select name="sort_by" id='sort_by'>
+                <option value="name">Name A-Z</option>
+                <option  {% ifequal  sort_by 'barcode' %}selected {% endifequal %}  value="barcode">Barcode 0-9</option>
+                <option  {% ifequal  sort_by 'price' %}selected {% endifequal %}  value="price">Price - Lowest to Highest</option>
+                <option  {% ifequal  sort_by '-price' %}selected {% endifequal %}  value="-price">Price - Highest to Lowest</option>
+                <option  {% ifequal  sort_by 'cost' %}selected {% endifequal %}  value="cost">Cost - Lowest to Highest</option>
+                <option  {% ifequal  sort_by '-cost' %}selected {% endifequal %}   value="-cost">Cost - Highest to Lowest</option>
+            </select>
+            {{ category_form.as_p }}
+            </form>
+        </div>
+        <div class="btn-right">
+
+            <a class="btn" href="{% url 'product_create' %}"><i class="icon-plus"></i> Add Product</a>
+            <a class="btn" href="{% url 'quick_product_add' %}"><i class="icon-plus"></i> Quick product add</a>
+
+        </div>
+        <div class="separator bottom"></div>
+        <div class="widget">
+            <table class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+                <thead>
+                <tr>
+                    <th>{% trans "Name" %}</th>
+                    <th>{% trans "Description" %}</th>
+                    <th>{% trans "Category" %}</th>
+                    <th>{% trans "Cost" %}</th>
+                    <th>{% trans "Price" %}</th>
+                    <th>{% trans "Barcode" %}</th>
+                    <th>{% trans "Stock" %}</th>
+                    <th>{% trans "Tax Status" %}</th>
+                    <th>{% trans "Active" %}</th>
+                </tr>
+                </thead>
+                <tbody data-link="row" class="rowlink">
+                {% for object in object_list %}
+                    <tr>
+                        <td><a href="{% url 'product_detail' pk=object.pk %}">{{ object.name }}</a></td>
+                        <td class="right">{{ object.description|default_if_none:""|intcomma }}</td>
+                        <td>
+                            <span class="categories_data w300" data-pk="{{object.pk }}" data-value="{{object.get_categories }}" style="display: none;">
+                                {{ multiple_category_form.multiple_categories }}
+                            </span>
+                        </td>
+
+                        <td class="right">${{ object.cost|floatformat:2|default:"0.00"|intcomma }}</td>
+                        <td class="right">${{ object.price|floatformat:2|default:"0.00"|intcomma }}</td>
+                        <td>{{ object.barcode }}</td>
+                        <td class="right">{{ object.stock|default_if_none:"Out of Stock"|intcomma }}</td>
+                        <td class="right">{{ object.get_tax_status_display }}</td>
+                        <td>{{ object.active }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% include "includes/paginator.html" %}
+        </div>
+      <form id="csv-download" action="{% url 'csvdownload' %}" method="post">
+          {% csrf_token %}
+          <button class="btn btn-primary" type="submit">Export to CSV</button>
+      </form>
+    </div>
+
+{% endblock content %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/multiple-select/multiple-select.css"/>
+        <!-- TODO: Please, put this code in right place -->
+        <!-- NOTE: Fix correct displaying checkbox in categories multiple choice select box -->
+        <style>
+            .ms-drop > ul > li > label > input[type=checkbox]{
+                margin: 5px;
+            }
+        </style>
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}common/multiple-select/multiple-select.js"></script>
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $('span.categories_data').each(function(index, el) {
+                var dataset = el.dataset;
+                var multiple_select = $(el).find('select');
+                multiple_select.val(eval(dataset.value));
+                multiple_select.multipleSelect({
+                    selectAll: false,
+                    onClick: function(opt) {
+                        var checkbox = opt.instance.$selectItems.filter(':input[value="'+opt.value+'"]');
+                        if (opt.instance.$selectItems.filter(':checked').length == 0) {
+                            checkbox.prop('checked', true);
+                            opt.instance.update();
+                            return;
+                        }
+                        var checked_values = $.map(
+                                opt.instance.$selectItems.filter(':checked'),
+                                function(item) {
+                                    return $(item).val();
+                                });
+
+                        $.post("{% url 'update_prod_list' %}", {
+                            pk: dataset.pk,
+                            category: checked_values.join(';')
+                        });
+                    }
+                });
+                $(el).show();
+            });
+            $('#id_categories, #sort_by').change(function()
+            {
+                $('#sort-form').submit();
+            });
+        });
+    </script>
+{% endblock js %}

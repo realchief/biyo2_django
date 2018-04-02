@@ -1,0 +1,48 @@
+{% extends "modifiergroup_list.html" %}
+{% load i18n %}
+{% load panel_tags %}
+{% load humanize %}
+{% block modifiercontent%}
+
+<div class="widget">
+    <table class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+        <thead>
+            <tr>
+                <th>{% trans "Name" %}</th>
+                <th>{% trans "Groups" %}</th>
+                <th>{% trans "Cost" %}</th>
+                <th>{% trans "Price" %}</th>
+                <th>{% trans "Active" %}</th>
+                <th>{% trans "Action" %}</th>
+            </tr>
+        </thead>
+        <tbody data-link="row" class="rowlink">
+            {% for object in moditems %}
+                <tr>
+                    <td class="center">
+                        {{ object.name }}
+                    </td>
+                    <td class="center">
+                        {{ object|field_value:"group" }}
+                    </td>
+                    <td class="right">
+    				${{ object.cost|floatformat:2|default:"0.00"|intcomma }}
+    			</td>
+                    <td class="right">
+    				${{ object.price|floatformat:2|default:"0.00"|intcomma }}
+    			</td>
+                    <td>
+                        {{ object.active }}
+                    </td>
+    			<td class="center">
+                        <a href="{% url 'modifier_update' pk=object.id %}">Edit</a>
+                        <span class="action-separator"></span>
+                        <a class="modal-delete" data-toggle="modal" data-target="#delete" data-name="{{object.name}}" data-id="{{object.id}}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% include "includes/paginator.html" %}
+</div>
+{% endblock modifiercontent %}

@@ -1,0 +1,124 @@
+{% load i18n %}
+{% load bootstrap3 %}
+<div class="row clearfix">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">{% trans "Order Items" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;"></div>
+    <div class="col-sm-12 col-md-5"></div>
+    <div class="hidden-md-up" style="height: 50px;"></div>
+    <div class="col-sm-12 col-md-4">
+        <div class="pull-md-right" aria-label="Add Order">
+            <a id="add-order-item-btn">
+                <button type="button" class="btn btn-primary"><i class="icon md-plus" aria-hidden="true"></i>
+                    {% trans "Add item" %}
+                </button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="panel" style="overflow: visible;">
+    <table class="table table-bordered" id="order-items-formset"  style="max-width: 100%; overflow-x: auto">
+    <thead>
+        <tr>
+            <th class="span1"></th>
+            <th class="span3">{% trans "Name" %}</th>
+            <th class="span1">{% trans "Price" %}</th>
+            <th class="span2">{% trans "Discount" %}</th>
+            <th class="span2">{% trans "Tax" %}</th>
+            <th class="span1">{% trans "Quantity" %}</th>
+            <th class="span1">{% trans "Subtotal" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr id="order-item-template" style="display: none;">
+        <td class="span1">
+          <a title="Remove item" class="close large glyphicons remove order-item-remove"> <i></i> </a>
+        </td>
+        <td class="span3">
+            {% bootstrap_field init_form.name show_label=False %}
+            {% bootstrap_field init_form.order_id %}
+            {% bootstrap_field init_form.instance_id %}
+            {% bootstrap_field init_form.void_status %}
+            {% bootstrap_field init_form.cost %}
+            {% bootstrap_field init_form.employee %}
+            <div id="products_list" class="dropdown open" style="display: none;">
+              <ul class="dropdown-menu span3" role="menu" style="margin-top: -10px;margin-left:0;max-height: 210px;overflow: auto;">
+              </ul>
+            </div>
+            <div class="modifiers_list"></div>
+        </td>
+        <td class="span1">{% bootstrap_field init_form.price show_label=False %}<h3 class="price-label">$0.00</h3></td>
+        <td class="span2">
+            <div class="col-sm-12 col-md-2 dropdown span0 pull-md-right">
+              <a class="glyphicons show_thumbnails_with_lines add-discount dropdown-toggle" href="#" data-toggle="dropdown" title='Select discount' id="dLabel">
+                <i></i>
+              </a>
+              <ul style="margin-top: 25px;" class="dropdown-menu" role="menu" aria-labelledby="">
+                  <li class="li-preloader">
+                    <img src="{{ STATIC_URL }}assets/img/preloader.gif" style="display: block;margin-left: auto;margin-right: auto;">
+                  </li>
+              </ul>
+            </div>
+            <div class="col-sm-12 col-md-10">{% bootstrap_field init_form.discount show_label=False %}</div>
+        </td>
+        <td class="span2">{% bootstrap_field init_form.tax show_label=False %}</td>
+        <td class="span1">{% bootstrap_field init_form.quantity show_label=False %}</td>
+        <td class="span1"><h3 class="item-subtotal">$0.00</h3></td>
+    </tr>
+    {% for form in forms %}
+      <tr id="order-item-{{ forloop.counter0 }}">
+        <td class="span1">
+          <a title="Remove item" class="close large glyphicons remove order-item-remove"> <i></i> </a>
+        </td>
+          <input type="hidden" name="item_id" value="{{ form.instance.id }}">
+          <input type="hidden" name="product_id" value="{{ form.instance.product.id }}">
+        <td class="span3">
+            {% bootstrap_field form.name show_label=False %}
+            {% bootstrap_field form.product show_label=False %}
+            {% bootstrap_field form.order_id show_label=False %}
+            {% bootstrap_field form.instance_id show_label=False %}
+            {% bootstrap_field form.void_status show_label=False %}
+            {% bootstrap_field form.cost show_label=False %}
+            {% bootstrap_field form.employee show_label=False %}
+
+            <div id="products_list" class="dropdown open" style="display: none;">
+              <ul class="dropdown-menu span3" role="menu" style="margin-top: -10px;margin-left:0;max-height: 210px;overflow: auto;">
+              </ul>
+            </div>
+            {% if form.modifiers %}
+                <div class="modifiers_list">
+                    <ul class="well nav nav-stacked">
+                        {% for modifier in form.modifiers %}
+                            <li data-item-modifier="{{ modifier.id }}" data-modifier="{{ modifier.oryginal_id }}" data-name="{{ modifier.name }} "><a>{{ modifier.name }} <span class="pull-right label label-default">${{ modifier.price }}</span></a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </td>
+        <td class="span1">{% bootstrap_field form.price show_label=False %}<h3 class="price-label">{{ form.price.value|default_if_none:"$0.00" }}</h3></td>
+        <td class="span2">
+            <div class="col-sm-12 col-md-2 dropdown span0 pull-md-right">
+              <a class="glyphicons show_thumbnails_with_lines add-discount dropdown-toggle" href="#" data-toggle="dropdown" title='Select discount' id="dLabel">
+                <i></i>
+              </a>
+              <ul style="margin-top: 25px;" class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li class="li-preloader">
+                  <img src="{{ STATIC_URL }}assets/img/preloader.gif" style="display: block;margin-left: auto;margin-right: auto;">
+                </li>
+              </ul>
+            </div>
+            <div class="col-sm-12 col-md-10">
+                <label class="sr-only control-label" for="id_discount">Discount</label>
+                <input class="form-control span1" id="id_discount" name="discount" placeholder="Discount" required="required" step="any" title="" value="{{ form.discount.value }}" type="number">
+            </div>
+        </td>
+        <td class="span2">{% bootstrap_field form.tax show_label=False %}</td>
+        <td class="span1">{% bootstrap_field form.quantity show_label=False %}</td>
+        <td class="span1"><h3 class="item-subtotal">$0.00</h3></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>

@@ -1,0 +1,72 @@
+{% extends "base.html" %} {% block content %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load humanize %}
+
+  <!-- Page -->
+<thead>
+    <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+    <th class="divider">/</th>
+    <th><a href="{% url 'employee_list' %}">{% trans "Employees" %}</a></th>
+    <th class="divider">/</th>
+    <th><a href="{% url 'employee_detail' pk=object.pk %}">{{ object.name }}</a></th>
+    <th class="divider">/</th>
+    <th>{% trans "Update" %} {{ object.name }}</th>
+</thead>
+
+<div class="table-responsive">
+      {% if form.errors %}
+          <div class="alert alert-warning">
+              {{ form.errors }}
+          </div>
+      {% endif %}
+      <form method="post" enctype="multipart/form-data">
+        <div class="panel col-md-6 offset-md-3 create-update-form">
+            <h3 class="panel-title">
+               {{ object.name }}
+            </h3>
+            {% csrf_token %}
+            <table class="table" id="editableUser">
+                        <tr>
+                            <td>{% bootstrap_field form.name show_label=True %}</td>
+                            <td>{% bootstrap_field form.email show_label=True %}</td>
+                        </tr>
+                        <tr>
+                            <td>{% bootstrap_field form.pin show_label=True %}</td>
+                            <td>
+                                <div>Photo</div>
+                                <label class="btn btn-secondary btn-file employee-add-photo-button">Browse
+                                    <input id="id_photo" name="photo" title="" type="file" hidden>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{% bootstrap_field form.address show_label=True %}</td>
+                            <td>{% bootstrap_field form.address2 show_label=True %}</td>
+                        </tr>
+                        <tr>
+                            <td>{% bootstrap_field form.city show_label=True %}</td>
+                            <td>{% bootstrap_field form.state show_label=True %}</td>
+                        </tr>
+                        <tr>
+                            <td>{% bootstrap_field form.zipcode show_label=True %}</td>
+                            <td>{% bootstrap_field form.phone show_label=True %}</td>
+                        </tr>
+                        <tr>
+                            <td>{% bootstrap_field form.role show_label=True %}</td>
+                            <td>{% bootstrap_field form.hourly_rate show_label=True %}</td>
+                        </tr>
+            </table>
+            <div class="col-md-6">
+                <button type="submit" style="margin-left: 20px" class="btn btn-success waves-effect form-table-button">Save changes</button>
+            </div>
+              <div class=" col-md-6 change-employee-password-button" aria-label="Add Order">
+                  <a href="{% url 'empl_changepass' object.id %}">
+                      <button type="button" class="btn btn-success waves-effect">{% trans "Change password" %}</button>
+                  </a>
+              </div>
+        </div>
+      </form>
+</div>
+{% endblock content %}
+

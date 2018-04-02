@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+<thead>
+  <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+  <th class="divider">/</th>
+  <th><a href="{% url 'supplier_list' %}">{% trans "Suppliers" %}</a></th>
+  <th class="divider">/</th>
+  <th>{% trans "Add new terminal" %}</th>
+</thead>
+    <div class="separator bottom"></div>
+
+<div class="table-responsive">
+        {% if form.errors %}
+            <div class="alert alert-warning">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+      <form method="post" enctype="multipart/form-data">
+        <div class="panel col-md-6 offset-md-3">
+            <h3 class="panel-title">
+               Create Supplier
+            </h3>
+            {% csrf_token %}
+            <table class="table create-update-form" id="editableUser">
+                <div class="col-md-3">
+                   <tr>
+                     <td>{% bootstrap_field form.supplier show_label=True %}</td>
+                     <td>{% bootstrap_field form.default_markup show_label=True %}</td>
+                   </tr>
+                    <tr>
+                     <td>{% bootstrap_field form.company show_label=True %}</td>
+                     <td>{% bootstrap_field form.website show_label=True %}</td>
+                   </tr>
+                    <tr>
+                     <td>{% bootstrap_field form.first_name show_label=True %}</td>
+                     <td>{% bootstrap_field form.last_name show_label=True %}</td>
+                   </tr>
+                    <tr>
+                        <td>{% bootstrap_field form.phone show_label=True %}</td>
+                        <td>{% bootstrap_field form.mobile show_label=True %}</td>
+                   </tr>
+                    <tr>
+                        <td>{% bootstrap_field form.fax show_label=True %}</td>
+                        <td>{% bootstrap_field form.email show_label=True %}</td>
+                   </tr>
+                    <tr>
+                        <td>{% bootstrap_field form.street show_label=True %}</td>
+                        <td>{% bootstrap_field form.city show_label=True %}</td>
+                   </tr>
+                    <tr>
+                        <td>{% bootstrap_field form.country show_label=True %}</td>
+                        <td>{% bootstrap_field form.suburb show_label=True %}</td>
+                   </tr>
+                    <tr>
+                        <td>{% bootstrap_field form.postcode show_label=True %}</td>
+                        <td>{% bootstrap_field form.state show_label=True %}</td>
+                   </tr>
+                    <tr>
+                        <td colspan="5" class="supplier-description-field">{% bootstrap_field form.description show_label=True %}</td>
+                    </tr>
+                </div>
+            </table>
+            <div>
+                <button type="submit" class="btn btn-success waves-effect form-table-button">Add new Supplier</button>
+            </div>
+        </div>
+      </form>
+</div>
+{% endblock content %}

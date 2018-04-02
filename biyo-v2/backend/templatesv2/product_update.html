@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load panel_tags %}
+{% load bootstrap3 %}
+{% block content %}
+    <div class=""></div>
+    <form method="post" enctype="multipart/form-data">
+        <div class="page-header page-header-bordered">
+            <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+            <th class="divider">/</th>
+            <th><a href="{% url 'product_list' %}">{% trans "Products" %}</a></th>
+            <th class="divider">/</th>
+            <th><a href="{% url 'product_detail' pk=object.pk %}">{{ object.name }}</a></th>
+            <th><button type="submit" class="btn btn-success waves-effect form-table-button" id="myFormSubmit">Save</button></th>
+            <th><button type="submit" class="btn btn-success waves-effect form-table-button" id="btn-delete">Delete</button></th>
+        </div>
+        <div class="table-responsive">
+            {% if form.errors %}
+                <div class="alert alert-warning">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+            <div class="panel col-md-6 offset-md-3 create-update-form p-0">
+                <div class="row panel-heading" style="border-bottom: solid 1px rgb(224, 224, 224);">
+                    <div class="col-md-6">
+                        <h2 class="panel-title custom-border">
+                            {% trans "Details" %}
+                        </h2>
+                    </div>
+                    <div class="col-md-6">
+                        <lable class="control-label" id="inventory-history">
+                            {% trans "View Orders" %}
+                            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                        </lable>
+                    </div>
+                </div>
+                {% csrf_token %}
+                <div class="panel-body p-b-5">
+                     <div class="col-md-8 p-l-0" id="editableUser">
+                         <tr>
+                             <td>{% bootstrap_field form.name show_label=True %}</td>
+                         </tr>
+                         <div class="row">
+                             <div class="col-md-9" style="padding-top: 10px;">Categories<br>{{ form.categories }}</div>
+                             <div class="col-md-3" style="padding-top: 10px;">
+                                <label class="control-label">Sorting</label>
+                                <input type="text" class="form-control" name="sorting" data-plugin="asSpinner" min_value=0 value="{{ form.sorting.value }}" />
+                             </div>
+                         </div>
+                         <div class="form-group p-t-15">
+                            <label class="control-label">Description</label>
+                            <textarea class="form-control" id="id_description" name="description" placeholder="Text area" rows="3"></textarea>
+                         </div>
+    {#                     </tr>#}
+    {#                     <tr><td>{% bootstrap_field form.description show_label=True %}</td></tr>#}
+                     </div>
+                     <div class="col-md-4 p-r-0 p-l-15">
+                         <div class="example-wrap m-b-0">
+                             <label class="control-label" for="id_name">Image</label>
+                             <div class="uploader-inline">
+                                 <input id="id_image" name="image" title="" type="file"  data-plugin="dropify" data-default-file=""
+                                 />
+                             </div>
+                             <div class="p-t-25">{% bootstrap_field form.color show_label=False %}
+                             </div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+            <div class="panel col-md-6 offset-md-3 create-update-form p-0">
+                <div class="row panel-heading" style="border-bottom: solid 1px rgb(224, 224, 224);">
+                    <div class="col-md-6">
+                         <h2 class="panel-title custom-border">
+                            {% trans "Price and Inventory" %}
+                        </h2>
+                    </div>
+                    <div class="col-md-6">
+                        <lable class="control-label" id="inventory-history">
+                            {% trans "Price and Inventory History" %}
+                            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                        </lable>
+                    </div>
+                </div>
+                <div class="panel-body p-30">
+
+                     <div class="row">
+                         <div class="col-lg-6">{% bootstrap_field form.cost show_label=True %}</div>
+                         <div class="col-lg-6">{% bootstrap_field form.price show_label=True %}</div>
+                     </div>
+                     <div class="row">
+                         <div class="col-lg-6">{% bootstrap_field form.stock show_label=True %}</div>
+                         <div class="col-lg-6">{% bootstrap_field form.barcode show_label=True %}</div>
+                     </div>
+                     <div class="row">
+                         <div class="col-lg-6">{% bootstrap_field form.tax_rate show_label=True %}</div>
+{#                         <div class="col-md-6">{% bootstrap_field form.tax_status show_label=True %}</div>#}
+                         <div class="col-lg-6">
+                             <label class="control-label">Price Prompt</label>
+                             <div class="row">
+                                 <div class="col-sm-3">
+                                     <label class="switch">
+                                        <input class="form-control switch-input" name="price_adjust" type="checkbox"/>
+                                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                                        <span class="switch-handle"></span>
+                                     </label>
+                                 </div>
+                                 <div class="col-sm-9">
+                                     <label class="control-label" id="prompt">Enabling Price Prompt will ask for a  price to input everytime you sell this product.</label>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+{#                     <tr>#}
+{#                         <td>{% bootstrap_field form.price_adjust show_label=True %}</td>#}
+{#                         <td>{% bootstrap_field form.print_to show_label=True %}</td>#}
+{#                     </tr>#}
+{#                     <tr>#}
+{#                         <td>{% bootstrap_field form.printer show_label=True %}</td>#}
+{#                         <td>Modifier groups <br>{{ form.modifier_groups }}</td>#}
+{#                     </tr>#}
+                </div>
+                <div class="separator bottom"></div>
+
+            </div>
+            <div class="panel col-md-6 offset-md-3 create-update-form p-0">
+                <div class="panel-heading">
+                    <h2 class="panel-title custom-border" style="border-bottom: solid 1px rgb(224, 224, 224);">
+                       {% trans "Options" %}
+                    </h2>
+                </div>
+                <div class="panel-body p-30" style="margin-bottom: -15px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <td>Modifier groups <br>{{ form.modifier_groups }}</td>
+                        </div>
+                        <div class="col-md-6">
+                            <td>{% bootstrap_field form.printer show_label=True %}</td>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div id="colorpicker" style="display: none">
+        <select name="colorpicker">
+          <option value="#e56d3b">Orange</option>
+          <option value="#459b99">Aqua</option>
+          <option value="#744a17">Brown</option>
+          <option value="#009d13">Green</option>
+          <option value="#00b2d8">Cyan</option>
+          <option value="#8f1758">Maroon</option>
+          <option value="#b93aab">Pink</option>
+        </select>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Special Pricing</h4>
+            </div>
+            <form class="specialprices">
+                <div class="modal-body">
+                    <table>
+                        <tbody>
+                        {% for group in customergroup %}
+                            <tr>
+                                <th>
+                                    <label for="id_price" class="label-group">{{ group.name }}:</label>
+                                </th>
+                                <td>
+                                    {% if group.special %}
+                                        <input id="id_price" class="form-control" name="group_{{ group.id }}" step="any" type="number" value="{{group.special }}">
+                                    {% else %}
+                                        <input id="id_price" class="form-control" name="group_{{ group.id }}" step="any" placeholder="0.0" type="number" value="">
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button  id="myFormSubmit" type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+	{{ block.super }}
+
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker.js"></script>
+    <script src="{{ STATIC_URL }}vendor/switchery/switchery.min.js"></script>
+    <script src="{{ STATIC_URL }}vendor/intro-js/intro.js"></script>
+    <script src="{{ STATIC_URL }}vendor/screenfull/screenfull.js"></script>
+    <script src="{{ STATIC_URL }}vendor/slidepanel/jquery-slidePanel.js"></script>
+    <script src="{{ STATIC_URL }}vendor/jquery-ui/jquery-ui.js"></script>
+    <script src="{{ STATIC_URL }}vendor/blueimp-tmpl/tmpl.js"></script>
+    <script src="{{ STATIC_URL }}vendor/blueimp-canvas-to-blob/canvas-to-blob.js"></script>
+    <script src="{{ STATIC_URL }}vendor/blueimp-load-image/load-image.all.min.js"></script>
+    <script src="{{ STATIC_URL }}vendor/blueimp-file-upload/jquery.fileupload.js"></script>
+    <script src="{{ STATIC_URL }}vendor/blueimp-file-upload/jquery.fileupload-image.js"></script>
+    <script src="{{ STATIC_URL }}vendor/blueimp-file-upload/jquery.fileupload-ui.js"></script>
+    <script src="{{ STATIC_URL }}vendor/dropify/dropify.min.js"></script>
+    <script src="{{ STATIC_URL }}vendor/asspinner/jquery-asSpinner.js"></script>
+    <script src="{{ STATIC_URL }}js/Plugin/asspinner.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/jquery-simplecolorpicker/jquery.simplecolorpicker.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/jquery-simplecolorpicker/jquery.simplecolorpicker-glyphicons.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/dropify/dropify.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/blueimp-file-upload/jquery.fileupload.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/asspinner/asSpinner.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/custom.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script type="text/javascript">
+     $( document ).ready(function() {
+            var colorsreverse = {
+			1:'#e56d3b',
+			2:'#459b99',
+			3:'#744a17',
+			4:'#009d13',
+			5:'#00b2d8',
+			6:'#8f1758',
+			7:'#b93aab'
+		};
+        var predefined = $( "input:checked" ).val()
+        $('select[name="colorpicker"]').simplecolorpicker('selectColor',colorsreverse[predefined]);
+{#        $('#id_price').parent().parent().after('<tr class="specialpricing" style="height: 3em;"><th><label for="id_cost">Special Pricing:</label></th><td><span class="btn"><i class="icon-pencil"></i> Group Prices</span></td></tr>');#}
+
+         $('table').delegate( ".specialpricing", "click", function() {
+             $('#myModal').modal('show')
+
+
+});
+});
+		var colors = {
+			'#e56d3b': 1,
+			'#459b99': 2,
+			'#744a17': 3,
+			'#009d13': 4,
+			'#00b2d8': 5,
+			'#8f1758': 6,
+			'#b93aab': 7
+		};
+		$('#colorpicker select').appendTo($('#id_color').parent());
+		$('select[name="colorpicker"]').simplecolorpicker({theme: 'glyphicons'})
+				.on('change', function(){
+					var val = $('select[name="colorpicker"]').val();
+					id = colors[val]-1;
+					$("#id_color_" + id).prop("checked", true);
+				});
+	    $('#id_color').hide();
+     $('.specialprices').submit(function(e){
+         e.preventDefault();
+         $.ajax({
+             type: "POST",
+             url: '/terminalapi/update/spicialprices/{{ object.pk }}',
+             data: $(".specialprices").serialize(), // serializes the form's elements.
+             success: function(data)
+             {
+                 $('#myModal').modal('hide')
+             }
+         });
+     });
+
+     function removeImage(e) {
+       $('#id_product_image')
+         .attr('src', '#');
+
+       $('#id_image').val(null);
+
+       $('#removeProduct').addClass('hidden');
+     }
+
+     function readUrlImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#id_product_image')
+                    .attr('src', e.target.result);
+
+                $('#removeProduct').removeClass('hidden');
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    </script>
+
+
+{% endblock %}
+
+{% endblock content %}

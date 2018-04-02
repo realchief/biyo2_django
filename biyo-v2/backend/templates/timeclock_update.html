@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load tz %}
+
+{% block content %}
+<ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reports_home' %}">{% trans "Reports" %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'employee_hour_summary' %}">{% trans "EMPLOYEE TOTAL HOURS SUMMARY" %}</a></li>
+        <li class="divider"></li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans 'Update' %} {{ object.name }}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+        <div class="widget">
+            {% if form.errors %}
+                <div class="alert alert-warning">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    {% timezone tz %}
+                    {{ form.as_table }}
+                    {% endtimezone %}
+                </table>
+                <div class="separator bottom"></div>
+                <div>
+                    <input type="submit" class="btn btn-primary" value="Save changes"/>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}
+{% block js %}
+	{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL }}common/datetimepicker/jquery.datetimepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}common/datetimepicker/jquery.datetimepicker.css"/>
+    <script type="text/javascript">
+
+        jQuery('#id_time_in').datetimepicker({
+        datepicker:true,
+        step:5,
+        hours12:false,
+        format:'Y-m-d h:i A'
+
+    });
+
+
+    jQuery('#id_time_out').datetimepicker({
+        datepicker:true,
+        step:5,
+        hours12:false,
+        format:'Y-m-d h:i A'
+
+    });
+
+    Date.prototype.dateFormat = function( format ){
+  //you code for convert date object to format string
+  //for example
+  switch( format ){
+    case 'Y-m-d h:i A': return this.getFullYear()+'-'+ (this.getMonth()+ 1)+'-'+ this.getDate() +' '+ ((this.getHours() %12) ? this.getHours() % 12 : 12)+':'+(this.getMinutes()<10?'0':'')+this.getMinutes()+(this.getHours() < 12 ? ' AM' : ' PM');
+    case 'd': return this.getDate();
+    case 'H:i:s': return this.getHours()+':'+this.getMinutes()+':'+this.getSeconds();
+    case 'h:i A': return ((this.getHours() %12) ? this.getHours() % 12 : 12)+':'+(this.getMinutes()<10?'0':'')+this.getMinutes()+(this.getHours() < 12 ? ' AM' : ' PM');
+  }
+  // or default format
+  return ((this.getHours() %12) ? this.getHours() % 12 : 12)+':'+(this.getMinutes()<10?'0':'')+this.getMinutes()+(this.getHours() < 12 ? ' AM' : ' PM');
+{#    return (this.getDate()<0?'0':'')+this.getDate()+'.'+(this.getMonth()+ 1)+'.'+this.getFullYear();#}
+};
+
+    </script>
+
+
+
+
+{% endblock %}

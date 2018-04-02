@@ -1,0 +1,63 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+
+<div class="row ">
+    <div class="col-sm-12 col-md-6 col-lg-3">
+        <h1 class="page-title">{% trans "Price Adjustments" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-5">
+        {% with 'price_adjustment' as active %}
+          {% include "reports/includes/filter.html" %}
+        {% endwith %}
+    </div>
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+    {% if out %}
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Item Name" %}</th>
+                            <th>{% trans "Qty" %}</th>
+                            <th class="right">{% trans "Orginal Price" %}</th>
+                            <th class="right">{% trans "Adjusted" %}</th>
+                            <th class="right">{% trans "Difference" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item,qty, price, price_ad, diff in out %}
+                        <tr>
+                            <td>{{ item}}</td>
+                            <td>{{ qty}}</td>
+                            <td class="right">${{price_ad|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td class="right">${{ price|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td class="right">${{ diff|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot class="text-primary ">
+                        <tr>
+                        <td>{% trans "Totals" %}</td>
+                        <td>{{ total_count}}</td>
+                        <td class="right">${{total_adjusted|floatformat:2|default:"0.00"|intcomma }}</td>
+                        <td class="right">${{ total_original|floatformat:2|default:"0.00"|intcomma }}</td>
+                        <td class="right">${{ total_difference|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        {% include 'reports/includes/empty.html' %}
+    {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

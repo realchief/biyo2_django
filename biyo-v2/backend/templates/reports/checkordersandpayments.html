@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load panel_tags %}
+{% block content %}
+
+
+<ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reports_home' %}">{% trans "Reports" %}</a></li>
+
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Reports" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+        <div class="row">
+            <div class="span4">
+                <ul>
+                    {% with 'discount_summary' as active %}
+                        {% include "reports/report_list_new.html" %}
+                    {% endwith %}
+                </ul>
+            </div>
+
+            <div class="separator bottom"></div>
+			<div class="span8">
+				{% include "reports/includes/filter.html" %}
+
+            <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Order" %}</th>
+                            <th>{% trans "Status" %}</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for order in order %}
+                            <tr>
+                                <td><a href="{% url 'order-detail' order.id%}">{{ order.id }}</a></td>
+
+                                <td class="right">
+                                {{ order|field_value:"status" }}
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+
+
+
+                    </tbody>
+                </table>
+
+
+
+
+            </div>
+
+        </div>
+    <div class="innerLR">
+    </div>
+
+{% endblock %}

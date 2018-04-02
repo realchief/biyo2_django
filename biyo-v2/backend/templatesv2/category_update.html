@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load panel_tags %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <thead>
+    <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+    <th class="divider">/</th>
+    <th><a href="{% url 'category_list' %}">{% trans "Categorys" %}</a></th>
+    <th class="divider">/</th>
+    <th><a href="{% url 'category_detail' pk=object.pk %}">{{ object.name }}</a></th>
+    <th class="divider">/</th>
+    <th>{% trans 'Update' %} {{ object.name }}</th>
+    </thead>
+
+    <div class="table-responsive">
+        {% if form.errors %}
+            <div class="alert alert-warning">
+                {% bootstrap_form_errors form %}
+            </div>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+            <div class="panel col-md-4 offset-md-4">
+                <h3 class="panel-title">
+                    Update category
+                </h3>
+                {% csrf_token %}
+                <table class="table" id="editableUser">
+                    <div class="col-md-4">
+                        <tr>
+                            <td>{% bootstrap_field form.name %}</td>
+                        </tr>
+                        <tr>
+                            <td>{% bootstrap_field form.parent %}</td>
+                        </tr>
+                        <tr>
+                            <td><p>Color</p>{{ form.color }}</td>
+                        </tr>
+                        <tr>
+                            <td>{% bootstrap_field form.sorting %}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>Image</div>
+                                <label class="btn btn-secondary btn-file employee-add-photo-button">Browse
+                                    <input id="id_image" name="image" title="" type="file" hidden>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{% bootstrap_field form.active show_label=False %}</td>
+                        </tr>
+                    </div>
+                </table>
+                <div>
+                    <button type="submit" class="btn btn-success waves-effect form-table-button">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="colorpicker"style="display: none">
+        <select name="colorpicker">
+            <option value="#e56d3b">Orange</option>
+            <option value="#459b99">Aqua</option>
+            <option value="#744a17">Brown</option>
+            <option value="#009d13">Green</option>
+            <option value="#00b2d8">Cyan</option>
+            <option value="#8f1758">Maroon</option>
+            <option value="#b93aab">Pink</option>
+        </select>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Special Pricing</h4>
+                </div>
+                <form class="specialprices">
+                    <div class="modal-body">
+                        <table>
+                            <tbody>
+                            {% for group in customergroup %}
+                                <tr>
+                                    <th>
+                                        <label for="id_price">{{ group.name  }}:</label>
+                                    </th>
+                                    <td>
+                                        {% if group.special %}
+                                            <input id="id_price" name="group_{{ group.id }}" step="any" type="number" value="{{group.special }}">
+                                        {% else %}
+                                            <input id="id_price" name="group_{{ group.id }}" step="any" placeholder="0.0" type="number" value="">
+                                        {% endif %}
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+                            </tbody></table>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button  id="myFormSubmit" type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    {% block scripts %}
+        {{ block.super }}
+
+        <script src="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker.js"></script>
+        <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker.css"/>
+        <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker-glyphicons.css"/>
+        <script type="text/javascript">
+            $( document ).ready(function() {
+                var colorsreverse = {
+                    1:'#e56d3b',
+                    2:'#459b99',
+                    3:'#744a17',
+                    4:'#009d13',
+                    5:'#00b2d8',
+                    6:'#8f1758',
+                    7:'#b93aab'
+                };
+                var predefined = $( "input:checked" ).val()
+                $('select[name="colorpicker"]').simplecolorpicker('selectColor',colorsreverse[predefined]);
+                $('#id_price').parent().parent().after('<tr class="specialpricing" style="height: 3em;"><th><label for="id_cost">Special Pricing:</label></th><td><span class="btn"><i class="icon-pencil"></i> Group Prices</span></td></tr>');
+
+                $('table').delegate( ".specialpricing", "click", function() {
+                    $('#myModal').modal('show')
+
+
+                });
+            });
+            var colors = {
+                '#e56d3b': 1,
+                '#459b99': 2,
+                '#744a17': 3,
+                '#009d13': 4,
+                '#00b2d8': 5,
+                '#8f1758': 6,
+                '#b93aab': 7
+            };
+            $('#colorpicker select').appendTo($('#id_color').parent());
+            $('select[name="colorpicker"]').simplecolorpicker({theme: 'glyphicons'})
+                    .on('change', function(){
+                        var val = $('select[name="colorpicker"]').val();
+                        id = colors[val]-1;
+                        $("#id_color_" + id).prop("checked", true);
+                    });
+            $('#id_color').hide();
+            $('.specialprices').submit(function(e){
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: '/terminalapi/update/spicialprices/{{ object.pk }}',
+                    data: $(".specialprices").serialize(), // serializes the form's elements.
+                    success: function(data)
+                    {
+                        $('#myModal').modal('hide')
+                    }
+                });
+            });
+        </script>
+
+
+    {% endblock %}
+
+{% endblock content %}

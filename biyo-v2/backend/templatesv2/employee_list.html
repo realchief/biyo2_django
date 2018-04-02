@@ -1,0 +1,152 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load humanize %}
+
+
+<div class="row clearfix">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">{% trans "Employees" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+
+    <div class="col-sm-12 col-md-5">
+        <!-- <div class="input-daterange" data-plugin="datepicker">
+            <div class="input-group">
+                <span class="input-group-addon">
+                        <i class="icon md-calendar" aria-hidden="true"></i>
+                      </span>
+                <input type="text" class="form-control" name="start" placeholder="Start Date">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">to</span>
+                <input type="text" class="form-control" name="end" placeholder="End Date">
+            </div>
+        </div> -->
+    </div>
+
+
+<div class="hidden-md-up" style="height: 50px;">
+    </div>
+    <div class="col-sm-12 col-md-4">
+
+        <div class="pull-md-right" aria-label="Add Order">
+            <a href="{% url 'employee_create' %}">
+                <button type="button" class="btn btn-success waves-effect"><i class="icon md-plus" aria-hidden="true"></i>{% trans "New Employee" %}</button>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="m-b-15">
+                    <!-- <button id="addToTable" class="btn btn-primary" type="button">
+        <i class="icon md-plus" aria-hidden="true"></i> Add row
+      </button> -->
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover table-striped" cellspacing="0" id="exampleFixedHeader">
+            <thead>
+                <tr>
+{#                    <th></th>#}
+                    <th class="center">{% trans "Name" %}</th>
+                    <th class="center">{% trans "Phone" %}</th>
+                    <th class="center">{% trans "e-mail" %}</th>
+                    <th class="center">{% trans "Role" %}</th>
+                    <th class="center">{% trans "Row for Edit " %}</th>
+                    <th class="center">{% trans "Row for Delete" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                {% for object in object_list %}
+{#                <td class="center">#}
+{#                <a class="avatar avatar-lg" href="{% url 'employee_detail' pk=object.id  %}">#}
+{#                    <img src="/static/portraits/{{ object.id }}.jpg" alt="...">#}
+{#                </a>#}
+{#                </td>#}
+                <td class="center">
+                    <a class="avatar avatar-lg" href="{% url 'employee_detail' pk=object.id  %}">
+                      <img src="/media/{{ object.photo }}" alt="...">
+                    </a>
+                    <span class="x-editable" data-pk="{{object.pk}}" data-name="name" data-type="text" data-url="{% url 'employee_update' pk=object.pk %}" data-title="Enter name">
+                        {{ object.name }}
+                    </span>
+                </td>
+                <td class="center">
+                    <span class="x-editable" data-pk="{{object.pk}}" data-name="phone" data-type="text" data-url="{% url 'employee_update' pk=object.pk %}" data-title="Enter phone">
+                        {% if object.phone == None or object.phone == '' %}
+                            -
+                        {% else %}
+                           {{ object.phone }}
+                        {% endif %}
+                    </span>
+                </td>
+                <td class="center">
+                    <span class="x-editable-select" data-pk="{{object.pk}}" data-name="email" data-type="text" data-url="{% url 'employee_update' pk=object.pk %}" data-title="Edit email"">
+                        {% if object.phone == None or object.email != '' %}
+                            {{ object.email }}
+                        {% else %}
+                            {{ object.email }}
+                        {% endif %}
+                    </span>
+                </td>
+                <td>
+                    {% if object.role == 1 %}
+                        <span class="tag  tag-success w-75px" data-pk="{{object.pk}}" data-name="role" data-type="select" data-url="{% url 'employee_update' pk=object.pk %}" data-title="Select role" data-value="{{object.role}}">
+                            {{ object.get_role_display }}
+                        </span>
+                    {% else %}
+                        <span class="tag  tag-danger w-75px" data-pk="{{object.pk}}" data-name="role" data-type="select" data-url="{% url 'employee_update' pk=object.pk %}" data-title="Select role" data-value="{{object.role}}">
+                            {{ object.get_role_display }}
+                        </span>
+                    {% endif %}
+                </td>
+                <td>
+                      <a href="{% url 'employee_update' pk=object.id %}">
+                        <button type="button" class="btn btn-warning waves-effect">{% trans "Edit" %}</button>
+                      </a>
+                </td>
+                <td>
+                      <a href="{% url 'employee_delete' pk=object.id %}">
+                        <button type="button" class="btn btn-danger waves-effect"> {% trans "Delete" %}</button>
+                      </a>
+                </td>
+            </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        <div align="center">
+            {% include "includes/paginator.html" %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+{% block scripts %}
+{{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+	<script type="text/javascript">
+	    $.fn.editable.defaults.mode = 'inline';
+		var form = $('#form-hidden tbody').clone();
+
+		$('.x-editable').editable({send: 'always'});
+		$('.x-editable-select').editable({
+			source: [
+				  {value: 1, text: 'Owner'},
+				  {value: 2, text: 'Manager'},
+				  {value: 3, text: 'Cashier'},
+				  {value: 4, text: 'Employee'}
+			   ]
+    	});
+	</script>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load panel_tags %}
+{% load thumbnail %}<!--add to ...-->
+{% block content %}
+
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'product_list' %}">{% trans "Product" %}</a></li>
+        <li class="divider"></li>
+        <li>{{ object.name }}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{{ object.name }}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+
+          <h4>Info about product:</h4>
+          <ul>
+              <div>
+                {% thumbnail object.image "100x100" as im %}
+                    <img src="{{ im.url }}">
+                {% endthumbnail %}
+              </div>
+              {% for field_name in info_fields %}
+                  <li><strong>{{ object|field_verbose_name:field_name }}:</strong> {{ object|field_value:field_name }}</li>
+              {% endfor %}
+          </ul>
+          <p>
+                <strong>Categories:</strong>
+                {% for category in object.categories.all %}
+                    <span class="label">{{ category }}</span>
+                {% endfor %}
+          </p>
+          <p>
+              <strong>Modifiers:</strong>
+              {% if object.modifier_groups.all.count %}
+              {% for modifier_group in object.modifier_groups.all %}
+                  <span class="label">{{ modifier_group }}</span>
+              {% endfor %}
+              {% else %}
+              <span class="label"> No modifiers selected </span>
+              {% endif %}
+          </p>
+          <div class="separator bottom"></div>
+          <div>
+              <a href="{% url 'product_update' pk=object.pk %}" class="btn"><i class="icon-pencil"></i> Edit</a>
+              <a href="{% url 'product_delete' pk=object.pk %}" class="btn"><i class="icon-trash"></i> Delete</a>
+          </div>
+    </div>
+    <br/>
+    <a class="btn" href="{% url 'product_view_orders' pk=object.pk  %}" >View Orders for this product</a>
+
+    <hr/>
+    <div class="innerLR">
+    <h3>{% trans 'Product History' %}</h3>
+    <table>
+        <table id="change-history" class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th scope="col">{% trans 'Date/time' %}</th>
+              <th scope="col">{% trans 'Changed by' %}</th>
+              <th scope="col">{% trans 'Cost' %}</th>
+              <th scope="col">{% trans 'Price' %}</th>
+              <th scope="col">{% trans 'Stock' %}</th>
+              <th scope="col">{% trans 'Stock Change' %}</th>
+              <th scope="col">{% trans 'Comment' %}</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for hist in object.history.all|slice:":25" %}
+              <tr>
+                <td>{{ hist.history_date|date:"d M Y, h:i A" }}</td>
+                <td>{{ hist.history_user.name }}</td>
+                <td>$ {{ hist.cost }}</td>
+                <td>$ {{ hist.price }}</td>
+                <td>{{ hist.stock }}</td>
+                <td>{{ hist.stock_change }}</td>
+                <td>{{ hist.change_reason|default:hist.get_history_type_display|product_order_link|safe }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </table>
+    </div>
+
+{% endblock content %}

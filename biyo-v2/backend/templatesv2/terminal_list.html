@@ -1,0 +1,93 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+
+
+<div class="row clearfix">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">{% trans "Terminals" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-5">
+    </div>
+    <div class="hidden-md-up" style="height: 50px;">
+    </div>
+    <div class="col-sm-12 col-md-4">
+        <div class="pull-md-right" aria-label="Add Order">
+            <a href="{% url "terminal_create" %}"><button type="button" class="btn btn-success waves-effect"><i class="icon md-plus" aria-hidden="true"></i>{% trans " Add new terminal" %}</button></a>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="m-b-15">
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover table-striped" cellspacing="0" id="exampleFixedHeader">
+            <thead>
+                <tr>
+                    <th>{% trans "ID" %}</th>
+                    <th>{% trans "Name" %}</th>
+                    <th>{% trans "MAC" %}</th>
+                    <th>{% trans "Mode" %}</th>
+                </tr>
+
+
+            </thead>
+            <tbody>
+                {% for object in object_list %}
+                    <td class="center">
+                        <a href="{% url 'terminal_detail' pk=object.id %}">{{ object.id }}</a>
+                    </td>
+                    <td class="center">
+                        <a href="{% url 'terminal_detail' pk=object.id %}">{{ object.name }}</a>
+                    </td>
+                    <td class="center">
+                        <span >
+                            {{ object.mac_id }}
+                        </span>
+                    </td>
+                    {% if object.get_mode_display != "Quick Service" %}
+                    <td class="center">
+                        <span class="tag tag-primary w-100px">{{ object.get_mode_display }}</span>
+                    </td>
+                    {% else %}
+                    <td class="center">
+                        <span class="tag tag-info w-100px">{{ object.get_mode_display }}</span>
+                    </td>
+                    {% endif %}
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div align="center">
+            {% include "includes/paginator.html" %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+{% block scripts %}
+	{{ block.super }}
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+
+	<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+	<script type="text/javascript">
+		$('.x-editable').editable({send: 'always'});
+		$('.x-editable-select').editable({
+			source: [
+				{text: 'Table Service', value: 1},
+				{text: 'Quick Service', value: 2}
+			]
+		});
+
+	</script>
+{% endblock %}

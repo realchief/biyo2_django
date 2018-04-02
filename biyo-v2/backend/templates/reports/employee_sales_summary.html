@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load humanize %}
+
+{% block content %}
+
+
+
+<ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reports_home' %}">{% trans "Reports" %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Employee sales summary" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Reports" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="row">
+<div class="offset1">
+{% with 'employee_sales_summary' as active %}
+        {% include "reports/includes/filter.html" %}
+{% endwith %}
+            <form method="POST" class="employee_form" action="">
+                {% csrf_token %}
+            {{ form }}
+            </form>
+
+                {% if grand_total %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>{% trans "Sales" %}</th>
+                        <th></th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{% trans "Gross Sales" %}</td>
+                        <td class="right">${{ gross_sales|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr><td>{% trans "Discounts" %}</td><td class="right">(${{ discount_total|floatformat:2|default:"0.00"|intcomma }})</td></tr>
+                    <tr><td>{% trans "Tax" %}</td><td class="right">${{ tax_total|floatformat:2|default:"0.00"|intcomma }}</td></tr>
+                    <tr><td>{% trans "Total Collected" %}</td><td class="right">${{ grand_total|floatformat:2|default:"0.00"|intcomma }}</td></tr>
+{#                    <tr><td>{% trans "Tips" %}</td><td class="right">${{ tips|floatformat:2|default:"0.00"|intcomma }}</td></tr>#}
+                    </tbody>
+                </table>
+            {% else %}
+                {% include 'reports/includes/empty.html' %}
+            {% endif %}
+
+            {% if total_sum %}
+                <table class="table">
+                 <thead>
+                    <tr>
+                        <th>{% trans "Payments" %}</th>
+                        <th></th>
+
+                    </tr>
+                    </thead>
+                    <tr>
+                        <td>Cash</td>
+                        <td class="right">${{ cash_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td>Credit Card</td>
+                        <td class="right">${{ total_card_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 20px">Visa</td>
+                        <td class="right">${{ visa_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 20px" >Mastercard</td>
+                        <td class="right">${{ mastercard_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 20px">American Express</td>
+                        <td class="right">${{ american_express_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 20px">Discover</td>
+                        <td class="right">${{ discover_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding-left: 20px">Other CC</td>
+                        <td class="right">${{ other_cc|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Refunded Payments</td>
+                        <td class="right">${{ refunded|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Total before Tips</td>
+                        <td class="right">${{ total_before_tips|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <th>Tips</th>
+                        <td class="right">${{ tips_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td class="right">${{ total_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                </table>
+            {% endif %}
+
+            </div>
+
+        </div>
+    <div class="innerLR">
+    </div>
+
+{% endblock %}
+
+{% block js %}
+	{{ block.super }}
+<script>
+    $('.employee_form').change(function(){
+{#         alert(path);#}
+        $(this).submit();
+    });
+</script>
+{% endblock %}

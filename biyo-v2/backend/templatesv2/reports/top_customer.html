@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+
+
+
+<div class="row ">
+    <div>
+        <h1 class="page-title">{% trans "Top Customers" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-6 offset-md-3">
+        {% include "reports/includes/filter.html" %}
+    </div>
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+    {% if top_cutomers %}
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Top Customers" %}</th>
+                            <th>{% trans "Total Transactions" %}</th>
+                            <th class="right">{% trans "Total" %}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for customer in top_cutomers %}
+                        <tr><td>{{ customer}}</td>
+                            <td>{{ customer.total_transactions}}</td>
+                            <td class="right">${{ customer.total_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        {% include 'reports/includes/empty.html' %}
+    {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

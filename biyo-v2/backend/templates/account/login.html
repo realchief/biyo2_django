@@ -1,0 +1,22 @@
+{% extends 'account/base.html' %}
+{% load i18n %}
+{% block content %}
+<form method="post">
+                        {% csrf_token %}
+                        {{ form.email.errors }}
+						<label class="strong">Login</label>
+						<input type="text" class="input-block-level" placeholder="Login" name="username" tabindex="1"/>
+						<label class="strong">{% trans 'Password' %}</label>
+						<input type="password" class="input-block-level" placeholder="{% trans 'Password' %}" name="password" tabindex="2"/>
+                        <a class="password" href="{% url 'password_reset' %}" tabindex="5">Forgot password?</a>
+						<div class="uniformjs fix-login-chkbox"><label class="checkbox"><input type="checkbox" value="remember-me" tabindex="3">{% trans "Remember me" %}</label></div>
+						<div class="row-fluid">
+                        <div class="separator"></div>
+							<div class="span5 center">
+								<button class="btn btn-block btn-primary" style="margin-left:128px;" type="submit" tabindex="4">{% trans "Login" %}</button>
+							</div>
+
+
+						</div>
+					</form>
+{% endblock %}

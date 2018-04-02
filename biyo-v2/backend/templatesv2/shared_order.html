@@ -1,0 +1,276 @@
+
+ {% block style %}
+
+    {% load staticfiles%}
+    {% load static %}
+    {% load i18n %}
+    {% load report_tags %}
+    {% load humanize %}
+    {% load panel_tags %}
+    {% load tz %}
+    <link rel="stylesheet" href="{% static '/static/vendor/select2/select2.css' %}"> {% endblock %} {% block content %}
+    <head>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-extend.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/site.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-datepicker/bootstrap-datepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+    <script src="{% static 'common/theme/scripts/plugins/tables/DataTables/docs/media/js/jquery.js' %}"></script>
+    <script src="{% static 'vendor/babel-external-helpers/babel-external-helpers.js' %}"></script>
+    <script src="{% static 'vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'vendor/tether/tether.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/bootstrap.js' %}"></script>
+    <script src="{% static 'vendor/animsition/animsition.js' %}"></script>
+</head>
+
+
+    <div class="clearfix" style="height: 20px;"></div>
+
+<div class="panel">
+        <div class="panel-body container-fluid" id="order">
+        <div class="row">
+            <div class="col-md-3">
+            <img width="200px" class="margin-right-10" src="{{ STATIC_URL }}images/biyo_logo.png">
+          <address>
+            {{ store.name }}
+            <br> {{ store.address }} {{ store.state }} {{ store.zipcode }}
+            <br>
+              {{ store.city }}
+            <br>
+            E-mail: {{ store.email }}
+            <br>
+            Phone: {{ store.phone }}
+            <br>
+            Fax: {{ store.fax }}
+          </address>
+        </div>
+        <div class="col-md-3 col-md-offset-6 text-right invoice-info">
+          <h4>Invoice Info</h4>
+          <p>
+            <span class="font-size-20">#{{ object.order.number }}</span>
+            <br> To:
+            <br>
+              {% if customer %}
+                  <span class="font-size-20">{{ customer }}</span>
+              {% else %}
+                No customer info
+              {% endif %}
+          </p>
+          <address>
+            {{ customer.address }}
+            <br> {{ customer.city }} {{ cudtomer.state }} {{ customer.zipcode }}
+            <br>
+            <abbr title="Phone">{{ customer.phone }}</abbr>
+              <br>
+            <abbr title="Email">{{ customer.email }}</abbr>
+            <br>
+          </address>
+          <span>{% trans "Open date" %}: {{ object.order.open_date|timezone:tz|date:"m-d-Y h:i A" }}</span>
+          <br>
+        {% if object.order.hold_date %}
+          <span>{% trans "Hold date" %}: {{ object.order.hold_date|timezone:tz|date:"m-d-Y h:i A" |default:'-' }}</span>
+          <br>
+        {% endif %}
+        {% if object.order.close_date %}
+          <span>{% trans "Close date" %}: {{ object.order.close_date|timezone:tz|date:"m-d-Y h:i A"|default:'-' }}</span>
+          <br>
+        {% endif %}
+            {% trans "Order status" %}:
+            {{ object.order.get_status_display }}
+            <br>
+        {%  if object.order.emp_open == object.order.emp_close %}
+            {% trans "Employee" %}:
+            {{ object.order.emp_open}}
+            <br>
+            {% elif object.order.emp_open != object.order.emp_close and object.emp_close != null %}
+            {% trans "Employee" %}:
+            {{ object.emp_open }}, {{object.order.emp_close }}
+            <br>
+            {% elif object.emp_open %}
+            {{ object.order.emp_open }}
+            <br>
+        {% endif %}
+        {% if object.order.terminal_id %}
+            {% trans "Terminal" %}:
+            #{{ object.order.terminal_id }}
+            <br>
+            {% if object.order.descriprion %}
+            {% trans "Order description" %}:
+            <div class="order-description">{{ object.order.description }}</div>
+            {% endif %}
+        {% endif %}
+        </div>
+        </div>
+            <div class="separator bottom"></div>
+            {#                    <div>#}
+            {#                        <a href="{% url 'terminal_update' pk=object.pk %}">#}
+            {#                            <button type="button" class="btn btn-warning waves-effect">{% trans "Edit" %}</button>#}
+            {#                        </a>#}
+            {#                        <a href="{% url 'terminal_delete' pk=object.pk %}">#}
+            {#                            <button type="button" class="btn btn-danger waves-effect"> {% trans "Delete" %}</button>#}
+            {#                        </a>#}
+            {#                    </div>#}
+            {% if order_items %}
+            <div class="page-invoice-table table-responsive">
+                <table class="table table-hover text-right">
+                    <thead>
+                    <tr>
+                        <h4>{% trans "Order items" %}:</h4>
+                    </tr>
+                    <tr>
+                        <th class="order-items-table text-center">#</th>
+                        <th class="order-items-table">{% trans "Name" %}</th>
+                        <th class="order-items-table text-right">{% trans "Price" %}</th>
+                        <th class="order-items-table text-right">{% trans "Discount" %}</th>
+                        <th class="order-items-table text-right">{% trans "Tax" %}</th>
+                        <th class="order-items-table text-right">{% trans "Quantity" %}</th>
+                        <th class="order-items-table text-right">{% trans "Subtotal" %}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in order_items %}
+                        <tr>
+                            <td class="text-center">{{ forloop.counter }}</td>
+                            <td class="text-left">
+                                {{ item.name }}
+                                <ul>
+                                    {% for mod in item.get_modifiers %}<li>{{ mod.name }} - ${{ mod.price|floatformat:2 }}</li>{% endfor %}
+                                </ul>
+                            </td>
+                            <td>${{ item.price|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td>${{ item.discount|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td>${{ item.tax|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td>{{ item.quantity|floatformat:-2|intcomma }}</td>
+                            <td>${{ item|subtotal|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+            {% if voided_items %}
+            <div class="page-invoice-table table-responsive">
+                <table class="table table-hover text-right">
+                    <thead>
+                    <tr>
+                        <h4>{% trans "Voided items" %}:</h4>
+                    </tr>
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th>{% trans "Name" %}</th>
+                        <th class="text-right">{% trans "Price" %}</th>
+                        <th class="text-right">{% trans "Discount" %}</th>
+                        <th class="text-right">{% trans "Quantity" %}</th>
+                        <th class="text-right">{% trans "Tax" %}</th>
+                        <th class="text-right">{% trans "Subtotal" %}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in voided_items %}
+                        <tr>
+                            <td class="text-center">{{ forloop.counter }}</td>
+                            <td class="text-left">
+                                {{ item.name }}
+                                <ul>
+                                    {% for mod in item.modifiers.all %}<li>{{ mod.name }} - ${{ mod.price|floatformat:2 }}{% if mod.void_status %} (Removed){% endif %}</li>{% endfor %}
+                                </ul>
+                            </td>
+                            <td>${{ item.price|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td>${{ item.discount|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td>{{ item.quantity|intcomma }}</td>
+                            <td>${{ item.tax|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td>${{ item|subtotal|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+            {% if object.payments.all %}
+            <div class="page-invoice-table table-responsive">
+                <table class="table table-hover text-right">
+                    <thead>
+                    <tr>
+                        <h4>{% trans "Payments" %}:</h4>
+                    </tr>
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th class="text-right">{% trans "Amount" %}</th>
+                        <th class="text-right">{% trans "Amount Paid" %}</th>
+                        <th class="text-right">{% trans "Change Amount" %}</th>
+                        <th class="text-right">{% trans "Payment Type" %}</th>
+                        <th class="text-right">{% trans "Payment Date" %}</th>
+                        <th class="text-right">{% trans "Transaction Type" %}</th>
+                        <th class="text-right">{% trans "Signature" %}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for payment in object.payments.all %}
+                        <tr>
+                            <td class="text-center">{{ forloop.counter }}</td>
+                            <td>${{ payment.amount|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td>${{ payment.amount|dodeduction:payment.change_amount|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td>${{ payment.change_amount|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td>
+                                {{ payment.payment_type.capitalize }}
+                                {% if  payment.payment_type != "Othercredit" and payment.payment_type != "Cash"%}
+                                    <a class="details" data-toggle="modal" data-target=".modal" data-id="{{payment.id}}"> View Details</a>
+                                    <br/>
+                                    <a href="{% url 'add_tips' pk=payment.id %}"> Add Tips</a>
+                                {% endif %}
+                            </td>
+                            <td>{{ payment.payment_date|timezone:tz }}</td>
+                            <td>{{ payment.get_transaction_type_display }}</td>
+                            <td>
+                                {% if payment.signature %}
+                                    <img width="200" src="data:image/jpg;base64,{{ payment.signature }}">
+                                {% endif %}
+                            </td>
+                            <td style="display: none" class="payment-data-{{payment.id}}">
+                                <ul>
+                                    <li>Transaction ID: {{ payment.transaction_id }}</li>
+                                    {% if payment.card_lastfour != None %}
+                                        <li>Card Last Four: {{ payment.card_lastfour }}</li>
+                                    {% endif %}
+                                    <li>Processor Response: {{ payment.processor_response }}</li>
+                                    <li>Batch Number: {{ payment.batch_num }}</li>
+                                    <li>Check Number: {{ payment.check_number }}</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+
+        <div class="order-total">
+            <p>{% trans "Discount Items" %}:
+            ${{ object.order.discount_items|floatformat:"2"|intcomma }}</p>
+            <p>{% trans "Discount Orders" %}:
+            ${{ object.order.discount_orders|default:'0.0'|floatformat:"2"|intcomma }}</p>
+            <p>{% trans "Total Discount" %}:
+            ${{ object.order.discount_total|floatformat:"2"|intcomma }}</p>
+            <p>{% trans "Tips" %}:
+            ${{ object.order.payments.all|get_tips|default:"0.00"|floatformat:"2"|intcomma}}</p>
+            <p>{% trans "Balance remaining" %}:
+            ${{ object.order.balance_remaining|floatformat:"2"|default:"0.00"|intcomma }}</p>
+            <p>{% trans "Subtotal" %}:
+            ${{ object.order.subtotal|floatformat:"2"|intcomma }}</p>
+            <p>{% trans "Tax total" %}:
+          ${{ object.order.tax_total|floatformat:"2"|intcomma }}</p>
+            <p class="order-grand-total">{% trans "Grand" %}:
+          ${{ object.order.grand_total|floatformat:"2"|intcomma }}</p>
+        </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock content %} {% block scripts %}
+
+    <script src="{% static '/static/js/Plugin/select2.js' %}"></script>
+    <script src="{% static '/static/vendor/select2/select2.full.min.js' %}"></script>
+{% endblock %}

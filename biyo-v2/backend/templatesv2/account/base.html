@@ -1,0 +1,202 @@
+{% load i18n %}
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="ie lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="ie lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="ie lt-ie9"> <![endif]-->
+<!--[if gt IE 8]> <html class="ie gt-ie8"> <![endif]-->
+<!--[if !IE]><!--><html><!-- <![endif]-->
+<head>
+	<title>Biyo Point of Sale - Dashboard</title>
+
+	<!-- Meta -->
+	<meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="bootstrap admin template">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="author" content="">
+
+    <link rel="apple-touch-icon" href="{{ STATIC_URL }}images/apple-touch-icon.png">
+    <link rel="shortcut icon" href="{{ STATIC_URL }}images/favicon.ico">
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-extend.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/site.min.css?v2.2.0">
+
+    <!-- Plugins -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/animsition/animsition.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/asscrollable/asScrollable.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/switchery/switchery.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/intro-js/introjs.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/slidepanel/slidePanel.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/flag-icon-css/flag-icon.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}fonts/font-awesome/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/build.css">
+
+    <!-- Page -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}examples/css/pages/login-v3.min.css?v2.2.0">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}fonts/web-icons/web-icons.min.css?v2.2.0">
+    <link rel="stylesheet" href="{{ STATIC_URL }}fonts/brand-icons/brand-icons.min.css?v2.2.0">
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+
+
+
+</head>
+<body class="page-login-v3 layout-full">
+  <!-- Page -->
+  <!-- End Page -->
+
+<!-- Core  -->
+  <script src="{{ STATIC_URL }}vendor/jquery/jquery.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/bootstrap/bootstrap.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/animsition/animsition.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/asscrollable/jquery-asScrollable.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/mousewheel/jquery.mousewheel.min.js"></script>
+{#  <script src="{{ STATIC_URL }}vendor/asscrollable/jquery.asScrollable.all.min.js"></script>#}
+  <script src="{{ STATIC_URL }}vendor/ashoverscroll/jquery-asHoverScroll.min.js"></script>
+
+  <!-- Plugins -->
+  <script src="{{ STATIC_URL }}vendor/switchery/switchery.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/intro-js/intro.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/screenfull/screenfull.min.js"></script>
+  <script src="{{ STATIC_URL }}vendor/slidepanel/jquery-slidePanel.min.js"></script>
+
+  <!-- Plugins For This Page -->
+  <script src="{{ STATIC_URL }}vendor/jquery-placeholder/jquery.placeholder.min.js"></script>
+
+  <!-- Scripts -->
+{#  <script src="{{ STATIC_URL }}js/core.min.js"></script>#}
+  <script src="{{ STATIC_URL }}js/Site.min.js"></script>
+
+  <script src="{{ STATIC_URL }}js/Plugin/menu.min.js"></script>
+  <script src="{{ STATIC_URL }}js/Section/menubar.min.js"></script>
+{#  <script src="{{ STATIC_URL }}js/Plugin/gridmenu.min.js"></script>#}
+  <script src="{{ STATIC_URL }}js/Section/sidebar.min.js"></script>
+
+  <script src="{{ STATIC_URL }}js/Plugin/asscrollable.min.js"></script>
+  <script src="{{ STATIC_URL }}js/Plugin/animsition.min.js"></script>
+  <script src="{{ STATIC_URL }}js/Plugin/slidepanel.min.js"></script>
+  <script src="{{ STATIC_URL }}js/Plugin/switchery.min.js"></script>
+
+  <script src="{{ STATIC_URL }}js/Plugin/jquery-placeholder.min.js"></script>
+  <script src="{{ STATIC_URL }}js/Plugin/material.min.js"></script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="login">
+	<!-- Wrapper -->
+<div id="login">
+	<!-- Box -->
+	<div class="form-signin">
+    <div class="beta"></div>
+		<h3></h3>
+		<!-- Row -->
+		<div class="row-fluid row-merge">
+			<!-- Column -->
+			<div class="span12">
+				<div class="inner">
+                    {% if msg %}
+                         <div class="milo-notify error bottom-margin">
+                         Podany login i/lub hasło są nieprawidłowe.
+                         {% comment %}{{ msg }}{% endcomment %}
+                         </div>
+                    {% endif %}
+					<!-- Form -->
+{% block content %}
+{% endblock %}
+					<!-- // Form END -->
+				</div>
+			</div>
+			<!-- // Column END -->
+		</div>
+		<!-- // Row END -->
+	</div>
+	<!-- // Box END -->
+</div>
+<!-- // Wrapper END -->
+	<!-- JQuery -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery.min.js"></script>
+
+	<!-- JQueryUI -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery-ui/js/jquery-ui-1.9.2.custom.min.js"></script>
+
+
+
+
+	<!-- JQueryUI Touch Punch -->
+	<!-- small hack that enables the use of touch events on sites using the jQuery UI user interface library -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+	<!-- Modernizr -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/modernizr.js"></script>
+
+	<!-- Bootstrap -->
+	<script src="{{ STATIC_URL }}common/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- SlimScroll Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/jquery-slimScroll/jquery.slimscroll.min.js"></script>
+
+	<!-- Common Demo Script -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/demo/common.js?1369414386"></script>
+
+	<!-- Holder Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/holder/holder.js"></script>
+
+	<!-- Uniform Forms Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/forms/pixelmatrix-uniform/jquery.uniform.min.js"></script>
+
+	<!-- PrettyPhoto -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/gallery/prettyphoto/js/jquery.prettyPhoto.js"></script>
+
+	<!-- Global -->
+	<script>
+	var basePath = '{{ STATIC_URL }}common/';
+	</script>
+
+
+
+</body>
+</html>

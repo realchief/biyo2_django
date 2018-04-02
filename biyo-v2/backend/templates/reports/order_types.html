@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load humanize %}
+
+{% block content %}
+
+
+<ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reports_home' %}">{% trans "Reports" %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Order Types" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Reports" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+    <div class="row">
+<div class="offset1">
+{% with 'order_types' as active %}
+        {% include "reports/includes/filter.html" %}
+{% endwith %}
+
+                {% if not open_orders.total and  not held_orders.total and not closed_orders.total and not cancelled_orders.total and not refunded_orders.total%}
+                {% include 'reports/includes/empty.html' %}
+                {% else %}
+
+
+                <table class="table">
+					<tbody>
+						<tr>
+							<td>Total Open Orders: ${{open_orders.total|default:"0.00"|floatformat:2}}</td>
+							<td>Number of Open Orders: #{{open_orders.number|default_if_none:"0"}}</td>
+						</tr>
+						<tr>
+							<td>Total Held Orders: ${{held_orders.total|default:"0.00"|floatformat:2}}</td>
+							<td>Number of Held Orders: #{{held_orders.number|default_if_none:"0"}}</td>
+						</tr>
+						<tr>
+							<td>Total Closed Orders: ${{closed_orders.total|default:"0.00"|floatformat:2}}</td>
+							<td>Number of Closed Orders: #{{closed_orders.number|default_if_none:"0"}}</td>
+						</tr>
+						<tr>
+							<td>Total Cancelled Orders: ${{cancelled_orders.total|default:"0.00"|floatformat:2}}</td>
+							<td>Number of Cancelled Orders: #{{cancelled_orders.number|default_if_none:"0"}}</td>
+						</tr>
+						<tr>
+							<td>Total Returned Orders: ${{refunded_orders.total|default:"0.00"|floatformat:2}}</td>
+							<td>Number of Returned Orders: #{{refunded_orders.number|default_if_none:"0"}}</td>
+						</tr>
+					</tbody>
+                </table>
+                {% endif %}
+            </div>
+
+        </div>
+    <div class="innerLR">
+    </div>
+
+{% endblock %}

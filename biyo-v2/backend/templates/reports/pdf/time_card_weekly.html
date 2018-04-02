@@ -1,0 +1,286 @@
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Time Card Weekly report DETAIL</title>
+    <style>
+        @page {
+            size: letter landscape;
+            @frame header {
+                -pdf-frame-content: header;
+                bottom: 6cm;
+            }
+            @frame qmiddle {
+                -pdf-frame-content: qmiddle; 
+                top: 100px;
+                /*margin-left: 1cm; */
+                /*margin-right: 1cm;*/
+                /*height:11cm;    */
+            }
+        }
+
+        .text-nowrap, td {
+          white-space:nowrap;
+        }
+
+        .time_card_weekly .employee-name {
+          font-size: 16px;
+          font-weight: bold;
+          /*padding-top: 50px !important;*/
+        }
+
+        .time_card_weekly, table.middle {
+            padding-top: 6cm;
+        }
+
+        .employee-card {
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+        * {
+            text-shadow: none !important;
+            color: #000 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            margin: 0px;
+          }
+          pre,
+          blockquote {
+            border: 1px solid #999;
+            page-break-inside: avoid;
+          }
+          thead {
+            display: table-header-group;
+          }
+          tr,
+          img {
+            page-break-inside: avoid;
+          }
+          img {
+            max-width: 100% !important;
+          }
+          p,
+          h2,
+          h3 {
+            orphans: 3;
+            widows: 3;
+          }
+          h2,
+          h3 {
+            page-break-after: avoid;
+          }
+
+        body {
+          margin: 0;
+          font-family: Verdana, Helvetica, Arial, sans-serif;
+          font-size: 16px;
+          line-height: 20px;
+          color: #333333;
+          background-color: #ffffff;
+        }
+
+        small {
+          font-size: 65%;
+        }
+        strong, .strong {
+          font-weight: bold;
+        }
+        em {
+          font-style: italic;
+        }
+        cite {
+          font-style: normal;
+        }
+
+        .text-left {
+          text-align: left;
+        }
+        .text-right {
+          text-align: right;
+        }
+        .text-center {
+          text-align: center;
+        }
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          margin: 10px 0;
+          font-family: inherit;
+          font-weight: bold;
+          line-height: 20px;
+          color: inherit;
+          text-rendering: optimizelegibility;
+        }
+        h1 small,
+        h2 small,
+        h3 small,
+        h4 small,
+        h5 small,
+        h6 small {
+          font-weight: normal;
+          line-height: 1;
+          color: #999999;
+        }
+        h1,
+        h2,
+        h3 {
+          line-height: 40px;
+        }
+        h1 {
+          font-size: 38.5px;
+        }
+        h2 {
+          font-size: 31.5px;
+        }
+        h3 {
+          font-size: 24.5px;
+        }
+        h4 {
+          font-size: 17.5px;
+        }
+        h5 {
+          font-size: 14px;
+        }
+        h6 {
+          font-size: 11.9px;
+        }
+        h1 small {
+          font-size: 24.5px;
+        }
+        h2 small {
+          font-size: 17.5px;
+        }
+        h3 small {
+          font-size: 14px;
+        }
+        h4 small {
+          font-size: 14px;
+        }
+        table {
+          max-width: 100%;
+          background-color: transparent;
+          /*border-collapse: collapse;*/
+          border-spacing: 0;
+        }
+        .employee-card table  {font-size: 12px;}
+        .table {
+          width: 100%;
+          /*margin-bottom: 20px;*/
+        }
+        .table th,
+        .table td {
+          /*padding: 1px 0px 1px 0px;*/
+          padding-top: 3px;
+          margin-top: 3px;
+        /*  padding-top: 3px;
+          padding-bottom: 1px;
+          padding-right: 0px;*/
+          line-height: 20px;
+          text-align: center;
+          vertical-align: middle;
+          /*border-top: 1px solid #dddddd;*/
+        }
+        .table th {
+          font-weight: bold;
+        }
+        .table thead th {
+          vertical-align: middle;
+        }
+        .table caption + thead tr:first-child th,
+        .table caption + thead tr:first-child td,
+        .table colgroup + thead tr:first-child th,
+        .table colgroup + thead tr:first-child td,
+        .table thead:first-child tr:first-child th,
+        .table thead:first-child tr:first-child td {
+          border-top: 0;
+        }
+        .table tbody + tbody {
+          border-top: 2px solid #dddddd;
+        }
+        .table .table {
+          background-color: #ffffff;
+        }
+        .table-condensed th,
+        .table-condensed td {
+          padding: 4px 5px;
+        }
+        .table-bordered {
+          border: 1px solid #dddddd;
+          border-collapse: separate;
+          border-left: 0;
+          -webkit-border-radius: 4px;
+          -moz-border-radius: 4px;
+          border-radius: 4px;
+        }
+        .table-bordered th,
+        .table-bordered td {
+          border-left: 1px solid #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+    <br/>
+    <h1 class="text-center">Time Card Weekly report DETAIL</h1>
+    <h4 class="text-center">{{ start|date:'m/d/Y' }} - {{ end|date:'m/d/Y' }} </h4>
+    </div>
+    <div>
+        <br/><br/><br/><br/><br/>
+    </div>
+    <table class="table span12 time_card_weekly" id="middle">
+        {% for employee in employees %}
+            {% if forloop.counter0|divisibleby:wrap_at %}
+                {% if not forloop.first %}
+            </tr>
+                    {% if forloop.counter0|divisibleby:wrap_at_page %}
+    </table>
+    <pdf:nextpage />
+    <div>
+        <br/><br/><br/><br/><br/>
+    </div>
+    <table class="table span12 time_card_weekly" xid="middle">
+                    {% endif %}
+                {% endif %}
+            <tr>
+            {% endif %}
+                <td class="employee-card">
+                {% if employee != '-EMPTY-' %}
+                    <span class="employee-name"><br/>{{ employee.name }}</span>
+                    <table class="table table-bordered text-center">
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>In</td>
+                            <td>Out</td>
+                            <td>Hours</td>
+                        </tr>
+                        {% for r in employee.report %}
+                        <tr class="text-nowrap">
+                            <td class="text-nowrap"><small>{{ r.date|date:'D' }}</small>&nbsp;{{ r.date|date:'m/d' }}</td>
+                            <td>{{ r.tin|date:'h:i' }}&nbsp;<small>{{ r.tin|date:'A' }}</small></td>
+                            <td>{{ r.tout|date:'h:i' }}&nbsp;<small>{{ r.tout|date:'A' }}</small></td>
+                            <td>{{ r.hours|floatformat:'2' }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="strong">
+                            <td>Total</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>{{ employee.total|floatformat:'2' }}</td>
+                        </tr>
+                    </table>
+                {% else %}
+                &nbsp;
+                {% endif %}
+                </td>
+            {% if forloop.last %}
+            </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+</body>
+</html>

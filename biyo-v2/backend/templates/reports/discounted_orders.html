@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load tz %}
+{% block content %}
+
+
+<ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reports_home' %}">{% trans "Reports" %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Discount summary" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Reports" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+        <div class="row">
+            <div class="span4">
+                <ul>
+
+                </ul>
+            </div>
+
+            <div class="separator bottom"></div>
+			<div class="span12">
+				{% include "reports/includes/filter.html" %}
+                <table class="table">
+                     <thead>
+                        <tr>
+                            <th>{% trans "Deduction Type" %}</th>
+                            <th>{% trans "Order" %}</th>
+                            <th>{% trans "Employee" %}</th>
+                            <th>{% trans "Discounted" %}</th>
+                            <th>{% trans "Close date" %}</th>
+                            <th>{% trans "Terminal #" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in orders %}
+                            <tr>
+                                <td>{% ifequal order.discount_orders Null %} Item  {% else %}Order{% endifequal %}</td>
+                                <td>
+                                    <a href="{% url 'order-detail' pk=order.pk %}">{% trans 'Order' %} #{{order.id}} </a>
+                                </td>
+                                <td>{{ order.emp_close }}</td>
+
+                                <td>(${{ order.discount_total|floatformat:2|default:"0.00"|intcomma}})</td>
+                                <td>{{ order.close_date|timezone:tz|date:"m-d-Y h:i A" }}</td>
+                            <td><a href="{% url 'terminal_detail' pk=order.terminal_id %}">{{ order.terminal_id }}</a> </td>
+                            </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    <div class="innerLR">
+    </div>
+
+{% endblock %}

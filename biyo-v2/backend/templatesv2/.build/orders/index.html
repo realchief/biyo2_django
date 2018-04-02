@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html class="no-js css-menubar" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>Biyo Point of Sale | Dashboard</title>
+
+    <link rel="apple-touch-icon" href="/static/images/apple-touch-icon.png">
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-extend.min.css">
+    <link rel="stylesheet" href="/static/css/site.min.css">
+    <link rel="stylesheet" href="/static/vendor/bootstrap-datepicker/bootstrap-datepicker.css">
+
+    <!-- Plugins -->
+    <link rel="stylesheet" href="/static/vendor/animsition/animsition.css">
+    <link rel="stylesheet" href="/static/vendor/asscrollable/asScrollable.css">
+    <link rel="stylesheet" href="/static/vendor/switchery/switchery.css">
+    <link rel="stylesheet" href="/static/vendor/intro-js/introjs.css">
+    <link rel="stylesheet" href="/static/vendor/slidepanel/slidePanel.css">
+    <link rel="stylesheet" href="/static/vendor/flag-icon-css/flag-icon.css">
+    <link rel="stylesheet" href="/static/vendor/waves/waves.css">
+    <link rel="stylesheet" href="/static/vendor/chartist/chartist.css">
+    <link rel="stylesheet" href="/static/vendor/jvectormap/jquery-jvectormap.css">
+    <link rel="stylesheet" href="/static/vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.css">
+    <link rel="stylesheet" href="/static/examples/css/dashboard/v1.css">
+
+    <!-- Page Style -->
+
+     
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="/static/fonts/material-design/material-design.min.css">
+    <link rel="stylesheet" href="/static/fonts/brand-icons/brand-icons.min.css">
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+    <!--[if lt IE 9]>
+          <script src="/static/vendor/html5shiv/html5shiv.min.js"></script>
+          <![endif]-->
+    <!--[if lt IE 10]>
+          <script src="/static/vendor/media-match/media.match.min.js"></script>
+          <script src="/static/vendor/respond/respond.min.js"></script>
+          <![endif]-->
+    <!-- Scripts -->
+    <script src="/static/vendor/breakpoints/breakpoints.js"></script>
+    <script>
+        Breakpoints();
+    </script>
+</head>
+
+
+
+<body class="animsition site-navbar-small dashboard">
+    <!--[if lt IE 8]>
+              <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+          <![endif]-->
+    <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega navbar-inverse" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggler hamburger hamburger-close navbar-toggler-left hided" data-toggle="menubar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="hamburger-bar"></span>
+            </button>
+            <button type="button" class="navbar-toggler collapsed" data-target="#site-navbar-collapse" data-toggle="collapse">
+              <i class="icon md-more" aria-hidden="true"></i>
+            </button>
+            <a class="navbar-brand navbar-brand-center" href="/index.html">
+                <img class="navbar-brand-logo navbar-brand-logo-normal" src="/static/images/biyo-logo_white.svg" title="Biyo">
+                <img class="navbar-brand-logo navbar-brand-logo-special" src="/static/images/biyo-logo_white.svg" title="Biyo">
+            </a>
+
+        </div>
+        <div class="navbar-container container-fluid">
+            <!-- Navbar Collapse -->
+            <div class="collapse navbar-collapse navbar-collapse-toolbar" id="site-navbar-collapse">
+                <!-- Navbar Toolbar -->
+                <ul class="nav navbar-toolbar">
+                    <li class="nav-item hidden-float" id="toggleMenubar">
+                        <a class="nav-link" data-toggle="menubar" href="#" role="button">
+                            <i class="icon hamburger hamburger-arrow-left">
+                        <span class="sr-only">Toggle menubar</span>
+                        <span class="hamburger-bar"></span>
+                      </i>
+                        </a>
+                    </li>
+                    <li class="nav-item hidden-sm-down" id="toggleFullscreen">
+                        <a class="nav-link icon icon-fullscreen" data-toggle="fullscreen" href="#" role="button">
+                            <span class="sr-only">Toggle fullscreen</span>
+                        </a>
+                    </li>
+
+
+                </ul>
+                <!-- End Navbar Toolbar -->
+                <!-- Navbar Toolbar Right -->
+                <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" data-animation="scale-up" aria-expanded="false" role="button">
+                            <span class="flag-icon flag-icon-us"></span>
+                        </a>
+                        <div class="dropdown-menu" role="menu">
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                                <span class="flag-icon flag-icon-gb"></span> English</a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                                <span class="flag-icon flag-icon-fr"></span> Français</a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                                <span class="flag-icon flag-icon-es"></span> Español</a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                                <span class="flag-icon flag-icon-de"></span> Deutsche</a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                                <span class="flag-icon flag-icon-tr"></span> Türkçe</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" title="Notifications" aria-expanded="false" data-animation="scale-up" role="button">
+                            <i class="icon md-notifications" aria-hidden="true"></i>
+                            <span class="tag tag-pill tag-danger up">5</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-media" role="menu">
+                            <div class="dropdown-menu-header">
+                                <h5>NOTIFICATIONS</h5>
+                                <span class="tag tag-round tag-danger">New 5</span>
+                            </div>
+                            <div class="list-group">
+                                <div data-role="container">
+                                    <div data-role="content">
+                                        <a class="list-group-item dropdown-item" href="javascript:void(0)" role="menuitem">
+                                            <div class="media">
+                                                <div class="media-left p-r-10">
+                                                    <i class="icon md-receipt bg-red-600 white icon-circle" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">A new order has been placed</h6>
+                                                    <time class="media-meta" datetime="2016-06-12T20:50:48+08:00">5 hours ago</time>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="list-group-item dropdown-item" href="javascript:void(0)" role="menuitem">
+                                            <div class="media">
+                                                <div class="media-left p-r-10">
+                                                    <i class="icon md-account bg-green-600 white icon-circle" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">Completed the task</h6>
+                                                    <time class="media-meta" datetime="2016-06-11T18:29:20+08:00">2 days ago</time>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="list-group-item dropdown-item" href="javascript:void(0)" role="menuitem">
+                                            <div class="media">
+                                                <div class="media-left p-r-10">
+                                                    <i class="icon md-settings bg-red-600 white icon-circle" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">Settings updated</h6>
+                                                    <time class="media-meta" datetime="2016-06-11T14:05:00+08:00">2 days ago</time>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="list-group-item dropdown-item" href="javascript:void(0)" role="menuitem">
+                                            <div class="media">
+                                                <div class="media-left p-r-10">
+                                                    <i class="icon md-calendar bg-blue-600 white icon-circle" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">Event started</h6>
+                                                    <time class="media-meta" datetime="2016-06-10T13:50:18+08:00">3 days ago</time>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="list-group-item dropdown-item" href="javascript:void(0)" role="menuitem">
+                                            <div class="media">
+                                                <div class="media-left p-r-10">
+                                                    <i class="icon md-comment bg-orange-600 white icon-circle" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">Message received</h6>
+                                                    <time class="media-meta" datetime="2016-06-10T12:34:48+08:00">3 days ago</time>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-menu-footer">
+                                <a class="dropdown-menu-footer-btn" href="javascript:void(0)" role="button">
+                                    <i class="icon md-settings" aria-hidden="true"></i>
+                                </a>
+                                <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                          All notifications
+                        </a>
+                            </div>
+                        </div>
+                    </li>
+
+
+
+
+
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link navbar-avatar" data-toggle="dropdown" href="#" aria-expanded="false" data-animation="scale-up" role="button">
+                            <span class="avatar avatar-online">
+                      <img src="/static/portraits/5.jpg" alt="...">
+                      <i></i>
+                    </span>
+                        </a>
+                        <div class="dropdown-menu" role="menu">
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon md-account" aria-hidden="true"></i> Profile</a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon md-card" aria-hidden="true"></i> Billing</a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon md-settings" aria-hidden="true"></i> Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon md-power" aria-hidden="true"></i> Logout</a>
+                        </div>
+                    </li>
+
+                </ul>
+                <!-- End Navbar Toolbar Right -->
+            </div>
+            <!-- End Navbar Collapse -->
+            <!-- Site Navbar Seach -->
+            <div class="collapse navbar-search-overlap" id="site-navbar-search">
+                <form role="search">
+                    <div class="form-group">
+                        <div class="input-search">
+                            <i class="input-search-icon md-search" aria-hidden="true"></i>
+                            <input type="text" class="form-control" name="site-search" placeholder="Search...">
+                            <button type="button" class="input-search-close icon md-close" data-target="#site-navbar-search" data-toggle="collapse" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- End Site Navbar Seach -->
+        </div>
+    </nav>
+    <div class="site-menubar hidden-print">
+        <div class="site-menubar-body">
+            <div>
+                <div>
+                    <ul class="site-menu" data-plugin="menu">
+                        <li class="site-menu-category">Sales Performance</li>
+                        <li class="dropdown site-menu-item has-sub ">
+                            <a data-toggle="dropdown" href="index.html" data-dropdown-toggle="false">
+                                <i class="site-menu-icon md-view-compact" aria-hidden="true"></i>
+                                <span class="site-menu-title">Dashboard</span>
+                            </a>
+
+                        </li>
+                        <li class="dropdown site-menu-item has-sub ">
+                            <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
+                                <i class="site-menu-icon md-receipt" aria-hidden="true"></i>
+                                <span class="site-menu-title">Orders</span>
+                                <span class="site-menu-arrow"></span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="site-menu-scroll-wrap is-list">
+                                    <div>
+                                        <div>
+                                            <ul class="site-menu-sub site-menu-normal-list">
+                                                <li class="site-menu-item ">
+                                                    <a class="animsition-link" href="/orders">
+                                                        <span class="site-menu-title">Sales Orders</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="widgets/dat">
+                                                        <span class="site-menu-title">Purchase Orders</span>
+                                                    </a>
+                                                </li>
+
+
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </li>
+
+                        <li class="dropdown site-menu-item has-sub ">
+                            <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
+                                <i class="site-menu-icon md-chart" aria-hidden="true"></i>
+                                <span class="site-menu-title">Reports</span>
+                                <span class="site-menu-arrow"></span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="site-menu-scroll-wrap is-list">
+                                    <div>
+                                        <div>
+                                            <ul class="site-menu-sub site-menu-normal-list">
+
+                                                <h6 class="dropdown-header text-white">Product Reports</h6>
+
+                                                <li class="site-menu-item ">
+                                                    <a class="animsition-link" href="/reports/item_sales_summary">
+                                                        <span class="site-menu-title">Item Sales</span>
+                                                    </a>
+                                                </li>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/category_summary">
+                                                        <span class="site-menu-title">Category Summary</span>
+                                                    </a>
+                                                </li>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/price_adjustments">
+                                                        <span class="site-menu-title">Price Adjustments</span>
+                                                    </a>
+                                                </li>
+
+
+
+                                                <h6 class="dropdown-header text-white">Sales Reports</h6>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/sales_summary">
+                                                        <span class="site-menu-title">Sales Summary</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/hourly_sales">
+                                                        <span class="site-menu-title">Hourly Sales</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/shifts_payouts">
+                                                        <span class="site-menu-title">Shifts & Payouts</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/discounts_summary">
+                                                        <span class="site-menu-title">Discount Summary</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/order_gross_profit">
+                                                        <span class="site-menu-title">Order Gross Profit</span>
+                                                    </a>
+                                                </li>
+
+
+
+                                                <h6 class="dropdown-header text-white">User Reports</h6>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/employee_hour_summary">
+                                                        <span class="site-menu-title">Employee Hours</span>
+                                                    </a>
+                                                </li>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/time_card_weekly">
+                                                        <span class="site-menu-title">Time Card Weekly</span>
+                                                    </a>
+                                                </li>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/top_customers">
+                                                        <span class="site-menu-title">Top Customers</span>
+                                                    </a>
+                                                </li>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/customer_account_balance">
+                                                        <span class="site-menu-title">Customer Account Balance</span>
+                                                    </a>
+                                                </li>
+
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+
+                        <li class="site-menu-category">Management</li>
+                        <li class="dropdown site-menu-item has-sub">
+                            <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
+                                <i class="site-menu-icon md-widgets" aria-hidden="true"></i>
+                                <span class="site-menu-title">Products</span>
+                                <span class="site-menu-arrow"></span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="site-menu-scroll-wrap is-list">
+                                    <div>
+                                        <div>
+                                            <ul class="site-menu-sub site-menu-normal-list">
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/category">
+                                                        <span class="site-menu-title">Categories</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/product">
+                                                        <span class="site-menu-title">Products</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/modifiergroup">
+                                                        <span class="site-menu-title">Modifiers</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/discount">
+                                                        <span class="site-menu-title">Discounts</span>
+                                                    </a>
+                                                </li>
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+
+                        <li class="dropdown site-menu-item has-sub">
+                            <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
+                                <i class="site-menu-icon md-accounts" aria-hidden="true"></i>
+                                <span class="site-menu-title">Users</span>
+                                <span class="site-menu-arrow"></span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="site-menu-scroll-wrap is-list">
+                                    <div>
+                                        <div>
+                                            <ul class="site-menu-sub site-menu-normal-list">
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/employee">
+                                                        <span class="site-menu-title">Employees</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/customer">
+                                                        <span class="site-menu-title">Customers</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/supplier">
+                                                        <span class="site-menu-title">Suppliers</span>
+                                                    </a>
+                                                </li>
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="dropdown site-menu-item has-sub">
+                            <a data-toggle="dropdown" href="/display" data-dropdown-toggle="false">
+                                <i class="site-menu-icon md-image-alt" aria-hidden="true"></i>
+                                <span class="site-menu-title text hidden-md-down">Digital Displays</span>
+                                <span class="site-menu-arrow"></span>
+                            </a>
+
+                        </li>
+                        <li class="dropdown site-menu-item has-sub">
+                            <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
+                                <i class="site-menu-icon md-settings-square" aria-hidden="true"></i>
+                                <span class="site-menu-title text hidden-md-down">Configure</span>
+                                <span class="site-menu-arrow"></span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="site-menu-scroll-wrap is-list">
+                                    <div>
+                                        <div>
+                                            <ul class="site-menu-sub site-menu-normal-list">
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/store">
+                                                        <span class="site-menu-title">General</span>
+                                                    </a>
+                                                </li>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/taxrate">
+                                                        <span class="site-menu-title">Sales Taxes</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reward">
+                                                        <span class="site-menu-title">Rewards & Loyalty</span>
+                                                    </a>
+                                                </li>
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-content container-fluid">
+
+            
+
+
+
+  <div class="row clearfix">
+                <div class="col-sm-12 col-md-3">
+                  <h1 class="page-title">Sales Orders</h1>
+                </div>
+                <div class="hidden-md-up" style="height: 10px;">
+                </div>
+                <div class="col-sm-12 col-md-5">
+                  <div class="input-daterange" data-plugin="datepicker">
+                    <div class="input-group">
+                      <span class="input-group-addon">
+                        <i class="icon md-calendar" aria-hidden="true"></i>
+                      </span>
+                      <input type="text" class="form-control" name="start" placeholder="Start Date">
+                    </div>
+                    <div class="input-group">
+                      <span class="input-group-addon">to</span>
+                      <input type="text" class="form-control" name="end" placeholder="End Date">
+                    </div>
+                  </div>
+                </div>
+                <div class="hidden-md-up" style="height: 50px;">
+                </div>
+                <div class="col-sm-12 col-md-4">
+
+                  <div class="pull-md-right" aria-label="Add Order" >
+                    <button type="button" class="btn btn-success waves-effect"><i class="icon md-plus" aria-hidden="true"></i> New Order</button>
+                  </div>
+
+                </div>
+              </div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+<div class="panel-body">
+<div class="row">
+  <div class="col-xs-12 col-md-6">
+    <div class="m-b-15">
+      <!-- <button id="addToTable" class="btn btn-primary" type="button">
+        <i class="icon md-plus" aria-hidden="true"></i> Add row
+      </button> -->
+    </div>
+  </div>
+</div>
+<table class="table table-hover table-striped" cellspacing="0" id="exampleFixedHeader">
+  <thead>
+    <tr>
+      <th>Order #</th>
+      <th>Date</th>
+      <th>Sold By</th>
+      <th>Register</th>
+      <th>Customer</th>
+      <th>Status</th>
+      <th>Total</th>
+
+      <!-- <th>Total</th> -->
+    </tr>
+
+<!-- <tr>
+<td rowspan="1" colspan="1"><select class="form-control w-full"><option value=""></option><option value="AdaHoppe">AdaHoppe</option><option value="Adrianna">Adrianna</option><option value="Afton">Afton</option><option value="Alisa">Alisa</option><option value="August">August</option><option value="Bret">Bret</option><option value="Ceasar">Ceasar</option><option value="Chester">Chester</option><option value="Citlalli">Citlalli</option><option value="Clementina">Clementina</option><option value="Coby">Coby</option><option value="Colin">Colin</option><option value="Davin">Davin</option><option value="Deckow">Deckow</option><option value="Elliottr">Elliottr</option><option value="Emerson">Emerson</option><option value="Gerhard">Gerhard</option><option value="Gerhold">Gerhold</option><option value="Gunnar">Gunnar</option><option value="Heath">Heath</option><option value="Herta">Herta</option><option value="Hubeen">Hubeen</option><option value="Jakubowski">Jakubowski</option><option value="Jennie">Jennie</option><option value="Johanna">Johanna</option><option value="Johnathan">Johnathan</option><option value="Jolin">Jolin</option><option value="Josephine">Josephine</option><option value="Kate">Kate</option><option value="Kreiger">Kreiger</option><option value="Lacey">Lacey</option><option value="Marjorie">Marjorie</option><option value="Mckenna">Mckenna</option><option value="Melany">Melany</option><option value="Monica">Monica</option><option value="Monique">Monique</option><option value="Mueller">Mueller</option><option value="Nicolas">Nicolas</option><option value="Raina">Raina</option><option value="Ruben">Ruben</option><option value="Sammie">Sammie</option><option value="Shanel">Shanel</option><option value="Simonis">Simonis</option><option value="Terrance">Terrance</option><option value="Thea">Thea</option><option value="Torrey">Torrey</option><option value="Treva">Treva</option><option value="Wilhelmine">Wilhelmine</option><option value="Yasmine">Yasmine</option></select></td>
+<td
+  rowspan="1" colspan="1"><select class="form-control w-full"><option value=""></option><option value="0039 Heath Plain">0039 Heath Plain</option><option value="02868 Cronin Tunnel">02868 Cronin Tunnel</option><option value="054 O'Hara Union">054 O'Hara Union</option><option value="0778 Elvis Spurs">0778 Elvis Spurs</option><option value="083 Kshlerin Forest">083 Kshlerin Forest</option><option value="098 Noel Way">098 Noel Way</option><option value="1100 Steve Pines">1100 Steve Pines</option><option value="111 Hershel Stream">111 Hershel Stream</option><option value="139 Ebert Freeway">139 Ebert Freeway</option><option value="14095 Kling Gateway">14095 Kling Gateway</option><option value="1568 Richmond Bypass">1568 Richmond Bypass</option><option value="1998 Webster Fords">1998 Webster Fords</option><option value="26114 Narciso Lodge">26114 Narciso Lodge</option><option value="2795 Clement Ridges">2795 Clement Ridges</option><option value="282 Susana Heights">282 Susana Heights</option><option value="308 Octavia Roads">308 Octavia Roads</option><option value="314 Aurore Canyon">314 Aurore Canyon</option><option value="36238 Satterfield Avenue">36238 Satterfield Avenue</option><option value="3658 Richie Street">3658 Richie Street</option><option value="39 Hirthe Squares">39 Hirthe Squares</option><option value="415 Corkery Walks">415 Corkery Walks</option><option value="4301 Trever Radial">4301 Trever Radial</option><option value="46406 Powlowski Common">46406 Powlowski Common</option><option value="50922 Kiara Square">50922 Kiara Square</option><option value="53700 Pagac Lodge">53700 Pagac Lodge</option><option value="5516 Adolfo Rode">5516 Adolfo Rode</option><option value="57724 Ernser Crossroad">57724 Ernser Crossroad</option><option value="5957 Hagenes Falls">5957 Hagenes Falls</option><option value="63204 Hegmann Keys">63204 Hegmann Keys</option><option value="637 Paucek Mountain">637 Paucek Mountain</option><option value="6440 Moen Loop">6440 Moen Loop</option><option value="64838 D'Amore Cove">64838 D'Amore Cove</option><option value="67284 Kreiger Freeway">67284 Kreiger Freeway</option><option value="6778 Howe Route">6778 Howe Route</option><option value="69842 Peyton Viaduct">69842 Peyton Viaduct</option><option value="731 Stiedemann Crossing">731 Stiedemann Crossing</option><option value="7491 Bednar Gardens">7491 Bednar Gardens</option><option value="75151 Kshlerin Square">75151 Kshlerin Square</option><option value="755 Greyson Key">755 Greyson Key</option><option value="7579 Santa Forest">7579 Santa Forest</option><option value="760 Hickle Causeway">760 Hickle Causeway</option><option value="784 Adriel Radial">784 Adriel Radial</option><option value="80391 Maxwell Parks">80391 Maxwell Parks</option><option value="828 Cathy Streets">828 Cathy Streets</option><option value="8417 Orion Parkway">8417 Orion Parkway</option><option value="8884 Jamel Pines">8884 Jamel Pines</option><option value="893 Mara Parkway">893 Mara Parkway</option><option value="92873 Barney Club">92873 Barney Club</option><option value="995 Lang Springs">995 Lang Springs</option></select></td>
+<td
+    rowspan="1" colspan="1"><select class="form-control w-full"><option value=""></option><option value="Anaishaven">Anaishaven</option><option value="Andresmouth">Andresmouth</option><option value="Antwanbury">Antwanbury</option><option value="Beckerhaven">Beckerhaven</option><option value="Beierview">Beierview</option><option value="Clintmouth">Clintmouth</option><option value="Cordellburgh">Cordellburgh</option><option value="Cristmouth">Cristmouth</option><option value="Dibbertfurt">Dibbertfurt</option><option value="East Eunaton">East Eunaton</option><option value="East Jazmyne">East Jazmyne</option><option value="East Opal">East Opal</option><option value="East Vern">East Vern</option><option value="Elmermouth">Elmermouth</option><option value="Harrisfurt">Harrisfurt</option><option value="Hermannborough">Hermannborough</option><option value="Howemouth">Howemouth</option><option value="Immanuelfort">Immanuelfort</option><option value="Jenningsbury">Jenningsbury</option><option value="Jordaneville">Jordaneville</option><option value="Kaneport">Kaneport</option><option value="Lake Augustineton">Lake Augustineton</option><option value="Lake Charity">Lake Charity</option><option value="Lake Esperanzamouth">Lake Esperanzamouth</option><option value="Lake Nickolasshire">Lake Nickolasshire</option><option value="Littelhaven">Littelhaven</option><option value="New Alexanderhaven">New Alexanderhaven</option><option value="New Isobelview">New Isobelview</option><option value="New Jerroldland">New Jerroldland</option><option value="North Elwynfurt">North Elwynfurt</option><option value="Port Edmund">Port Edmund</option><option value="Port Jaquelineburgh">Port Jaquelineburgh</option><option value="Port Lempi">Port Lempi</option><option value="Port Lucianoton">Port Lucianoton</option><option value="Rolfsonborough">Rolfsonborough</option><option value="Rossieville">Rossieville</option><option value="Ryleetown">Ryleetown</option><option value="Santinoland">Santinoland</option><option value="Schillerfort">Schillerfort</option><option value="South Geovannyburgh">South Geovannyburgh</option><option value="South Hershel">South Hershel</option><option value="South Travon">South Travon</option><option value="Stoltenbergside">Stoltenbergside</option><option value="Streichside">Streichside</option><option value="West Bentonhaven">West Bentonhaven</option><option value="West Lauryn">West Lauryn</option><option value="West Luraberg">West Luraberg</option><option value="West Sedrickstad">West Sedrickstad</option><option value="West Uriahville">West Uriahville</option></select></td>
+  <td
+      rowspan="1" colspan="1"></td>
+      <td
+          rowspan="1" colspan="1"></td>
+
+          <td
+              rowspan="1" colspan="1"></td>
+              <td
+                  rowspan="1" colspan="1"></td>
+
+
+    </tr> -->
+  </thead>
+  <tbody>
+    <tr>
+      <td>131245</td>
+      <td>30 Nov. '16 - 4:45 AM</td>
+      <td ><a href="#">Matt Saricicek</a></td>
+
+      <td >Main Register</td>
+      <td >-</td>
+
+      <td ><span class="tag  tag-warning w-50px">Hold</span></td>
+        <td >$ 14.99</td>
+    </tr>
+    <tr>
+      <td>131244</td>
+      <td>30 Nov. '16 - 4:44 AM</td>
+      <td ><a href="#">Matt Saricicek</a></td>
+
+      <td >Main Register</td>
+      <td >-</td>
+      <td ><span class="tag  tag-info w-50px">Open</span></td>
+      <td >$ 15.93</td>
+    </tr>
+    <tr >
+      <td>131243</td>
+      <td>30 Nov. '16 - 4:43 AM</td>
+      <td ><a href="#">Matt Saricicek</a></td>
+      <td >Main Register</td>
+      <td >Walk-In</td>
+      <td><span class="tag  tag-success w-50px">Closed</span></td>
+      <td >$ 24.59</td>
+    </tr>
+    <tr>
+      <td>131242</td>
+      <td>30 Nov. '16 - 4:42 AM</td>
+      <td ><a href="#">Matt Saricicek</a></td>
+      <td >Main Register</td>
+      <td >Walk-In</td>
+      <td ><span class="tag  tag-success w-50px">Closed</span></td>
+      <td >$ 54.39</td>
+    </tr>
+    <tr>
+      <td>131241</td>
+      <td>30 Nov. '16 - 4:40 AM</td>
+      <td ><a href="#">Matt Saricicek</a></td>
+
+      <td >Main Register</td>
+      <td >-</td>
+      <td ><span class="tag  tag-success w-50px">Closed</span></td>
+      <td >$ 54.34</td>
+    </tr>
+    <tr>
+      <td>131240</td>
+      <td>30 Nov. '16 - 4:39 AM</td>
+      <td ><a href="#">Matt Saricicek</a></td>
+
+      <td >Main Register</td>
+      <td ><a href="#">Robert Jackson</a></td>
+      <td ><span class="tag  tag-dark w-50px">Canceled</span></td>
+      <td >$ 24.93</td>
+    </tr>
+    <tr>
+      <td>131239</td>
+      <td>30 Nov. '16 - 4:38 AM</td>
+      <td ><a href="#">Matt Saricicek</a></td>
+
+      <td >Main Register</td>
+      <td >-</td>
+      <td ><span class="tag tag-danger w-50px">Refunded</span></td>
+      <td >$ 13.99</td>
+    </tr>
+    <tr>
+      <td>13112</td>
+      <td>30 Nov. '16 - 4:38 AM</td>
+      <td ><a href="#">Matt Saricicek</a></td>
+
+      <td >Main Register</td>
+      <td ><a href="#">Bobby J.</a></td>
+      <td ><span class="tag  tag-success w-50px">Closed</span></td>
+      <td >$ 14.93</td>
+    </tr>
+    <tr>
+      <td>13111</td>
+      <td>30 Nov. '16 - 4:38 AM</td>
+      <td ><a href="#">Matt Saricicek</a></td>
+
+      <td >Main Register</td>
+      <td ><a href="#">Aimann Rasheed</a></td>
+      <td ><span class="tag  tag-success w-50px">Closed</span></td>
+      <td >$ 10.93</td>
+    </tr>
+    <tr>
+      <td>13110</td>
+      <td>30 Nov. '16 - 4:35 AM</td>
+      <td ><a href="#">Matt Saricicek</a></td>
+
+      <td >Main Register</td>
+      <td >-</td>
+      <td ><span class="tag  tag-success w-50px">Closed</span></td>
+      <td >$ 5.43</td>
+    </tr>
+
+
+  </tbody>
+</table>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+    <!-- Footer Start -->
+    <footer class="site-footer">
+        <div class="site-footer-legal">© 2017 <a href="http://biyopos.com">Biyo LLC.,</a></div>
+        <div class="site-footer-right">
+            Made with <i class="red-600 icon md-favorite"></i></a>
+        </div>
+    </footer>
+    <!-- Footer End -->
+
+
+    <!-- Core  -->
+    <script src="/static/vendor/babel-external-helpers/babel-external-helpers.js"></script>
+    <script src="/static/vendor/jquery/jquery.js"></script>
+    <script src="/static/vendor/tether/tether.js"></script>
+    <script src="/static/vendor/bootstrap/bootstrap.js"></script>
+    <script src="/static/vendor/animsition/animsition.js"></script>
+    <script src="/static/vendor/mousewheel/jquery.mousewheel.js"></script>
+    <script src="/static/vendor/asscrollbar/jquery-asScrollbar.js"></script>
+    <script src="/static/vendor/asscrollable/jquery-asScrollable.js"></script>
+    <script src="/static/vendor/waves/waves.js"></script>
+    <!-- Plugins -->
+    <script src="/static/vendor/switchery/switchery.min.js"></script>
+    <script src="/static/vendor/intro-js/intro.js"></script>
+    <script src="/static/vendor/screenfull/screenfull.js"></script>
+    <script src="/static/vendor/slidepanel/jquery-slidePanel.js"></script>
+    <script src="/static/vendor/chartist/chartist.min.js"></script>
+    <script src="/static/vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.min.js"></script>
+    <script src="/static/vendor/jvectormap/jquery-jvectormap.min.js"></script>
+    <script src="/static/vendor/jvectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="/static/vendor/matchheight/jquery.matchHeight-min.js"></script>
+    <script src="/static/vendor/peity/jquery.peity.min.js"></script>
+    <!-- Scripts -->
+    <script src="/static/js/State.js"></script>
+    <script src="/static/js/Component.js"></script>
+    <script src="/static/js/Plugin.js"></script>
+    <script src="/static/js/Base.js"></script>
+    <script src="/static/js/Config.js"></script>
+    <script src="/static/js/Section/Menubar.js"></script>
+    <script src="/static/js/Section/Sidebar.js"></script>
+    <script src="/static/js/Section/PageAside.js"></script>
+    <script src="/static/js/Plugin/menu.js"></script>
+    <!-- Config -->
+    <script src="/static/js/config/colors.js"></script>
+    <script src="/static/js/config/tour.js"></script>
+    <script>
+        Config.set('assets', '/static');
+    </script>
+    <!-- Page -->
+    <script src="/static/js/Site.js"></script>
+    <script src="/static/vendor/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+    <script src="/static/js/Plugin/asscrollable.js"></script>
+    <script src="/static/js/Plugin/slidepanel.js"></script>
+    <script src="/static/js/Plugin/switchery.js"></script>
+    <script src="/static/js/Plugin/matchheight.js"></script>
+    <script src="/static/js/Plugin/jvectormap.js"></script>
+    <script src="/static/js/Plugin/peity.js"></script>
+    <script src="/static/examples/js/dashboard/v1.js"></script>
+     
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Category" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Categories" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+        <div class="btn-right">
+            <a class="btn"  href="{% url 'category_create' %}"><i class="icon-plus"></i> {% trans "Add category" %}</a>
+        </div>
+        <div class="separator bottom"></div>
+        <div class="widget">
+            <table class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+                <thead>
+                    <tr>
+                        <th>{% trans "Name" %}</th>
+                        <th>{% trans "Parent" %}</th>
+                        <th>{% trans "Active" %}</th>
+                        <th>{% trans "Action" %}</th>
+                    </tr>
+                </thead>
+                <tbody data-link="row" class="rowlink">
+                    {% for object in object_list %}
+                        <tr>
+                            <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="name" data-type="text" data-url="{% url 'category_update' pk=object.pk %}" data-title="Enter name">{{ object.name }}</span></td>
+                            <td>
+                                <span class="parents_data w300" data-pk="{{object.pk}}" data-name="parent" data-type="select" data-url="{% url 'category_update' pk=object.pk %}" data-value="{{object.parent.id}}" style="display: none;">
+                                    {{ form_class.parent }}
+                                </span>
+                            </td>
+							<td><span class="x-editable-select-bool" data-pk="{{object.pk}}" data-name="active" data-type="select" data-url="{% url 'category_update' pk=object.pk %}" data-title="Choose parent" data-value="{{object.active}}">{{ object.active }}</span></td>
+                            <td class="center">
+                                <a href="{% url 'category_update' pk=object.id %}">Edit</a>
+                                <span class="action-separator"></span>
+                                <a class="modal-delete" data-toggle="modal" data-target="#delete" data-name="{{object.name}}" data-id="{{object.id}}">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include "includes/paginator.html" %}
+        </div>
+    </div>
+	{% include "includes/modal_delete.html" %}
+	{% include "includes/modal_add.html" %}
+	<div id="form-hidden"style="display: none"><table><tbody>{{form.as_table}}</tbody></table></div>
+	<div id="colorpicker"style="display: none">
+			<select name="colorpicker">
+			  <option value="#e56d3b">Orange</option>
+			  <option value="#459b99">Aqua</option>
+			  <option value="#744a17">Brown</option>
+		  	  <option value="#009d13">Green</option>
+			  <option value="#00b2d8">Cyan</option>
+			  <option value="#8f1758">Maroon</option>
+			  <option value="#b93aab">Pink</option>
+			</select>
+		</div>
+{% endblock content %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/multiple-select/multiple-select.css"/>
+        <!-- TODO: Please, put this code in right place -->
+        <!-- NOTE: Fix correct displaying checkbox in categories multiple choice select box -->
+        <style>
+            .ms-drop > ul > li > label > input[type=radio] {
+                margin: 5px 5px 5px 0px;
+            }
+        </style>
+{% endblock %}
+
+{% block js %}
+	{{ block.super }}
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker-glyphicons.css"/>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}common/multiple-select/multiple-select.js"></script>
+	<script type="text/javascript">
+
+        $(document).ready(function(){
+            $('span.parents_data').each(function(index, el) {
+                var dataset = el.dataset;
+                var multiple_select = $(el).find('select');
+                multiple_select.val(eval(dataset.value));
+                multiple_select.multipleSelect({
+                    selectAll: false,
+                    single: true,
+                    onClick: function(opt) {
+                        var checkbox = opt.instance.$selectItems.filter(':input[value="'+opt.value+'"]');
+                        if (opt.instance.$selectItems.filter(':checked').length == 0) {
+                            checkbox.prop('checked', true);
+                            opt.instance.update();
+                            return;
+                        }
+                        var checked_value = $(opt.instance.$selectItems.filter(':checked')).val()
+
+                        $.post(dataset.url, {
+                            pk: dataset.pk,
+                            name: dataset.name,
+                            value: checked_value
+                        });
+                    }
+                });
+                $(el).show();
+            });
+        });
+
+		$('.x-editable').editable({send: 'always'});
+//		$('.x-editable-select').editable({
+//			source: '{% url  'get_prodcat_list' %}'
+//    	});
+		$('.x-editable-select-bool').editable({
+			source: [
+				{text: 'True', value: 'True'},
+				{text: 'False', value: 'False'}
+			]
+		});
+
+		$(document).on("click", ".modal-add", function (ev) {
+			ev.preventDefault();
+			$('#form-hidden tbody').appendTo($("#add-modal-body table"));
+			$('#add-modal-body form').attr('action', '/category/add/');
+			$("#btn-add").click(function() {
+				ev.preventDefault();
+				$('#add-form').submit();
+				$('#add').modal('hide');
+			})
+		});
+		$(document).on("click", ".modal-delete", function (ev) {
+			ev.preventDefault();
+			var id = $(this).data('id');
+			var text = $(this).data('name');
+			$(".modal-body p strong").html( text );
+			$('#delete').modal('show');
+			$('#btn-delete').click(function() {
+				var url = '/category/' + id + '/delete/';
+				$.post(url, function() {
+					location.href = '/category/'
+				})
+			})
+		});
+
+		var colors = {
+			'#e56d3b': 0,
+			'#459b99': 1,
+			'#744a17': 2,
+			'#009d13': 3,
+			'#00b2d8': 4,
+			'#8f1758': 5,
+			'#b93aab': 6
+		};
+
+		$("#id_color_0").prop("checked", true);
+		$('#colorpicker select').appendTo($('#id_color').parent());
+		$('select[name="colorpicker"]').simplecolorpicker({theme: 'glyphicons'})
+				.on('change', function(){
+					var val = $('select[name="colorpicker"]').val();
+					id = colors[val];
+					$("#id_color_" + id).prop("checked", true);
+				});
+
+	</script>
+{% endblock %}

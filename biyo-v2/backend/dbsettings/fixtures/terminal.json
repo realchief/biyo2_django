@@ -1,0 +1,16 @@
+[
+{
+    "fields": {
+        "name": "Dashboard",
+        "mac_id": "00:00:00:00:00:00",
+        "local_ip": null,
+        "receipt_printer": null,
+        "station_number": null,
+        "master": null,
+        "archived": 0,
+        "pole_display": null
+    },
+    "model": "products.terminal",
+    "pk": -1
+}
+]

@@ -1,0 +1,259 @@
+{% extends "base.html" %} {% block style %}
+
+{% load static %}
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+{% load panel_tags %}
+<link rel="stylesheet" href="{% static '/static/vendor/select2/select2.css' %}"> {% endblock %} {% block content %}
+<div class="row ">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">{% trans "Sales Summary" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-4">
+        {% with 'sales_summary' as active %}
+            {% include "reports/includes/filter.html" %}
+        {% endwith %}
+    </div>
+    <div class="hidden-md-up" style="height: 50px;">
+    </div>
+    <!-- <div class="col-sm-12 col-md-4">
+
+                  <div class="pull-md-right" aria-label="Add Order" >
+                    <button type="button" class="btn btn-success waves-effect"><i class="icon md-plus" aria-hidden="true"></i> New Order</button>
+                  </div>
+
+                </div> -->
+
+    <div class="hidden-sm-up" style="height: 10px;">
+    </div>
+    <div class="offset1">
+        <form method="post">
+            {% csrf_token %}
+            <div class="col-sm-12 col-md-2">
+                {{ form.terminal }}
+            </div>
+            <div class="col-sm-12 col-md-2">
+                {{ form.employees }}
+            </div>
+            <div class="col-sm-12 col-md-1">
+                <button class="btn btn-primary waves-effect" id="statusfilter">{% trans "Filter" %}</button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+        <!-- <div class="row hidden-print">
+  <div class="col-xs-12">
+    <div class="m-b-15">
+
+      <button  class="btn btn-primary" type="button">
+        <i class="icon md-chart" aria-hidden="true"></i> Item Sales
+      </button>
+
+      <button  class="btn btn-primary" type="button">
+        <i class="icon md-chart" aria-hidden="true"></i> Discount Summary
+      </button>
+
+      <button  class="btn btn-primary" type="button">
+        <i class="icon md-chart" aria-hidden="true"></i> Category Summary
+      </button>
+
+      <button  class="btn btn-primary" type="button">
+        <i class="icon md-chart" aria-hidden="true"></i> Hourly Summary
+      </button>
+
+      <button  class="btn btn-primary" type="button">
+        <i class="icon md-chart" aria-hidden="true"></i> Gross Order Profit
+      </button>
+
+      <button  class="btn btn-primary" type="button">
+        <i class="icon md-chart" aria-hidden="true"></i> Time Card Weekly
+      </button>
+
+      <button  class="btn btn-primary" type="button">
+        <i class="icon md-chart" aria-hidden="true"></i> Employee Hours
+      </button>
+
+    </div>
+  </div>
+</div> -->
+
+
+        <!---->
+        <div class="row">
+            <div class="col-sm-6">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Sales" %}</th>
+                            <th></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{% trans "Gross Sales" %}</td>
+                            <td class="text-xs-right">${{ gross_sales|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                        <tr>
+                            <td>{% trans "Discounts" %}</td>
+                            <td class="text-xs-right">(${{ discount_total|floatformat:2|default:"0.00"|intcomma }})</td>
+                        </tr>
+                        <tr>
+                            <td>{% trans "Tax" %}</td>
+                            <td class="text-xs-right">{{ tax_total|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                        <tr>
+                            <td>{% trans "Total Collected" %}</td>
+                            <td class="text-xs-right">${{ grand_total|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+
+
+                        <tr class="table-active">
+                            <th>{% trans "General Information" %}</th>
+                            <th></th>
+
+                        </tr>
+
+                        <tr>
+                            <td># {% trans "Transactions" %}</td>
+                            <td class="text-xs-right">{{  transactions|default:"0" }}</td>
+                        </tr>
+                        <tr>
+                            <td>{% trans "Average Order" %}</td>
+                            <td class="text-xs-right">${{ aver|floatformat:2|default:"0.00" }}</td>
+                        </tr>
+
+
+
+                        <tr class="alert-warning">
+                            <th>{% trans "Order Status" %}</th>
+                            <th class="text-xs-center">{% trans "Transactions" %}</th>
+
+                        </tr>
+
+                        <tr>
+                            <td>{% trans "Open" %}</td>
+                            <td class="text-xs-center">{{ open_orders|default:"0" }}</td>
+                        </tr>
+                        <tr>
+                            <td>{% trans "On Hold" %}</td>
+                            <td class="text-xs-center">{{ hold_orders|default:"0" }}</td>
+                        </tr>
+                        <tr>
+                            <td>{% trans "Closed" %}</td>
+                            <td class="text-xs-center">{{ close_orders|default:"0" }}</td>
+                        </tr>
+                        <tr>
+                            <td>{% trans "Canceled" %}</td>
+                            <td class="text-xs-center">{{ canceled_orders|default:"0" }}</td>
+                        </tr>
+                        <tr>
+                            <td>{% trans "Refunded" %}</td>
+                            <td class="text-xs-center">{{ refunded_orders|default:"0" }}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+
+
+            </div>
+
+
+            <div class="col-sm-6">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Payments" %}</th>
+                            <th></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="alert-success">
+                            <td>{% trans "Cash" %}</td>
+                            <td class="text-xs-right">${{ cash_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                        <tr>
+                            <td>{% trans "Account" %}</td>
+                            <td class="text-xs-right">${{ account_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                        <tr>
+                            <td>{% trans "Check" %}</td>
+                            <td class="text-xs-right">${{ check_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                        <tr class="alert-info">
+                            <td>{% trans "Credit Card" %}</td>
+                            <td class="text-xs-right">${{ total_card_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                        <tr>
+                            <td class="p-l-20">{% trans "Visa" %}</td>
+                            <td class="text-xs-right">${{ visa_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                        <tr>
+                            <td class="p-l-20">{% trans "Mastercard" %}</td>
+                            <td class="text-xs-right">${{ mastercard_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                        <tr>
+                            <td class="p-l-20">{% trans "American Express" %}</td>
+                            <td class="text-xs-right">${{ american_express_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                        <tr>
+                            <td class="p-l-20">{% trans "Discover" %}</td>
+                            <td class="text-xs-right">${{ discover_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="p-l-20">{% trans "Other" %} CC</td>
+                            <td class="text-xs-right">${{ other_cc|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+
+                        <tr class="alert-danger">
+                            <td>{% trans "Refunded Payments" %}</td>
+                            <td class="text-xs-right">${{ refunded|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>{% trans "Total before Tips" %}</td>
+                            <td class="text-xs-right">${{ total_before_tips|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "Tips" %}</th>
+                            <td class="text-xs-right">${{ tips_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                        <tr class="table-active">
+                            <td><strong>{% trans "Total" %}</strong></td>
+                            <td class="text-xs-right"><strong>${{ total_sum|floatformat:2|default:"0.00"|intcomma }}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!---->
+
+
+
+
+        <!---->
+
+
+    </div>
+</div>
+
+
+{% endblock content %} {% block scripts %}
+
+<script src="{% static '/static/js/Plugin/select2.js' %}"></script>
+<script src="{% static '/static/vendor/select2/select2.full.min.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block content %}
+{% load bootstrap3 %}
+{% load i18n %}
+{% load humanize %}
+
+  <!-- Page -->
+
+<thead>
+    <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+    <th class="divider">/</th>
+    <th><a href="{% url 'modifiergroup_list' %}">{% trans "Modifier Groups" %}</a></th>
+    <th class="divider">/</th>
+    <th><a href="{% url 'modifier_list' %}">{% trans "Modifiers" %}</a></th>
+    <th class="divider">/</th>
+    <th><a href="{% url 'modifier_detail' pk=object.pk %}">{{ object.name }}</a></th>
+    <th class="divider">/</th>
+    <th>{% trans 'Update' %} {{ object.name }}</th>
+</thead>
+
+<div class="table-responsive">
+      {% if form.errors %}
+          <div class="alert alert-warning">
+              {% bootstrap_form_errors form %}
+          </div>
+      {% endif %}
+      <form method="post" enctype="multipart/form-data">
+        <div class="panel col-md-4 offset-md-4">
+            <h3 class="panel-title">
+               {{ object.name }}
+            </h3>
+            {% csrf_token %}
+            <table class="table " id="editableUser">
+                <div class="col-md-4">
+                    <tr>
+                     <td>{% bootstrap_field form.name %}</td>
+                   </tr>
+                    <tr>
+                     <td>{% bootstrap_field form.cost %}</td>
+                   </tr>
+                    <tr>
+                     <td>{% bootstrap_field form.price %}</td>
+                   </tr>
+                    <tr>
+                     <td>{% bootstrap_field form.group %}</td>
+                   </tr>
+                </div>
+            </table>
+            <div>
+                <button type="submit" class="btn btn-success waves-effect form-table-button">Save changes</button>
+            </div>
+        </div>
+      </form>
+</div>
+{% endblock content %}
+

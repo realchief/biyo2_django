@@ -1,0 +1,262 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load humanize %}
+{% load bootstrap3 %}
+
+
+<div class="row clearfix">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">{% trans "Suppliers" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+
+    <div class="col-sm-12 col-md-5">
+    </div>
+
+<div class="hidden-md-up" style="height: 50px;">
+    </div>
+    <div class="col-sm-12 col-md-4">
+        <div class="pull-md-right" aria-label="Add Order">
+            <a href="{% url "supplier_create" %}"><button type="button" class="btn btn-success waves-effect"><i class="icon md-plus" aria-hidden="true"></i>{% trans "New Supplier" %} </button></a>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="m-b-15">
+                </div>
+            </div>
+        </div>
+    {% if object_list %}
+        <table class="table table-hover table-striped" cellspacing="0" id="exampleFixedHeader">
+            <thead>
+                <tr>
+                    <th>{% trans "Supplier Name" %}</th>
+                    <th>{% trans "Default Markup" %}</th>
+                    <th>{% trans "Contact First Name" %}</th>
+                    <th>{% trans "Contact Last Name" %}</th>
+                    <th>{% trans "Phone" %}</th>
+                    <th>{% trans "Mobile" %}</th>
+                    <th>{% trans "Fax" %}</th>
+                    <th>{% trans "Email" %}</th>
+                    <th>{% trans "Action" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for object in object_list %}
+                <tr>
+                    <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="supplier" data-type="text" data-url="{% url 'supplier_update' pk=object.pk %}" data-title="Enter supplier name">{{ object.supplier }}</span></td>
+                    <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="default_markup" data-type="text" data-url="{% url 'supplier_update' pk=object.pk %}" data-title="Enter default markup">{{ object.default_markup }}</span></td>
+                    <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="first_name" data-type="text" data-url="{% url 'supplier_update' pk=object.pk %}" data-title="Enter first name">{{ object.first_name }}</span></td>
+                    <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="last_name" data-type="text" data-url="{% url 'supplier_update' pk=object.pk %}" data-title="Enter last name">{{ object.last_name }}</span></td>
+                    <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="phone" data-type="text" data-url="{% url 'supplier_update' pk=object.pk %}" data-title="Enter phone">{{ object.phone }}</span></td>
+                    <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="mobile" data-type="text" data-url="{% url 'supplier_update' pk=object.pk %}" data-title="Enter mobile phone">{{ object.mobile }}</span></td>
+                    <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="fax" data-type="text" data-url="{% url 'supplier_update' pk=object.pk %}" data-title="Enter fax">{{ object.fax }}</span></td>
+                    <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="email" data-type="text" data-url="{% url 'supplier_update' pk=object.pk %}" data-title="Enter email">{{ object.email }}</span></td>
+                    <td class="center">
+                        <a class="modal-edit" data-toggle="modal" data-target="#edit" data-name="{{object.last_name}}  {{object.first_name}}" data-id="{{object.id}}">
+                            <button type="button" class="btn btn-warning waves-effect">{% trans "Edit" %}</button>
+                        </a>
+                        <a class="modal-delete" data-toggle="modal" data-target="#delete" data-name="{{object.last_name}}  {{object.first_name}}" data-id="{{object.id}}">
+                            <button type="button" class="btn btn-danger waves-effect">{% trans "Delete" %}</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {% include 'reports/includes/empty.html' %}
+    {% endif %}
+    </div>
+</div>
+{% include "includes/modal_delete.html" %}
+{% include "includes/modal_add.html" %}
+{% include "includes/modal_edit.html" %}
+<div id="form-hidden"style="display: none">
+    <table>
+        <tbody>
+            <tr>
+                <td>{% bootstrap_form form %}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% block scripts %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+    <script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+    <script type="text/javascript">
+
+    $.fn.editable.defaults.mode = 'inline';
+
+        var form = $('#form-hidden tbody').clone();
+        $.editable = {
+        types: {
+            defaults: {
+                element : function(settings, original) {
+                    var input = $('<input type="hidden"></input>');
+                    $(this).append(input);
+                    return(input);
+                },
+                content : function(string, settings, original) {
+                    $(':input:first', this).val(string);
+                },
+                reset : function(settings, original) {
+                  original.reset(this);
+                },
+                buttons : function(settings, original) {
+                    var form = this;
+                    if (settings.submit) {
+                        /* if given html string use that */
+                        if (settings.submit.match(/>$/)) {
+                            var submit = $(settings.submit).click(function() {
+                                if (submit.attr("type") != "submit") {
+                                    form.submit();
+                                }
+                            });
+                        /* otherwise use button with given string as text */
+                        } else {
+                            var submit = $('<button type="submit" />');
+                            submit.html(settings.submit);
+                        }
+                        $(this).append(submit);
+                    }
+                    if (settings.cancel) {
+                        /* if given html string use that */
+                        if (settings.cancel.match(/>$/)) {
+                            var cancel = $(settings.cancel);
+                        /* otherwise use button with given string as text */
+                        } else {
+                            var cancel = $('<button type="cancel" />');
+                            cancel.html(settings.cancel);
+                        }
+                        $(this).append(cancel);
+
+                        $(cancel).click(function(event) {
+                            //original.reset();
+                            if ($.isFunction($.editable.types[settings.type].reset)) {
+                                var reset = $.editable.types[settings.type].reset;
+                            } else {
+                                var reset = $.editable.types['defaults'].reset;
+                            }
+                            reset.apply(form, [settings, original]);
+                            return false;
+                        });
+                    }
+                }
+            },
+            text: {
+                element : function(settings, original) {
+                    var input = $('<input />');
+                    if (settings.width  != 'none') { input.width(settings.width);  }
+                    if (settings.height != 'none') { input.height(settings.height); }
+                    /* https://bugzilla.mozilla.org/show_bug.cgi?id=236791 */
+                    //input[0].setAttribute('autocomplete','off');
+                    input.attr('autocomplete','off');
+                    $(this).append(input);
+                    return(input);
+                }
+            },
+            textarea: {
+                element : function(settings, original) {
+                    var textarea = $('<textarea />');
+                    if (settings.rows) {
+                        textarea.attr('rows', settings.rows);
+                    } else if (settings.height != "none") {
+                        textarea.height(settings.height);
+                    }
+                    if (settings.cols) {
+                        textarea.attr('cols', settings.cols);
+                    } else if (settings.width != "none") {
+                        textarea.width(settings.width);
+                    }
+                    $(this).append(textarea);
+                    return(textarea);
+                }
+            },
+            select: {
+               element : function(settings, original) {
+                    var select = $('<select />');
+                    $(this).append(select);
+                    return(select);
+                },
+                content : function(data, settings, original) {
+                    /* If it is string assume it is json. */
+                    if (String == data.constructor) {
+                        eval ('var json = ' + data);
+                    } else {
+                    /* Otherwise assume it is a hash already. */
+                        var json = data;
+                    }
+                    for (var key in json) {
+                        if (!json.hasOwnProperty(key)) {
+                            continue;
+                        }
+                        if ('selected' == key) {
+                            continue;
+                        }
+                        var option = $('<option />').val(key).append(json[key]);
+                        $('select', this).append(option);
+                    }
+                    /* Loop option again to set selected. IE needed this... */
+                    $('select', this).children().each(function() {
+                        if ($(this).val() == json['selected'] ||
+                            $(this).text() == $.trim(original.revert)) {
+                                $(this).attr('selected', 'selected');
+                        }
+                    });
+                }
+            }
+        },
+
+        /* Add new input type */
+        addInputType: function(name, input) {
+            $.editable.types[name] = input;
+        }
+    };
+
+        $('.x-editable').editable({send: 'always'});
+
+        $(document).on("click", ".modal-delete", function (ev) {
+            ev.preventDefault();
+            var id = $(this).data('id');
+            var text = $(this).data('name');
+            $(".modal-body p strong").html( text );
+            $('#delete').modal('show');
+            $('#btn-delete').click(function() {
+                var url = '/supplier/' + id + '/delete/';
+                $.post(url, function() {
+                    location.href = '/supplier/'
+                })
+            })
+        });
+
+        $(document).on("click", ".modal-edit", function(ev) {
+            ev.preventDefault();
+            var id = $(this).data('id');
+            var url = '/terminalapi/sync/suppliers';
+            $("#edit-modal-body form table").html(form);
+            $.get(url, function(data) {
+                var employee = $.grep(data.results, function(e){return e.id == id})[0];
+                $.each(employee, function(field, value) {
+                        $('#edit-modal-body #id_'+field).val(value);
+                });
+            });
+            $('#edit-modal-body form').attr('action', id+'/edit/')
+            $('#btn-edit').click(function(ev) {
+                ev.preventDefault();
+                $('#edit-form').submit();
+                $('#edit').modal('hide');
+            })
+        })
+    </script>
+{% endblock %}
+{% endblock content %}

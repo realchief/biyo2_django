@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<ul class="breadcrumb">
+	<li><a href="/" class="glyphicons home"><i></i>Strona główna</a></li>
+	<li class="divider"></li>
+	<li>Subskrybenci</li>
+</ul>
+<div class="separator bottom"></div>
+<!-- // Breadcrumb END -->
+
+<!-- Heading -->
+<div class="heading-buttons">
+	<h3>Subskrybenci</h3>
+	<div class="clearfix"></div>
+</div>
+<div class="separator bottom"></div>
+<!-- // Heading END -->
+
+<div class="innerLR">
+
+
+
+	<!-- Widget -->
+	<div class="widget">
+
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h4 class="heading glyphicons list"><i></i>Subskrybenci restauracji</h4>
+		</div>
+		<!-- // Widget heading END -->
+
+		<div class="widget-body">
+
+			<!-- Total products & Sort by options -->
+			<div class="form-inline separator bottom small">
+				Wszystkich osób: {{ subscribers|length }}
+				<span class="pull-right">
+					<label class="strong">Sortuj:</label>
+					<select class="selectpicker" data-style="btn-default btn-small">
+						<option>Kolejność zapisania</option>
+						<option>Alfabetycznie</option>
+					</select>
+				</span>
+			</div>
+			<!-- // Total products & Sort by options END -->
+
+
+
+			<!-- Products table -->
+			<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs js-table-sortable" id="subscribers">
+				<thead>
+					<tr>
+						<th style="width: 1%;" class="uniformjs"><input type="checkbox" /></th>
+                        <th class="center">Data dodania</th>
+						<th class="center">Subskrybenci</th>
+					</tr>
+				</thead>
+				<tbody>
+                    {% for s in subscribers %}
+                    <tr class="selectable">
+						<td class="center uniformjs"><input type="checkbox" /></td>
+                        <td class="left">{{ s.add_date|date:"Y/m/d H:i" }}</td>
+						<td class="left">{{ s.email }}</td>
+					</tr>
+                    {% endfor %}
+				</tbody>
+			</table>
+			<!-- // Products table END -->
+
+			<!-- Options -->
+			<div class="separator top form-inline small">
+
+				<!-- With selected actions -->
+				<div class="pull-left checkboxs_actions hide">
+					<label class="strong">With selected:</label>
+					<select class="selectpicker dropup" data-style="btn-default btn-small">
+						<option>Action</option>
+						<option>Action</option>
+						<option>Action</option>
+					</select>
+				</div>
+				<!-- // With selected actions END -->
+
+
+
+
+
+			</div>
+			<!-- // Options END -->
+
+		</div>
+	</div>
+	<!-- // Widget END -->
+
+</div>
+{% endblock %}

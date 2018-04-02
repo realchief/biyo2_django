@@ -1,0 +1,103 @@
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+        *{line-height: 30px; font-size: 20px;}
+    </style>
+</head>
+<body>
+    <h1>{% trans "Sales summary" %}</h1>
+    <h4>Store Name: {{ store }}</h4>
+    <h4>Period: {{ start_date }}- {{ end_date }}</h4>
+   <table class="table">
+                    <thead>
+                    <tr>
+                        <th  style="text-align: left">{% trans "Sales" %}</th>
+                        <th></th>
+
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{% trans "Gross Sales" %}</td>
+                        <td class="right">${{ gross_sales|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr><td>{% trans "Discounts" %}</td><td class="right">${{ discount_total|floatformat:2|default:"0.00"|intcomma }}</td></tr>
+                    <tr><td>{% trans "Tax" %}</td><td class="right">${{ tax_total|floatformat:2|default:"0.00"|intcomma }}</td></tr>
+                    <tr><td>{% trans "Total Collected" %}</td><td class="right">${{ grand_total|floatformat:2|default:"0.00"|intcomma }}</td></tr>
+{#                    <tr><td>{% trans "Tips" %}</td><td class="right">${{ tips|floatformat:2|default:"0.00"|intcomma }}</td></tr>#}
+                    </tbody>
+                </table>
+
+<table class="table">
+                 <thead>
+                    <tr>
+                        <th  style="text-align: left">{% trans "Payments" %}</th>
+                        <th></th>
+
+                    </tr>
+                    </thead>
+                    <tr>
+                        <td>Cash</td>
+                        <td class="right">${{ cash_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td>Account</td>
+                        <td class="right">${{ account_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td>Check</td>
+                        <td class="right">${{ check_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td>Credit Card</td>
+                        <td class="right">${{ total_card_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 20px">Visa</td>
+                        <td class="right">${{ visa_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 20px" >Mastercard</td>
+                        <td class="right">${{ mastercard_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 20px">American Express</td>
+                        <td class="right">${{ american_express_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 20px">Discover</td>
+                        <td class="right">${{ discover_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding-left: 20px">Other CC</td>
+                        <td class="right">${{ other_cc|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Refunded Payments</td>
+                        <td class="right">${{ refunded|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+
+
+                    <tr>
+                        <td>Total before Tips</td>
+                        <td class="right">${{ total_before_tips|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left">Tips</th>
+                        <td class="right">${{ tips_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td class="right">${{ total_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                </table>
+</body>
+</html>

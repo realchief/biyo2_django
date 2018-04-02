@@ -1,0 +1,84 @@
+{% load i18n %}
+{% load panel_tags %}
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="ie lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="ie lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="ie lt-ie9"> <![endif]-->
+<!--[if gt IE 8]> <html class="ie gt-ie8"> <![endif]-->
+<!--[if !IE]><!--><html><!-- <![endif]-->
+<head>
+    <title>Biyo Point of Sale - Dashboard</title>
+
+    <!-- Meta -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+
+    <!-- Bootstrap -->
+    <link href="{{ STATIC_URL }}common/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="{{ STATIC_URL }}common/bootstrap/css/responsive.css" rel="stylesheet" />
+
+    <!-- Glyphicons Font Icons -->
+    <link href="{{ STATIC_URL }}common/theme/css/glyphicons.css" rel="stylesheet" />
+
+    <!-- Main Theme Stylesheet :: CSS -->
+    <link href="{{ STATIC_URL }}common/theme/css/style-light.css?1369414383" rel="stylesheet" />
+    {% block extra_css %}
+    {% endblock %}
+
+
+</head>
+<body class="">
+
+<div class="container-fluid fluid menu-left">
+
+    <div id="wrapper">
+
+        <!-- Sidebar Menu -->
+
+        <!-- // Sidebar Menu END -->
+
+        <!-- Content -->
+        <div id="content-fluid">
+            {% if messages %}
+
+                <div class="milo-notify {% if message.tags %}{{ message.tags }}{% else %}normal{% endif %} bottom-margin">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+
+            {% endif %}
+            {% block content %}{% endblock %}
+        </div>
+        <!-- // Content END -->
+
+    </div>
+    <div class="clearfix"></div>
+    <!-- // Sidebar menu & content wrapper END -->
+
+
+    <!-- // Footer END -->
+
+</div>
+<!-- // Main Container Fluid END -->
+
+
+{% block js %}
+
+    <!-- JQuery -->
+    <script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery.min.js"></script>
+
+
+
+{% endblock %}
+
+{% block javascript%}{% endblock %}
+
+<!-- Common Demo Script -->
+{#	<script src="{{ STATIC_URL }}common/theme/scripts/demo/common.js?1369414383"></script>#}
+
+</body>
+</html>

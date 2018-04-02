@@ -1,0 +1,1 @@
+This folder contains config files for production-ready stores. Use these files as a examples/templates or symlinks for apache configuration.

@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'product_list' %}">{% trans "Product" %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Add new product" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "New product" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+        <div class="widget">
+            {% if form.errors %}
+                <div class="alert alert-warning">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    {{ form.as_table }}
+                </table>
+                <div class="separator bottom"></div>
+                <div>
+                    <input type="submit" class="btn btn-primary" value="Add new product"/>
+                </div>
+            </form>
+        </div>
+    </div>
+   <div id="modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel"></h3>
+  </div>
+  <div class="modal-body">
+    <p>One fine body…</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">OK</button>
+  </div>
+</div>
+{% endblock content %}
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+        $('form').find('#id_barcode').focus();
+            $.ajaxSetup({
+                headers: { "X-CSRFToken": getCookie("csrftoken") }
+            });
+
+            function getCookie(c_name)
+            {
+                if (document.cookie.length > 0)
+                {
+                    c_start = document.cookie.indexOf(c_name + "=");
+                    if (c_start != -1)
+                    {
+                        c_start = c_start + c_name.length + 1;
+                        c_end = document.cookie.indexOf(";", c_start);
+                        if (c_end == -1) c_end = document.cookie.length;
+                        return unescape(document.cookie.substring(c_start,c_end));
+                    }
+                }
+                return "";
+            }
+
+
+            $( "form" ).submit(function( event ) {
+
+                // Stop form from submitting normally
+
+                event.preventDefault();
+
+                var id = $(this).find('#id_barcode').val()
+                var status = false;
+                $.ajax(
+                        {
+                            url : '/terminalapi/check/product/barcode_extended',
+                            type: "POST",
+                            data : {'barcode':id},
+                            success:function(data, textStatus, jqXHR)
+                            {
+                                if (data.status=='exists'){
+                                    $('#modal .modal-body p').html("Item with this barcode already exists: <a href = '"+data["product"]["url"]+"'>"+data["product"]["name"]+"</a>");
+                                    $('#modal').modal('show');
+                                    $('form').find('#id_barcode').focus();
+                                    $('form').find('#id_barcode').val('');
+                                }
+                                if (data.status=='allowed'){
+                                    if ($('form').find('#id_name').val()!=''){
+                                        $.ajax({
+                                            type: "POST",
+                                            url: $('form').attr('action'),
+                                            data: $('form').serialize(),
+
+                                            success: function (data) {
+                                                $('#modal .modal-body p').html('Item has been added')
+                                                $('#modal').modal('show');
+                                                    $('#modal').on('hidden', function () {
+                                                        location.href = '/quickproductadd/'
+                                                     })
+
+                                            }
+                                        });
+                                    }else{
+                                        $('form').find('#id_name').focus();
+                                    }
+
+
+
+                                }
+                            },
+                            error: function(jqXHR, textStatus, errorThrown)
+                            {
+                                //if fails
+                            }
+                        });
+
+
+            });
+
+
+        })
+    </script>
+{% endblock %}

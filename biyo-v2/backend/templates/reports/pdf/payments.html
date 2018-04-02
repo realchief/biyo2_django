@@ -1,0 +1,37 @@
+{% load i18n %}
+{% load report_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+        *{line-height: 30px; font-size: 20px;}
+    </style>
+</head>
+<body>
+    <h1>{% trans "Item sales" %}</h1>
+            <table class="table">
+                <tr>
+                    <th>Cash</th><td>${{ cash_sum|floatformat:2|default:"0.00" }}</td>
+                </tr>
+                <tr>
+                    <th>Visa</th><td>${{ visa_sum|floatformat:2|default:"0.00" }}</td>
+                </tr>
+                <tr>
+                    <th>Mastercard</th><td>${{ mastercard_sum|floatformat:2|default:"0.00" }}</td>
+                </tr>
+                <tr>
+                    <th>American Express</th><td>${{ american_express_sum|floatformat:2|default:"0.00" }}</td>
+                </tr>
+                <tr>
+                    <th>Discover</th><td>${{ discover_sum|floatformat:2|default:"0.00" }}</td>
+                </tr>
+                <tr>
+                    <th>Other</th><td>${{ other_sum|floatformat:2|default:"0.00" }}</td>
+                </tr>
+                <tr>
+                    <th>Total</th><td>${{ total_sum|floatformat:2|default:"0.00" }}</td>
+                </tr>
+            </table>
+</body>
+</html>

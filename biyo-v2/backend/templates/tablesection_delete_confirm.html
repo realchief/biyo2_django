@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<ul class="breadcrumb">
+    <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+    <li class="divider"></li>
+    <li><a href="{% url 'tablesection_list' %}">Table sections</a></li>
+    <li class="divider"></li>
+    <li><a href="{% url 'tablesection_detail' pk=object.pk %}">{{ object.section_name }}</a></li>
+    <li class="divider"></li>
+    <li>{% trans "Delete" %} {{ object.section_name }}</li>
+</ul>
+<div class="separator bottom"></div>
+<div class="heading-buttons">
+    <h3>{% trans "Delete" %} {{ object.section_name }}</h3>
+    <div class="clearfix"></div>
+</div>
+<div class="separator bottom"></div>
+
+<div class="innerLR">
+    <h4>Are you sure you want to delete {{ object.section_name }}?</h4>
+    <form method="post">
+        {% csrf_token %}
+        <a href="{% url 'taxrate_detail' pk=object.pk %}" class="btn">Cancel</a>
+        <input type="submit" class="btn btn-danger" value="Delete"/>
+    </form>
+</div>
+{%  endblock content %}

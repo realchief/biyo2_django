@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load tz %}
+{% load panel_tags %}
+{% load humanize %}
+
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}common/theme/scripts/plugins/calendars/daterangepicker/daterangepicker-bs2.css" />
+
+  <!-- Breadcrumb -->
+  <ul class="breadcrumb">
+    <li><a href="/" class="glyphicons home"><i></i>{% trans "Home" %}</a></li>
+    <li class="divider"></li>
+    <li>{% trans "Orders" %}</li>
+  </ul>
+  <div class="separator bottom"></div>
+  <!-- // Breadcrumb END -->
+
+  <!-- Heading -->
+  <div class="heading-buttons">
+    <h3>Order of: {{ product }}</h3>
+    <div class="clearfix"></div>
+  </div>
+  <div class="separator bottom"></div>
+  <!-- // Heading END -->
+
+
+    <!-- Widget -->
+
+
+
+      <!-- Widget heading -->
+{#      <div class="widget-head">#}
+{#	<h4 class="heading glyphicons list"><i></i>{% trans "View Orders" %}</h4>#}
+{#      </div>#}
+      <!-- // Widget heading END -->
+
+
+        <div class="row offset1" >
+
+            {% with 'orders' as active %}
+          {% include "reports/includes/filter.html" %}
+            {% endwith %}
+
+
+
+
+	<!-- Products table -->
+
+      {% if object_list %}
+	<table class="table table-striped table-bordered vertical-middle">
+	  <thead>
+	    <tr>
+	      <th class="center">{% trans "Order #" %}</th>
+              <th class="center">{% trans "Order Total" %}</th>
+              {% if not custom_product %}
+              <th class="center">{% trans "Quantity" %}</th>
+              {% endif %}
+              <th class="center">{% trans "Sold By" %}</th>
+              {% if custom_product %}
+              <th class="center">{% trans "Item" %}</th>
+              {% else %}
+              {% endif %}
+              <th class="center">{% trans "Open Date" %}</th>
+              <th class="center">{% trans "Close Date" %}</th>
+              <th class="center">{% trans "Order Status" %}</th>
+              {% if not custom_product %}
+              <th class="center">{% trans "Actions" %}</th>
+              {% endif %}
+	    </tr>
+	  </thead>
+	  <tbody>
+            {% for order in object_list %}
+              <tr class="selectable">
+                <td class="center"><a href="{% url 'order-detail' pk=order.pk %}">{{ order.pk }}</a></td>
+                <td class="center">${{ order.grand_total|floatformat:2|default:"0.00"|intcomma }}</td>
+                {% if not custom_product %}
+                <td class="center">{{ order.items_qty|intcomma }}</td>
+                {% endif %}
+                <td class="center">{{ order.emp_open }}</td>
+                {% if custom_product %}
+                <td class="center">
+                <table>
+                <tr>
+                <th class="center">Item Name</th>
+                <th class="center">Qty</th>
+                <th class="center">Item Price</th>
+                </tr>
+                {% for oitem in order.get_custom_items %}
+                <tr>
+                <td class="center">{{ oitem.name }}</td>
+                <td class="center">{{ oitem.quantity|intcomma }}</td>
+                <td class="center">${{ oitem.price|floatformat:2|default:"0.00"|intcomma }}</td>
+                </tr>
+                {% endfor %}
+                </table>
+                </td>
+                {% else %}
+                {% endif %}
+                <td class="center">{{ order.open_date|timezone:tz|date:"m-d-Y h:i A" }}</td>
+                <td class="center">{{ order.close_date|timezone:tz|date:"m-d-Y h:i A" }}</td>
+                <td class="center">{{ order.get_status_display }}</td>
+                {% if not custom_product %}
+		            <td class="center">
+		              <a href="{% url 'order-detail' pk=order.pk %}" class="btn-action glyphicons eye_open btn-success"><i></i></a>
+		            </td>
+                {% endif %}
+	      </tr>
+            {% endfor %}
+	  </tbody>
+	</table>
+	<!-- // Products table END -->
+        {% include "includes/paginator.html" %}
+      {% else %}
+      {% include 'reports/includes/empty.html' %}
+      {% endif %}
+
+      <!-- // Options END -->
+
+    </div>
+  </div>
+  <!-- // Widget END -->
+
+
+{% endblock %}
+
+
+
+
+
+

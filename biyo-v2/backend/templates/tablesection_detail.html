@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load panel_tags %}
+{% block content %}
+  <ul class="breadcrumb">
+    <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+    <li class="divider"></li>
+    <li><a href="{% url 'tablesection_list' %}">{% trans "Table sections" %}</a></li>
+    <li class="divider"></li>
+    <li>{{ object.section_name }}</li>
+  </ul>
+  <div class="separator bottom"></div>
+  <div class="heading-buttons">
+    <h3>{{ object.section_name }}</h3>
+    <div class="clearfix"></div>
+  </div>
+  <div class="separator bottom"></div>
+
+  <div class="innerLR">
+    <h4>Info about table section:</h4>
+    <ul>
+      {% for field_name in info_fields %}
+        <li><strong>{{ object|field_verbose_name:field_name }}:</strong> {{ object|field_value:field_name }}</li>
+      {% endfor %}
+    </ul>
+    <div class="separator bottom"></div>
+    <div>
+      <a href="{% url 'tablesection_update' pk=object.pk %}" class="btn"><i class="icon-pencil"></i> Edit</a>
+      <a href="{% url 'tablesection_delete' pk=object.pk %}" class="btn"><i class="icon-trash"></i> Delete</a>
+    </div>
+  </div>
+
+<div class="manipulate">
+  <div class="items">
+    <ul>
+      <li class="draggable square" data-type="square"></li>
+      <li class="draggable rectangle" data-type="rectangle"></li>
+      <li class="draggable circle" data-type="circle"></li>
+    <form class="create_form hidden" action="{% url 'table_create' %}" method="POST">
+      {% csrf_token %}
+      <input name="section" id="id_section" value="{{ object.pk }}"/>
+      <input name="table_name" id="id_table_name" value="New Table"/>
+      <input name="table_image" id="id_table_image" />
+      <input name="x_value" id="id_x_value" />
+      <input name="y_value" id="id_y_value" />
+      <input name="number_people" id="id_number_people" value="0" />
+    </form>
+    </ul>
+  </div>
+  <div class="area">
+    <div class="delete" data-type="circle">Drop Here To Remove</div>
+    {% for table in object.get_tables %}
+      <div class="table existing {{ table.get_table_image_display|lower }}" 
+           data-type="{{ table.get_table_image_display|lower }}"
+           data-id="{{ table.pk }}"
+           style="position:absolute; top:{{ table.y_value }}px; left:{{ table.x_value }}px">
+        <span class="name display">{{ table.table_name }}</span>
+        <span class="name edit"><input type="text" value="{{ table.table_name }}"></span>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<style>
+  .manipulate{
+  margin-top:10px;
+  border:1px solid #E5E5E5;
+  background:url('/static/common/theme/images/tables/table_body.png') 0 0 repeat;
+  width:800px;
+  height:1280px;
+  }
+  .manipulate .items{
+  overflow:hidden;
+  border-bottom:1px solid #E5E5E5;
+  }
+  .manipulate .items ul{
+  margin:0;
+  padding:5px 0;
+  text-align:center;
+  }
+  .manipulate ul li{
+  display:inline-block;
+  list-style-type:none;
+  margin:0 10px;
+  cursor:pointer;
+  vertical-align:middle;
+  }
+  .ui-draggable{
+      cursor:pointer;
+  }
+  .manipulate .square{
+  background:url('/static/common/theme/images/tables/table_square_inactive.png') 0 0 no-repeat;
+  width:115px;
+  height:115px;
+  }
+  .manipulate .name{
+      display:block;
+      text-align:center;
+      position:relative;
+  }
+
+  .manipulate .square span.name{
+      top:90px;
+  }
+
+  .manipulate .rectangle{
+  background:url('/static/common/theme/images/tables/table_rec_inactive.png') 0 0 no-repeat;
+  width:230px;
+  height:115px;
+  }
+
+  .manipulate .rectangle span.name{
+      top:71px;
+  }
+  .manipulate .circle span.name{
+      top:84px;
+  }
+  .manipulate .circle{
+  background:url('/static/common/theme/images/tables/table_circle_inactive.png') 0 0 no-repeat;
+  width:114px;
+  height:114px;
+  }
+  .manipulate .delete{
+      width:114px;
+      height:96px;
+      background:#fff;
+      text-align:center;
+      padding-top:20px;
+      float:right;
+  }
+  .manipulate .area{
+  height:1155px;
+  position:relative;
+  }
+.name.edit{display:none}
+</style>
+
+<script>
+    var update_coords = function(event, ui){
+        var id = event.target.getAttribute('data-id');
+        var image = event.target.getAttribute('data-type');
+        switch (image){
+        case 'square':
+            image = '1'
+            break
+        case 'rectangle':
+            image = '3'
+            break
+        case 'circle':
+            image = '2'
+            break
+        }
+        var name = $(event.target.children[0]).html()
+        //var url = '/table/'+id+'/edit/'
+		var url = '/terminalapi/update/table/' + id;
+        var data ={'csrfmiddlewaretoken':$('input[name="csrfmiddlewaretoken"]').val(),
+                   'y_value':ui.offset.top-$('.area').offset().top,
+                   'x_value':ui.offset.left-$('.area').offset().left
+                  }
+        $.post(url, data, function(){})
+		/*$.ajax({
+			type: "PUT",
+			url: url,
+			data: data,
+			dataType: 'json'
+		})*/
+    }
+
+var init_rename = function(){
+    $('.table .name.display').click(function(evt){
+        $(this).hide();
+        $(this).siblings().show();
+        $(this).siblings('span').find('input').focus();
+    })
+
+    $('.table .name.edit input').blur(function(){
+        $(this).parent().hide();
+        $(this).parent().siblings().show();
+
+        var id = $(this).parent().parent().attr('data-id');
+        var image = $(this).parent().parent().attr('data-type');;
+        switch (image){
+        case 'square':
+            image = '1'
+            break
+        case 'rectangle':
+            image = '3'
+            break
+        case 'circle':
+            image = '2'
+            break
+        }
+        var name = $(this).val();
+        var url = '/table/'+id+'/edit/'
+        var data ={'csrfmiddlewaretoken':$('input[name="csrfmiddlewaretoken"]').val(),
+                   'number_people': 1,
+                   'section':{{ object.pk }},
+                   'table_name':name,
+                   'table_image': image,
+                   'y_value':$(this).parent().parent().css('top').replace('px', ''),
+                   'x_value':$(this).parent().parent().css('left').replace('px', ''),
+                  }
+        var el = this;
+
+        $.post(url, data, function(){
+            $(el).parent().siblings().html($(el).val())
+        })
+    })
+
+    $('.table .name.edit input').keypress(function(evt){
+        if(evt.which == 13){ $(this).blur()}
+    })
+
+}
+    $(document).ready(function(){
+        init_rename()
+        $('.table.existing').draggable({
+            stop: update_coords,
+            containment: '.area'
+        })
+
+        $('.delete').droppable({
+            drop: function(event, ui){
+				var _delete = true;
+                var id = ui.draggable.attr('data-id');
+				var x, y;
+                var url = '/table/'+id+'/delete/'
+				$.ajax({
+					url: '/terminalapi/sync/table',
+					async: false,
+					success: function(data){
+					$.each(data.results, function(i, obj) {
+						if (obj.id == parseInt(id) && obj.current_order_id != null) {
+							_delete = false;
+							x = obj.x_value;
+							y = obj.y_value;
+						}
+
+					});
+				}});
+				if (_delete == true) {
+					var data = {'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()}
+					$.post(url, data, function(response){
+						ui.draggable.remove();
+					})
+				} else {
+					alert("This table has order and cannot be deleted!");
+					$(ui.draggable[0]).css({'top': y, 'left': x});
+				}
+            }
+        })
+
+        $('.items li.draggable').draggable({ 
+            helper: "clone",
+            containment: '.area',
+            stop: function(event, ui){
+                var type = $(this).attr('data-type')                
+                switch (type){
+                case 'square':
+                    $('.create_form #id_table_image').val('1')
+                    break
+                case 'rectangle':
+                    $('.create_form #id_table_image').val('3')
+                    break
+                case 'circle':
+                    $('.create_form #id_table_image').val('2')
+                    break
+                }
+                $('.create_form #id_y_value').val(ui.offset.top-$('.area').offset().top)
+                $('.create_form #id_x_value').val(ui.offset.left-$('.area').offset().left)
+                var url = $('.create_form').attr('action')
+                var data = $('.create_form').serialize()
+                $.post(url, data, function(response){
+                    var id = $(response).find('.innerLR tr td a').last().text()
+                    var node = '<div class="table new '+type+'" data-type='+type+' data-id="'+id+'"><span class="name display">New Table</span><span class="name edit"><input type="text" value="New Table"></span></div>'
+                    $('.area').append(node);
+                    $('.new').draggable({
+                        containment:'.area',
+                        stop: update_coords,
+                        create: function(eventInner, uiInner){
+                            $(this).css({'left':ui.offset.left-$('.area').offset().left+'px', 
+                                         'top':ui.offset.top-$('.area').offset().top+'px',
+                                         'position':'absolute'
+                                        })
+                            init_rename();
+                        }
+                    })
+                })
+            }
+        })
+    })                      
+
+</script>
+
+{% endblock %}

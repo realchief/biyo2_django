@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<ul class="breadcrumb">
+	<li><a href="/" class="glyphicons home"><i></i>Strona główna</a></li>
+	<li class="divider"></li>
+	<li>Zdarzenia</li>
+</ul>
+<div class="separator bottom"></div>
+<!-- // Breadcrumb END -->
+
+<!-- Heading -->
+<div class="heading-buttons">
+	<h3>Zdarzenia</h3>
+	<div class="clearfix"></div>
+</div>
+<div class="separator bottom"></div>
+<!-- // Heading END -->
+
+<div class="innerLR">
+
+
+
+	<!-- Widget -->
+	<div class="widget">
+
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h4 class="heading glyphicons list"><i></i>Rejestrowane zdarzenia</h4>
+		</div>
+		<!-- // Widget heading END -->
+
+		<div class="widget-body">
+
+
+
+			<!-- Products table -->
+			<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center js-table-sortable" id="events-data">
+				<thead>
+					<tr>
+						<th class="center">Typ</th>
+                        <th class="center">Data</th>
+                        <th class="center">Nr urzadzenia</th>
+                        <th class="center">Informacje o zamowieniu</th>
+                        <th class="center">Akcje</th>
+					</tr>
+				</thead>
+				<tbody>
+                    {% for event in events %}
+                    <tr class="selectable {% if event.archive %}event-archive{% endif %}">
+                        <td class="left">
+                        {% if event.type == 'help' %}
+                        POMOC
+                        {% elif event.type == 'pay' %}
+                        PŁATNOŚĆ
+                        {% elif event.type == 'order' %}
+                        ZAMÓWIENIE
+                        {% else %}
+                        {{ event.type }}
+                        {% endif %}
+                        </td>
+                        <td class="left">{{ event.add_date|date:"Y/m/d H:i" }}</td>
+                        <td class="left"><a href="/tablets/{{ event.device.id }}/edit">{{ event.device }}</a></td>
+                        <td class="left">
+                            {% ifequal event.type event.EVENT_ORDER %}
+                            <span class="ellipsis">{{ event.get_order }} zamówienie na kwotę {{ event.get_order.value }} zł (<a href="{% url 'order_details' event.get_order.id %}">Zamówienie {{ event.get_order }}</a>)</span>
+                            {% endifequal %}
+                        </td>
+                        <td class="center">
+                            {% if event.archive %}
+                            <a class="btn-action glyphicons eye_open btn-success ok_2" href="javascript:void(0)" style="cursor:default;"><i></i></a>
+                            {% else %}
+                            <a class="btn-action glyphicons eye_open btn-success lock" href="{% url 'move_event_to_archive' event.id %}" title="Oznacz jako zamknięte"><i></i></a>
+                            {% endif %}
+                        </td>
+					</tr>
+                    {% endfor %}
+				</tbody>
+			</table>
+			<!-- // Products table END -->
+
+		</div>
+	</div>
+	<!-- // Widget END -->
+
+</div>
+{% endblock %}

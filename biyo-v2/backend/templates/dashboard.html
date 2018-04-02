@@ -1,0 +1,394 @@
+{% extends "base.html" %}
+{% load tz %}
+{% block javascript %}
+    <script src="//code.highcharts.com/highcharts.js"></script>
+<script src="//code.highcharts.com/modules/exporting.js"></script>
+  <script type="text/javascript">
+
+$('#reservationtime').css('margin',10).css('width',400);
+var url = '/reports/accountant_summary/';
+var path='';
+if ($('#reservationtime').val() != 'Today'){
+			var range = $('#reservationtime').val().split(' - ')
+			start = range[0].split(" ").join("")
+			end = range[1].split(" ").join("")
+            path += '?start='+start+'&end='+end+'&format=json';
+		}else{
+    path += '?format=json';
+}
+
+  $.getJSON(url+path, function (data1) {
+      var data = []
+      for ( var i=0;i<data1.length;i++ ){
+          data[i]= [data1[i].name,data1[i].grand_total]
+
+      }
+   $('#container').highcharts({
+       credits: {
+          enabled: false
+      },
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: 0,//null,
+            plotShadow: false
+        },
+        title: {
+            text: 'Sale by Categories'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y:.1f}$</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: ${point.y:.1f}',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: 'Grand Total Sales in category',
+            data: data
+        }]
+    });
+  })
+
+
+$.getJSON('/reports/dashboardcharts/', function (data) {
+chart = new Highcharts.Chart({
+            credits: {
+                  enabled: false
+              },
+            chart: {
+                renderTo: 'containersales',
+                type: 'areaspline'
+            },
+            title: {
+                text: '14 days Orders/Sales report'
+            },
+
+            xAxis: {
+                categories: data.categories,
+                min:1
+
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Sales/Orders'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                backgroundColor: '#FFFFFF',
+                align: 'left',
+                verticalAlign: 'top',
+                x: 10,
+                y: 10,
+                floating: true,
+                shadow: true
+            },
+            tooltip: {
+                formatter: function () {
+                return 'The value for <b>' + this.x +
+                    '</b> is <b>' + this.y + '</b>'+this.series.options.tag;
+            }
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+                series: [{
+                name: 'Total # of orders completed',
+                data: data.date_range_amount_total,
+                type: 'spline',
+                    tag:' orders'
+
+            }, {
+                name: 'Total value of sales',
+                data: data.date_range_grand_total,
+                type: 'spline',
+                    tag:'$'
+
+
+            }]
+        });
+  })
+
+
+
+    window.onload = setupRefresh;
+
+function setupRefresh() {
+{#    setTimeout("refreshPage();", 15000); // milliseconds#}
+{#    setTimeout("refreshEvents();", 3000); // milliseconds#}
+};
+function refreshPage() {
+    $.ajax({
+        url: "/check_changes/",
+        data: {devices_count : "{{ all_devices.count }}"},
+        cache: false,
+        dataType: "json"
+    }).done(function(response) {
+        if (response.status == "CHANGED"){
+            location.reload(true);
+        }else{
+            setupRefresh();
+        };
+    });
+};
+
+function refreshEvents() {
+    $.ajax({
+        url: "/get_last_events/?c=7",
+        cache: false
+    }).done(function(response) {
+        //console.log(response);
+        $('#last_events').html(response);
+    });
+};
+
+  $('#reservationtime').css('width','95%')
+
+  </script>
+{% endblock %}
+
+{% block content %}
+  <!-- Breadcrumb -->
+  <ul class="breadcrumb">
+    <li><a href="/" class="glyphicons home"><i></i>Home Page</a></li>
+  </ul>
+  <div class="separator bottom"></div>
+  <!-- // Breadcrumb END -->
+
+  <div class="row-fluid row-merge">
+    <div class="span6">
+
+      <!-- Inner -->
+      <div class="innerAll">
+	<!-- Row -->
+	<div class="row-fluid">
+	  <div class="span6">
+
+	    <!-- Stats Widget -->
+	    <a href="" class="widget-stats widget-stats-2 widget-stats-3">
+	      <span class="sparkline success"></span>
+	      <span class="txt"><span class="count">{{ total_orders }}</span> Number of orders</span>
+	      <div class="clearfix"></div>
+	    </a>
+	    <!-- // Stats Widget END -->
+
+	  </div>
+	  <div class="span6">
+
+	    <!-- Stats Widget -->
+	    <a href="" class="widget-stats widget-stats-2 widget-stats-3">
+	      <span class="sparkline danger"></span>
+	      <span class="txt"><span class="count">${{ avg_order_value|floatformat:2 }}</span> Average order value</span>
+	      <div class="clearfix"></div>
+	    </a>
+	    <!-- // Stats Widget END -->
+
+	  </div>
+	</div>
+	<!-- // Row END -->
+
+      </div>
+      <!-- // Inner END -->
+
+    </div>
+    <div class="span6">
+
+      <!-- Inner -->
+      <div class="innerAll">
+
+	<!-- Row -->
+	<div class="row-fluid">
+	  <div class="span6">
+
+	    <!-- Stats Widget -->
+	    <a href="" class="widget-stats widget-stats-2 widget-stats-3">
+	      <span class="sparkline danger"></span>
+	      <span class="txt"><span class="count">{{ new_customers }}</span> New Customers</span>
+	      <div class="clearfix"></div>
+	    </a>
+    <!-- // Stats Widget END -->
+
+	  </div>
+
+        <div class="span6">
+         <a href="" class="widget-stats widget-stats-2 widget-stats-3">
+	      <span class="sparkline success"></span>
+	      <span class="txt"><span class="count">{{ returned_customers }}</span>Returning Customers</span>
+	      <div class="clearfix"></div>
+	    </a>
+	    <!-- // Stats Widget END -->
+
+	  </div>
+
+	</div>
+	<!-- // Row END -->
+
+      </div>
+      <!-- // Inner END -->
+
+    </div>
+  </div>
+
+
+  <!-- Tablet List -->
+  {% include "_tablet_list.html" %}
+
+  <!-- Row -->
+  <div class="row-fluid row-merge border-top">
+
+    <!-- Column -->
+    <div class="span7">
+
+      <!-- Spacing -->
+      <div class="innerAll">
+
+    <div id="containersales" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+	<!-- Recent Activity -->
+	<div class="widget widget-4 widget-tabs-icons-only widget-timeline margin-bottom-none">
+
+	  <!-- Widget Heading -->
+	  <div class="widget-head">
+	    <h4 class="heading">Today's Latest 10 Orders</h4>
+	  </div>
+	  <!-- Widget Heading END -->
+
+	  <div class="widget-body">
+	    <div class="tab-content">
+	      <!-- Filter Orders Tab -->
+	      <div class="tab-pane active" id="filterOrdersTab">
+		<ul class="list-timeline" id="last_events">
+                  {% for order in last_seven_orders %}
+                    <li>
+                      <span class="date">{{ order.open_date|timezone:tz|date:"h:i a" }}</span>
+                      <span class="glyphicons activity-icon ipad"><i></i></span>
+                      <span class="ellipsis">
+                        <a href="{% url 'order-detail' pk=order.pk %}">{{ order.pk }}</a>:
+                        ${{ order.grand_total|floatformat:"2" }}
+                      </span>
+                      <div class="clearfix"></div>
+                    </li>
+                  {% endfor %}
+		</ul>
+		<a href="{% url 'order-list' %}" class="btn btn-primary view-all">more</a>
+	      </div>
+	      <!-- // Filter Orders Tab END -->
+	    </div>
+	  </div>
+	</div>
+	<!-- // Recent Activity END -->
+
+      </div>
+      <!-- // spacing END -->
+
+    </div>
+    <!-- // Column END -->
+
+    <!-- Column -->
+    <div class="span5">
+
+      <!-- Activity/List Widget -->
+      <div class="widget" data-toggle="collapse-widget">
+
+	<!-- Widget Heading -->
+	<div class="widget-head">
+	  <h4 class="heading glyphicons history"><i></i>Activity</h4>
+	  <a href="" class="details pull-right">more</a>
+	</div>
+	<!-- // Widget Heading END -->
+
+	<div class="widget-body list">
+	  <ul>
+
+	    <!-- List item -->
+	    <li>
+	      <span>Today's sales</span>
+	      <span class="count">${{ todays_sales|floatformat:"2"|default:"0.00" }}</span>
+	    </li>
+	    <!-- // List item END -->
+
+	    <!-- List item -->
+	    <li>
+	      <span>Number of orders</span>
+	      <span class="count">{{ todays_orders_count }}</span>
+	    </li>
+
+          <li>
+	      <span>Today average order value</span>
+	      <span class="count">${{ todays_average_sales|floatformat:"2"|default:"0.00" }}</span>
+	    </li>
+
+	    <!-- // List item END -->
+
+	  </ul>
+	</div>
+
+          <div class="widget-head">
+	  <h4 class="heading glyphicons history"><i></i>Charts</h4>
+
+	</div>
+
+          <div class="widget-body list">
+                            {% include 'reports/includes/filter.html' %}
+
+              <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+
+              </div>
+
+      </div>
+      <!-- // Activity/List Widget END -->
+
+      <!-- Latest Orders/List Widget -->
+      {% comment %}
+	<div class="widget margin-bottom-none" data-toggle="collapse-widget">
+
+	  <!-- Widget Heading -->
+	  <div class="widget-head">
+	    <h4 class="heading">Last orders</h4>
+	    <a href="" class="details pull-right">more</a>
+	  </div>
+	  <!-- // Widget Heading -->
+
+	  <div class="widget-body list products">
+	    <ul>
+              {% for order in last_seven_order %}
+                <li>
+                  <a href="{% url 'order_details' order.id %}">
+                    {% for item in order.items.all %}
+                      <img src="{{ item.img }}" class="img" />
+                    {% endfor %}
+		    <span class="title"><strong>${{ order.value }}</strong></span>
+		    <span class="count"></span>
+                  </a>
+		</li>
+              {% endfor %}
+	    </ul>
+	  </div>
+	</div>
+      {% endcomment %}
+      <!-- // Latest Orders/List Widget END -->
+    </div>
+    <!-- // Column END -->
+
+  </div>
+  <!-- // Row END -->
+
+
+  <!-- Button Widget -->
+
+  <div class="separator"></div>
+  <!-- // Button Widget END -->
+{% endblock %}

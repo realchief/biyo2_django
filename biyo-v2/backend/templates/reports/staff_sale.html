@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load report_tags %}
+
+
+{% block content %}
+        <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reports_home' %}">{% trans "Repots" %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Sale items" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Reports" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+        <div class="row">
+            <div class="span4">
+                <ul>
+                    {% with 'item_sales' as active %}
+                        {% include "reports/includes/report_list.html" %}
+                    {% endwith %}
+                </ul>
+            </div>
+            <div>
+                <a class="btn" href="{% url 'item_sales_pdf' %}" target="_blank"><i class="icon-file"></i>{% trans "Export pdf" %}</a>
+            </div>
+            <div class="separator bottom"></div>
+            <div class="span8">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Item name" %}</th>
+                            <th>{% trans "Sku" %}</th>
+                            <th>{% trans "Item sold" %}</th>
+                            <th>{% trans "Gross sales" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for object in object_list %}
+                            <tr>
+                                <td>{{ object }}</td>
+                                <td class="right">{{ object.pk }}</td>
+                                <td class="right">{{ object.order_items.count }}</td>
+                                <td class="right">${{ object.order_items.all|sum_price|floatformat:2|default:"0.00" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <div class="innerLR">
+    </div>
+{% endblock %}

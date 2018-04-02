@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+
+
+<ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reports_home' %}">{% trans "Reports" %}</a></li>
+
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Reports" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+        <div class="row">
+            <div class="span4">
+                <ul>
+                    {% with 'discount_summary' as active %}
+                        {% include "reports/report_list_new.html" %}
+                    {% endwith %}
+                </ul>
+            </div>
+
+            <div class="separator bottom"></div>
+			<div class="span8">
+				{% include "reports/includes/filter.html" %}
+ <br/><br/>
+            <br/><br/>
+
+            <h5>Order item.price*item.quantity vs. order.subtotal AND Summ (Payments.amount_paid) vs. order.grand_total</h5>
+           <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Order" %}</th>
+                            <th>{% trans "Order Item SUMM" %}</th>
+                            <th>{% trans "Order grand_total" %}</th>
+                            <th>{% trans "Payments Summ(amount_paid)" %}</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for order in outitem %}
+                            <tr>
+                                <td><a href="{% url 'order-detail' order.id%}">{{ order.id }}</a></td>
+                                <td>{{ order.subtotal }}</td>
+                                <td class="right">
+                                {{ order.grand_total }}
+                                </td>
+                            <td class="right">
+                                {{ order.description }}
+                                </td>
+
+
+                            </tr>
+                        {% endfor %}
+
+
+
+                    </tbody>
+                </table>
+
+
+ <br/><br/>
+            <br/><br/>
+{#                <h5>Order (item.price+item.tax)*item.quantity vs. order.grand_total#}
+{#                    AND (item.price+item.tax)*item.quantity vs. Summ( Payments.amount_paid)#}
+{#                    AND order.grand_total vs. Summ( Payments.amount_paid) </h5>#}
+{#             <table class="table table-bordered">#}
+{#                    <thead>#}
+{#                        <tr>#}
+{#                            <th>{% trans "Order" %}</th>#}
+{#                            <th>{% trans "Order Item SUMM" %}</th>#}
+{#                            <th>{% trans "Order grand_total" %}</th>#}
+{#                            <th>{% trans "Payments Summ(amount_paid)" %}</th>#}
+{##}
+{##}
+{#                        </tr>#}
+{#                    </thead>#}
+{#                    <tbody>#}
+{##}
+{#                        {% for order in orderout %}#}
+{#                            <tr>#}
+{#                                <td><a href="{% url 'order-detail' order.id%}">{{ order.id }}</a></td>#}
+{#                                <td>{{ order.subtotal }}</td>#}
+{#                                <td class="right">#}
+{#                                {{ order.grand_total }}#}
+{#                                </td>#}
+{#                            <td class="right">#}
+{#                                {{ order.description }}#}
+{#                                </td>#}
+{##}
+{##}
+{#                            </tr>#}
+{#                        {% endfor %}#}
+{##}
+{##}
+{##}
+{#                    </tbody>#}
+{#                </table>#}
+
+            <br/><br/>
+            <br/><br/>
+            {% if order_without_items %}
+            Orders without Items and Payments
+            <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Order" %}</th>
+                            <th>{% trans "Order subtotal" %}</th>
+                            <th>{% trans "Order grand_total" %}</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for order in order_without_items %}
+                            <tr>
+                                <td><a href="{% url 'order-detail' order.id%}">{{ order.id }}</a></td>
+                                <td>{{ order.subtotal }}</td>
+                                <td class="right">
+                                {{ order.grand_total }}
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+
+
+
+                    </tbody>
+                </table>
+            {% endif %}
+
+
+
+
+            </div>
+
+        </div>
+    <div class="innerLR">
+    </div>
+
+{% endblock %}

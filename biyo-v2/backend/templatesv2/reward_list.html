@@ -1,0 +1,122 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+
+<div class="row clearfix">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">{% trans "Reward Campaigns" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-5">
+        <!-- <div class="input-daterange" data-plugin="datepicker">
+            <div class="input-group">
+                <span class="input-group-addon">
+                        <i class="icon md-calendar" aria-hidden="true"></i>
+                      </span>
+                <input type="text" class="form-control" name="start" placeholder="Start Date">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">to</span>
+                <input type="text" class="form-control" name="end" placeholder="End Date">
+            </div>
+        </div> -->
+    </div>
+    <div class="hidden-md-up" style="height: 50px;">
+    </div>
+    <div class="col-sm-12 col-md-4">
+
+        <div class="pull-md-right" aria-label="Add Order">
+            <a href="{% url "reward_create" %}"><button type="button" class="btn btn-success waves-effect"><i class="icon md-plus" aria-hidden="true"></i> {% trans "Add Reward Compaign" %} </button></a>
+        </div>
+
+    </div>
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="m-b-15">
+                    <!-- <button id="addToTable" class="btn btn-primary" type="button">
+        <i class="icon md-plus" aria-hidden="true"></i> Add row
+      </button> -->
+                </div>
+            </div>
+        </div>
+    {% if object_list %}
+        <table class="table table-hover table-striped" cellspacing="0" id="exampleFixedHeader">
+            <thead>
+                <tr>
+                    <th>{% trans "Name" %}</th>
+                    <th>{% trans "Points to Reedem" %}</th>
+                    <th>{% trans "Discount  Type" %}</th>
+                    <th>{% trans "Row for Edit " %}</th>
+                    <th>{% trans "Row for Delete " %}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for object in object_list %}
+                    <tr>
+                        <td class="center">
+                            <span class="x-editable" data-pk="{{object.pk}}" data-name="name" data-type="text" data-url="{% url 'reward_update' pk=object.pk %}" data-title="Enter  name">
+                                {{ object.name }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="x-editable" data-pk="{{object.pk}}" data-name="points_redeem" data-type="text" data-url="{% url 'reward_update' pk=object.pk %}" data-title="Enter points">
+                                {{ object.points_redeem }}
+                            </span>
+                        </td>
+
+                        <td class="center">
+                              <span class="x-editable-select" data-pk="{{object.pk}}" data-name="discount" data-type="select" data-url="{% url 'reward_update' pk=object.pk %}" data-title="Discount type" data-value="{{object.discount_type}}">
+                                {{ object.get_discount_display }}
+                              </span>
+                        </td>
+                        <td class="center">
+                            <a href="{% url 'reward_update' pk=object.id %}">
+                              <button type="button" class="btn btn-warning waves-effect">{% trans "Edit" %}</button>
+                            </a>
+                        </td>
+                        <td>
+                             <a href="{% url 'reward_delete' pk=object.id %}">
+                              <button class="btn btn-danger waves-effect"> {% trans "Delete" %}</button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    {% else %}
+        {% include 'reports/includes/empty.html' %}
+    {% endif %}
+    </div>
+</div>
+{% include "includes/modal_delete.html" %}
+{% include "includes/modal_add.html" %}
+
+{% endblock content %}
+{% block scripts %}
+	{{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+	<script type="text/javascript">
+
+	var form = $('#form-hidden tbody').clone();
+	$.fn.editable.defaults.mode = 'inline';
+	$('.x-editable').editable({send: 'always'});
+
+    $('.x-editable-select').editable({
+	    source: [
+	           {value: "Discount", text: 'Discount'},
+	           {value: 'Text', text: 'Text'}
+	    ]
+    });
+	</script>
+{% endblock %}

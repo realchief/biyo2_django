@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+
+
+
+{% block content %}
+        <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reports_home' %}">{% trans "Reports" %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Sales summary" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Reports" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+        <div class="row">
+            <div class="span4">
+                <ul>
+                    {% with 'top_item_sales' as active %}
+                        {% include "reports/includes/report_list.html" %}
+                    {% endwith %}
+                </ul>
+            </div>
+            <div>
+{#                <a class="btn" href="{% url 'sales_summary_pdf' %}" target="_blank"><i class="icon-file"></i>{% trans "Export pdf" %}</a>#}
+            </div>
+            <div class="separator bottom"></div>
+            <div class="span8">
+				{% include "reports/includes/filter.html" %}
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for id,top in top_item_sales %}
+                        <tr><td>{{ top.name}}</td>
+                            <td>{{ top.q}}</td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <div class="innerLR">
+    </div>
+{% endblock %}

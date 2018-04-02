@@ -1,0 +1,94 @@
+### Python template
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+
+
+*.iml
+.idea/
+.env
+staticfiles
+geoip_data/
+!.gitkeep
+settings_local.py
+.settings
+.project
+.pydevproject
+.vagrant/
+
+
+
+### OSX template
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# ENV
+venv/
+
+# SQL
+*.sql
+
+# Foreman
+backend/.env
+
+# Local DB
+db.sqlite3
+/backup/profiles.sqlite3
+/pulsewallet/profiles.sqlite3
+/pulsewallet/db.sqlite3
+
+
+# By project
+Vagrantfile
+pulsewallet_data
+bootstrap.sh
+/media
+/storage
+/static
+
+backend/settings/store_*/
+
+/apache2

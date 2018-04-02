@@ -1,0 +1,113 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load tz %}
+{% load panel_tags %}
+{% load humanize %}
+{% load bootstrap3 %}
+
+
+<div class="row clearfix">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">{% trans "Sales Orders" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+
+    <div class="col-sm-12 col-md-5">
+        {% include 'reports/includes/filter.html' %}
+    </div>
+    <div class="col-sm-12 col-md-4">
+        <div class="pull-md-right" aria-label="Add Order" >
+            <a href="{% url 'order_create' %}"><button type="button" class="btn btn-success waves-effect"><i class="icon md-plus" aria-hidden="true"></i> {% trans 'New Order' %}</button></a>
+        </div>
+    </div>
+    <div class="col-sm-12"><h1></h1></div>
+    <div class="col-sm-12">
+        <form method="post" >
+            {% csrf_token %}
+            <div class="col-sm-12 col-md-2">
+                {% bootstrap_field  form.status show_label=False %}
+            </div>
+            <div class="col-sm-12 col-md-2">
+                {% bootstrap_field form.employees show_label=False %}
+            </div>
+            <div class="col-sm-12 col-md-2">
+                {% bootstrap_field form.customer %}
+            </div>
+            <div class="col-sm-12 col-md-2">
+                {% bootstrap_field form.terminal show_label=False %}
+            </div>
+            <div class="col-sm-12 col-md-2">
+            {% bootstrap_field form.payment show_label=False %}
+            </div>
+            <button class="btn orders btn-primary waves-effect" id="statusfilter">{% trans "Filter" %}</button>
+            <a  class="btn orders btn-secondary waves-effect" href="{% url 'ordersortlistclean' %}">{% trans "Clear Filter" %}</a>
+        </form>
+    </div>
+    <div class="hidden-md-up" style="height: 50px;">
+    </div>
+
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+<div class="panel-body" style="max-width: 100%; overflow-x: auto">
+<div class="row">
+  <div class="col-xs-12 col-md-6">
+    <div class="m-b-15">
+    </div>
+  </div>
+</div>
+{% if object_list %}
+<table class="table table-hover table-striped" cellspacing="0" id="exampleFixedHeader">
+  <thead>
+    <tr>
+      <th>{% trans "Order #" %}</th>
+      <th>{% trans "Date" %}</th>
+      <th>{% trans "Sold By" %}</th>
+      <th>{% trans "Open Date" %}</th>
+      <th>{% trans "Register" %}</th>
+      <th>{% trans "Customer" %}</th>
+      <th>{% trans "Status" %}</th>
+      <th>{% trans "Total" %}</th>
+
+    </tr>
+    </thead>
+    <tbody>
+       {% for order in object_list %}
+                 <tr class="selectable">
+                   <td class="center"><a href="{% url 'order-detail' pk=order.pk %}">{{ order.pk }}</a></td>
+                   {% if order.close_date == '' or order.hold_date == '' %}
+                       <td class="center">{{ order.open_date|timezone:tz|date:"m-d-Y h:i A" }}</td>
+                   {% else %}
+                       <td class="center">{{ order.close_date|timezone:tz|date:"m-d-Y h:i A" }}</td>
+                   {% endif %}
+                   <td class="center">{{ order.emp_open }}</td>
+                   <td class="center">{{ order.open_date|timezone:tz|date:"m-d-Y h:i A" }}</td>
+                   <td >Main Register</td>
+                   <td >{{ order.customer }}</td>
+                   {% if order.get_status_display == "Open" %}
+                       <td><span class="tag  tag-info w-75px">{{ order.get_status_display }}</span></td>
+                   {% elif order.get_status_display == "Hold" %}
+                       <td><span class="tag  tag-warning w-75px">{{ order.get_status_display }}</span></td>
+                   {% elif order.get_status_display == "Closed" %}
+                       <td><span class="tag  tag-success w-75px">{{ order.get_status_display }}</span></td>
+                   {% elif order.get_status_display == "Canceled" %}
+                       <td><span class="tag  tag-primary w-75px">{{ order.get_status_display }}</span></td>
+                   {% else %}
+                       <td><span class="tag  tag-danger w-75px">{{ order.get_status_display }}</span></td>
+                   {% endif %}
+                   <td class="center">${{ order.grand_total|floatformat:2|default:"0.00"|intcomma }}</td>
+       {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    {% include 'reports/includes/empty.html' %}
+{% endif %}
+<div align="center">
+{% include "includes/paginator.html" %}
+</div>
+</div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Breadcrumb -->
+<ul class="breadcrumb">
+	<li><a href="/" class="glyphicons home"><i></i>Strona główna</a></li>
+	<li class="divider"></li>
+	<li><a href="{% url 'tablets' %}" >Tablety</a></li>
+</ul>
+<div class="separator bottom"></div>
+<!-- // Breadcrumb END -->
+
+{% include "_tablet_list.html" %}
+
+<!-- Button Widget -->
+<div class="menubar">
+
+</div>
+<div class="separator"></div>
+<!-- // Button Widget END -->
+{% endblock %}

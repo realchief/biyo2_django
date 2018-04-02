@@ -1,0 +1,13 @@
+.simplecolorpicker.glyphicons span.color[data-selected]:after {
+  /* Taken from glyphicon class. */
+  position: relative;
+  top: 2px;
+  font-family: 'Glyphicons';
+  line-height: .9;
+  -webkit-font-smoothing: antialiased;
+
+  content: '\e207'; /* Ok/check mark */
+
+  margin-right: 1px;
+  margin-left: 4px;
+}

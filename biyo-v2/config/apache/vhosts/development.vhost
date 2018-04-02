@@ -1,0 +1,15 @@
+
+# This file was auto-generated
+
+<VirtualHost *>
+    ServerName biyo.webfactional.com
+    SetEnv DJANGO_SETTINGS_MODULE settings.store_development.settings
+
+    CustomLog /home/biyo/logs/user/development/apache-access.log combined
+    ErrorLog /home/biyo/logs/user/development/apache-error.log
+
+    WSGIDaemonProcess biyo.webfactional.com processes=1 threads=2 python-path=/home/biyo/webapps/development/backend:/home/biyo/webapps/development/venv/lib/python2.7:/home/biyo/webapps/development/venv/lib/python2.7/site-packages
+    WSGIProcessGroup biyo.webfactional.com
+    WSGIScriptAlias / /home/biyo/webapps/development/backend/wsgi.py process-group=biyo.webfactional.com
+</VirtualHost>
+

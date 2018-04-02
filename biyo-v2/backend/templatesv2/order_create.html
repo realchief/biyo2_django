@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block content %}
+<thead>
+    <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+    <th class="divider">/</th>
+    <th><a href="{% url 'order-list' %}">{% trans "Orders" %}</a></th>
+    <th class="divider">/</th>
+    <th>{% trans "Add New Order" %}</th>
+</thead>
+<div class="separator bottom"></div>
+
+<div class="panel-header">
+    <h3>{% trans "Add new order" %} #<b id="order-number"></b></h3>
+{#      <h3>{% trans "Edit order" %} #<b id="order-number"></b></h3>#}
+    <img id="order-preloader" src="{{ STATIC_URL }}images/preloader.gif" style="display: none;">
+    <div class="clearfix"></div>
+</div>
+<div class="separator bottom"></div>
+
+    <div class="row clearfix">
+        <div class="widget">
+            <form method="post" enctype="multipart/form-data" id="add-order-form">
+                {% csrf_token %}
+                <div id="order-part">
+                    <input type="hidden" id="id_order_id" name="id_order_id" value/>
+                    {{ form.number }}
+                    {{ form.balance_remaining }}
+                    {{ form.subtotal }}
+                    {{ form.tax_total }}
+                    {{ form.grand_total }}
+                    {{ form.discount_total }}
+                    {{ form.open_date }}
+                    {{ form.hold_date }}
+                    {{ form.close_date }}
+                    {{ form.emp_open_id }}
+                    {{ form.emp_close_id }}
+                    {{ form.status }}
+
+                    <div class='row-fluid'>
+                        <div class="col-sm-12 col-md-4"><label>{{ form.customer_id.label }}:{% if form.customer_id.field.required %}*{% endif %}</label>{% bootstrap_field form.customer_id show_label=False %}</div>
+                        <br/>
+
+                        <div class="btn-group pull-md-right" data-user="{{ user_id }}">
+                          <a href="#" id="btn_cancel">
+                            <button type="button" class="btn btn-primary waves-effect"><i class="icon md-alert-circle-o " aria-hidden="true"></i>
+                                {% trans "Cancel Order" %}
+                            </button>
+                          </a>
+                          <a href="#" id="btn_close">
+                            <button type="button" class="btn btn-primary waves-effect"><i class="icon md-bookmark-outline" aria-hidden="true"></i>
+                              {% trans "Leave As Open" %}
+                            </button>
+                          </a>
+                          <a href="#" id="btn_hold">
+                            <button type="button" class="btn btn-primary waves-effect"><i class="icon md-time" aria-hidden="true"></i>
+                              {% trans "Hold Order" %}
+                            </button>
+                          </a>
+                        </div>
+                    </div>
+                    <div class="separator bottom"></div>
+                    <div class='row-fluid'>
+                        <div class="control-group span12">
+                            <div class="col-sm-12">
+                                {% bootstrap_field form.description show_label=True %}
+                            </div>
+                        </div>
+                    </div>
+{#                    <div class='row-fluid'>#}
+{#                        <div class="control-group span4"><label>{{ form.discount_orders.label }}:{% if form.discount_orders.field.required %}*{% endif %}</label>#}
+{#                            {{ form.discount_orders }}#}
+{#                            <div class="btn-group">#}
+{#                                <button id="id_select_discount" class="btn btn-mini dropdown-toggle" data-toggle="dropdown">#}
+{#                                    <span class="caret"></span>#}
+{#                                </button>#}
+{#                                <ul class="dropdown-menu">#}
+{#                                    <li class="li-preloader">#}
+{#                                        <img src="{{ STATIC_URL }}assets/img/preloader.gif" style="display: block;margin-left: auto;margin-right: auto;">#}
+{#                                    </li>#}
+{#                                </ul>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                TODO: Uncomment it later - it is necessary and working part!#}
+                </div>
+            </form>
+            <div class="col-sm-12" id="order-items-part">
+            </div>
+            <div style="display: none;">
+
+                <div class="col-sm-12 pull-md-right">
+                <tr>
+                    <div class="col-sm-12 col-md-1 pull-md-right"><strong>Subtotal: $ </strong> <span id="subtotal"></span></div>
+                    <div class="col-sm-12 col-md-1 pull-md-right"><strong>Discounts: $ </strong> <span id="discounts"></span></div>
+                    <div class="col-sm-12 col-md-1 pull-md-right"><strong>Taxes: $ </strong> <span id="taxes"></span></div>
+                    </tr>
+                </div>
+
+                <div class="col-sm-12 pull-md-right" id="total">
+                    <h3 class="pull-md-right" style="line-height: 0; padding: 22px;"></h3>
+                    <h2 class="pull-md-right">Total: $ </h2>
+                </div>
+                <div class="col-sm-12 pull-md-right" id="balance_remaining">
+                    <h3 class="pull-md-right" style="line-height: 0; padding: 22px;"></h3>
+                    <h2 class="pull-md-right">Balance: $ </h2>
+                </div>
+            </div>
+            <div id="modifier-modal" class="modal hide fade" tabindex="-1" aria-hidden="true" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h3>
+                        {% trans 'Select modifiers' %}:
+                        <img class="modifier-preloader pull-right" src="{{ STATIC_URL }}images/preloader.gif" style="display: none;">
+                        <button class="close" data-dismiss="modal" aria-label="Close"><i class="icon-remove" ></i></button>
+                        </h3>
+                    </div>
+                    <div class="modal-body" id="order-modifiers-part" style="overflow: hidden;">
+                        <div class="hidden" id="template" style="display: none">
+                        <div style="position: relative;overflow: hidden;">
+                            <div id="choice_section">
+
+                                <div class="accordion">
+                                    <div id="modifier-template" class="hidden">
+                                        <div class="accordion-group">
+                                            <div class="accordion-heading">
+                                                <a class="list-group-item modifier-group-header accordion-toggle" data-toggle="collapse" href="#collapse_%s">
+                                                </a>
+                                            </div>
+                                            <div id="collapse_%s" class="accordion-body in collapse">
+                                                <div class="accordion-inner">
+                                                    <div class="row-fluid modifier-item list-group-dividered list-group-item list-group-item-light">
+                                                        <div class="span1">
+                                                            <a title="Add modifier" style="margin-top: 5px" class="close add-modifier glyphicons large circle_plus">
+                                                                <i></i>
+                                                            </a>
+                                                        </div>
+                                                        <div class="span5"><strong>Name:</strong> <i class="modifier-name"></i></div>
+                                                        <div class="span3"><strong>Price:</strong> <span class=" modifier-price"></span></div>
+                                                        <div class="span3"><strong>Cost:</strong> <span class=" modifier-cost"></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="attachment_section">
+                                <div id="modifier-template" class="hidden">
+                                    <form class="row-fluid modifier-modal-form">
+                                        <div class="span1"><a title="Remove modifier" class="close pull-left remove-modifier">&times;</a></div>
+                                        <div class="span6"><h4>Name: </h4>{% bootstrap_field modifier_form.name show_label=False %}</div>
+                                        <div class="span4"><h4>Price: </h4><h3 class="price-cost"></h3></div>
+                                        {{ modifier_form.cost }}
+                                        {{ modifier_form.price }}
+                                        {{ modifier_form.item_id }}
+                                        {{ modifier_form.instance_id }}
+                                        {{ modifier_form.void_status }}
+                                        {{ modifier_form.oryginal_id }}
+                                        {{ modifier_form.group_id }}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class=" col-sm-12 pull-md-right" id="payment-part">
+                <div class="col-sm-12 pull-md-right" id="id-processing-panel" style="display: none;">
+                    <h3 style="text-align: center;">Transaction is processing...</h3>
+                    <img src="{{ STATIC_URL }}assets/img/preloader.gif" style="margin: auto;display: block;">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+    <link href="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery-ui/css/smoothness/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" />
+    <script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery-ui/js/jquery-ui-1.9.2.custom.min.js"></script>
+    <script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+
+    <script src="{{ STATIC_URL }}js/order_manager.js?nocache=12345"></script>
+    <div id="screen_locker" style="display:none;top:0;right:0;width:100%;height:100%;background:white;opacity:.7;z-index:1000;position:fixed;">
+        <img src="{{ STATIC_URL }}assets/img/preloader.gif" alt="Loading..." style="margin:auto;position:absolute;top:0;bottom:0;left:0;right:0;">
+    </div>
+{% endblock %}

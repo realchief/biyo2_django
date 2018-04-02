@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reports_home' %}">{% trans "Repots" %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Sale items" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Reports" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+    <div class="row">
+        <div class="span4">
+            <ul>
+                {% with 'payments' as active %}
+                    {% include "reports/includes/report_list.html" %}
+                {% endwith %}
+            </ul>
+        </div>
+
+        <div class="separator bottom"></div>
+        <div class="span8">
+			{% include "reports/includes/filter.html" %}
+            {% if total_sum %}
+            <table class="table">
+                <tr>
+                    <th>Cash</th><td>${{ cash_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                </tr>
+				<tr>
+                    <th>Credit Card</th><td>${{ total_card_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                </tr>
+                <tr>
+                    <td>Visa</td><td>${{ visa_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                </tr>
+                <tr>
+                    <td>Mastercard</td><td>${{ mastercard_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                </tr>
+                <tr>
+                    <td>American Express</td><td>${{ american_express_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                </tr>
+                <tr>
+                    <td>Discover</td><td>${{ discover_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                </tr>
+
+                 <tr>
+                    <td>Other CC</td><td>${{ other_cc|floatformat:2|default:"0.00"|intcomma }}</td>
+                </tr>
+
+                <tr>
+					<th>Refunded Payments</th><td>${{ refunded|floatformat:2|default:"0.00"|intcomma }}</td>
+                </tr>
+
+
+				<tr>
+					<th>Total before Tips</th><td>${{ total_before_tips|floatformat:2|default:"0.00"|intcomma }}</td>
+                </tr>
+                <tr>
+					<th>Tips</th><td>${{ tips_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                </tr>
+				<tr>
+					<th>Total</th><td>${{ total_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                </tr>
+            </table>
+            {% else %}
+                {% include 'reports/includes/empty.html' %}
+      {% endif %}
+        </div>
+    </div>
+    <div class="innerLR">
+    </div>
+{% endblock %}

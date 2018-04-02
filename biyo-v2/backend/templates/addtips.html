@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+{{ tra }}
+
+    <div class="innerLR">
+        <div class="widget">
+            {% if form.errors %}
+                <div class="alert alert-warning">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    {{ form.as_table }}
+                </table>
+                <div class="separator bottom"></div>
+                <div>
+                    <input type="submit" class="btn btn-primary" value="ADD"/>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}

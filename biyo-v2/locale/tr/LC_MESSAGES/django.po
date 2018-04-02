@@ -1,0 +1,1578 @@
+# BIYO DASHBOARD - TURKISH LANGUAGE
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <MEHMET@SARICICEK.COM>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Biyo Dashboard\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-26 21:00+0000\n"
+"PO-Revision-Date: 2016-03-04 22:54-0500\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.3\n"
+
+#: employees/models.py:59 products/models.py:171
+#: theme/templates/customer_list.html:40
+msgid "Email"
+msgstr "E-posta"
+
+#: employees/models.py:60 products/models.py:32 products/models.py:60
+#: products/models.py:71 products/models.py:82 products/models.py:94
+#: products/models.py:139 products/models.py:161 settings/models.py:7
+#: theme/templates/category_list.html:26 theme/templates/discount_list.html:26
+#: theme/templates/display_list.html:32 theme/templates/employee_list.html:26
+#: theme/templates/modifier_list.html:28
+#: theme/templates/modifiergroup_detail.html:11
+#: theme/templates/modifiergroup_list.html:34
+#: theme/templates/modifiergroup_list.html:69
+#: theme/templates/order_detail.html:76 theme/templates/order_detail.html:110
+#: theme/templates/order_items.html:14 theme/templates/printer_list.html:27
+#: theme/templates/product_list.html:53
+#: theme/templates/product_list_stock.html:46
+#: theme/templates/reward_list.html:28 theme/templates/store_list.html:27
+#: theme/templates/table_list.html:27
+#: theme/templates/tablesection_list.html:26
+#: theme/templates/taxrate_list.html:27 theme/templates/terminal_list.html:28
+msgid "Name"
+msgstr "İsim"
+
+#: employees/models.py:61 products/models.py:164
+msgid "Address"
+msgstr "Adres"
+
+#: employees/models.py:62
+msgid "Address2"
+msgstr "Adres 2"
+
+#: employees/models.py:63 employees/models.py:117 products/models.py:166
+msgid "City"
+msgstr "Şehir"
+
+#: employees/models.py:64 employees/models.py:118 products/models.py:167
+msgid "State"
+msgstr "Bölge"
+
+#: employees/models.py:65 employees/models.py:119
+msgid "Zip code"
+msgstr "Posta kodu"
+
+#: employees/models.py:66 products/models.py:169
+#: theme/templates/customer_list.html:41 theme/templates/employee_list.html:27
+msgid "Phone"
+msgstr "Telefon"
+
+#: employees/models.py:67
+msgid "Pin"
+msgstr "POS Pin"
+
+#: employees/models.py:68 theme/templates/employee_list.html:28
+msgid "Role"
+msgstr "Rol"
+
+#: employees/models.py:69
+msgid "Vein String"
+msgstr "Damar String"
+
+#: employees/models.py:70
+msgid "Hourly Rate"
+msgstr "Saatlik Ücret"
+
+#: products/models.py:33 products/models.py:96
+msgid "Color"
+msgstr "Renk"
+
+#: products/models.py:34 products/models.py:97
+msgid "Sorting"
+msgstr "Sıralama"
+
+#: products/models.py:35 products/models.py:74 products/models.py:106
+#: products/models.py:255 theme/templates/category_list.html:28
+#: theme/templates/modifier_list.html:32
+#: theme/templates/modifiergroup_detail.html:15
+#: theme/templates/modifiergroup_list.html:73
+#: theme/templates/product_list.html:60
+msgid "Active"
+msgstr "Aktif"
+
+#: products/models.py:37 products/models.py:95
+#: theme/templates/table_list.html:28
+msgid "Image"
+msgstr "Resim"
+
+#: products/models.py:48 theme/templates/taxrate_list.html:28
+msgid "Rate"
+msgstr "Ücret"
+
+#: products/models.py:49
+msgid "Tax Name"
+msgstr "Vergi İsmi"
+
+#: products/models.py:61 theme/templates/modifiergroup_list.html:35
+msgid "Select Multiple"
+msgstr "Coklu seç"
+
+#: products/models.py:70 theme/templates/modifier_list.html:29
+#: theme/templates/modifiergroup_detail.html:12
+#: theme/templates/modifiergroup_list.html:70
+msgid "Groups"
+msgstr "Grouplar"
+
+#: products/models.py:72 products/models.py:98
+#: theme/templates/modifier_list.html:30
+#: theme/templates/modifiergroup_detail.html:13
+#: theme/templates/modifiergroup_list.html:71
+#: theme/templates/product_list.html:55
+msgid "Cost"
+msgstr "Maliyet"
+
+#: products/models.py:73 products/models.py:99 taskin/models.py:31
+#: theme/templates/modifier_list.html:31
+#: theme/templates/modifiergroup_detail.html:14
+#: theme/templates/modifiergroup_list.html:72
+#: theme/templates/order_detail.html:77 theme/templates/order_detail.html:111
+#: theme/templates/order_items.html:15 theme/templates/product_list.html:56
+#: theme/templates/product_list_stock.html:47
+#: theme/templates/specialprices_list.html:31
+msgid "Price"
+msgstr "Fiyat"
+
+#: products/models.py:100 theme/templates/product_list.html:57
+#: theme/templates/product_list_stock.html:45
+msgid "Barcode"
+msgstr "Barkod"
+
+#: products/models.py:101 theme/templates/product_list.html:58
+#: theme/templates/product_list_stock.html:48
+msgid "Stock"
+msgstr "Stok"
+
+#: products/models.py:104 products/models.py:173
+msgid "Tax Rate"
+msgstr "Vergi Ücreti"
+
+#: products/models.py:105
+msgid "Tax status"
+msgstr "Vergi Durumu"
+
+#: products/models.py:109
+msgid "Ask price everytime?"
+msgstr "Her seferinde fiyat sor?"
+
+#: products/models.py:112
+msgid "Print to Kitchen"
+msgstr "Mutfak için Yazdırma"
+
+#: products/models.py:115
+msgid "Which Printer"
+msgstr "Hangi yazıcı"
+
+#: products/models.py:140 settings/models.py:8
+#: theme/templates/discount_list.html:27
+msgid "Value"
+msgstr "Değer"
+
+#: products/models.py:141 theme/templates/discount_list.html:28
+msgid "Type"
+msgstr "Tür"
+
+#: products/models.py:162 theme/templates/store_list.html:28
+msgid "Logo"
+msgstr "Şirket Logosu:"
+
+#: products/models.py:163
+msgid "Number"
+msgstr "Numara"
+
+#: products/models.py:165
+msgid "Second Address"
+msgstr "İkinci adres"
+
+#: products/models.py:168
+msgid "Zipcode"
+msgstr "Posta kodu"
+
+#: products/models.py:170
+msgid "Fax"
+msgstr "Faks"
+
+#: products/models.py:172
+msgid "Website"
+msgstr "Web sitesi"
+
+#: products/models.py:174
+msgid "Package"
+msgstr "Paket"
+
+#: products/models.py:176
+msgid "XWeb URL"
+msgstr "XWeb URL"
+
+#: products/models.py:177
+msgid "XWeb ID"
+msgstr "XWeb ID"
+
+#: products/models.py:178
+msgid "XWeb Terminal ID"
+msgstr "XWeb Terminal ID"
+
+#: products/models.py:179
+msgid "XWeb Auth Key"
+msgstr "XWeb Auth Key"
+
+#: products/models.py:180
+msgid "XWeb Industry"
+msgstr "XWeb Industry"
+
+#: products/models.py:188 products/models.py:242
+#: theme/templates/store_list.html:12
+#: theme/templates/tablesection_list.html:27
+msgid "Store"
+msgstr "Mağaza"
+
+#: products/models.py:189
+msgid "Section Name"
+msgstr "Bölüm Adı"
+
+#: products/models.py:200
+msgid "Section"
+msgstr "Bölüm"
+
+#: products/models.py:201
+msgid "Table Name"
+msgstr "Masa Adı"
+
+#: products/models.py:203
+msgid "Table Image"
+msgstr "Masa Resmi"
+
+#: products/models.py:204
+msgid "X Value"
+msgstr "X Değeri"
+
+#: products/models.py:205
+msgid "Y Value"
+msgstr "Y Değeri"
+
+#: products/models.py:206
+msgid "Number of People"
+msgstr "Kişi sayısı"
+
+#: products/models.py:208
+msgid "Current Order"
+msgstr "Şuan ki Sipariş"
+
+#: products/models.py:241
+msgid "Name of Reward"
+msgstr "Ödül adı"
+
+#: products/models.py:243
+msgid "Amount of Points to Reedem"
+msgstr "Kazanmak icin Puan Sayısı"
+
+#: products/models.py:244
+msgid "Reward Type?"
+msgstr "Ödül türü?"
+
+#: products/models.py:246
+msgid "Discount Type?"
+msgstr "İndirim Türü?"
+
+#: products/models.py:248
+msgid "Discount Item?"
+msgstr "Ürun iskonto?"
+
+#: products/models.py:251
+msgid "Discount Value"
+msgstr "İndirim Değeri"
+
+#: products/models.py:252
+msgid "Discount Text"
+msgstr "İndirimi Metni"
+
+#: products/models.py:253
+msgid "Percentage or Dollars off"
+msgstr "Yüzde veya TL İndirim"
+
+#: products/models.py:254
+msgid "Disable Reward"
+msgstr "Ödüleri devre dışı bırak"
+
+#: pulsewallet/settings.py:120
+msgid "German"
+msgstr "Almanca"
+
+#: pulsewallet/settings.py:121
+msgid "English"
+msgstr "İngilizce"
+
+#: pulsewallet/settings.py:122
+msgid "Spanish"
+msgstr "İspanyolca"
+
+#: pulsewallet/settings.py:123
+msgid "Turkish"
+msgstr "Türkçe"
+
+#: reports/forms.py:25
+msgid "Payment Method"
+msgstr "Ödeme şekli"
+
+#: reports/forms.py:26 theme/templates/reports/customer_payment.html:81
+msgid "Date"
+msgstr "Tarih"
+
+#: reports/forms.py:27
+msgid "Check #"
+msgstr "Çek #"
+
+#: reports/forms.py:33
+msgid "Check number is required for this payment method."
+msgstr "Bu ödeme yöntemi için check numarası gereklidir."
+
+#: reports/views.py:1486
+msgid "Successfully processed a payment."
+msgstr "Ödeme başarıyla işledi."
+
+#: settings/models.py:9
+msgid "Description"
+msgstr "Açıklama"
+
+#: settings/models.py:11
+msgid "Terminal"
+msgstr "Terminal"
+
+#: settings/models.py:27
+msgid "Settings with this Name and Terminal already exists."
+msgstr "Bu adı ve Terminal ayarları zaten var."
+
+#: taskin/models.py:17 theme/templates/customergroup_list.html:29
+msgid "Group Name"
+msgstr "Grup Adı"
+
+#: theme/templates/account/login.html:9 theme/templates/account/login.html:10
+msgid "Password"
+msgstr "Şifre"
+
+#: theme/templates/account/login.html:12
+msgid "Remember me"
+msgstr "Beni Hatırla"
+
+#: theme/templates/account/login.html:16
+msgid "Login"
+msgstr "Giriş"
+
+#: theme/templates/account/password_reset.html:6
+msgid "Password reset"
+msgstr "Şifre Sıfırlama"
+
+#: theme/templates/account/password_reset.html:8
+msgid ""
+"Forgotten your password? Enter your email address below, and we'll email "
+"instructions for setting a new one."
+msgstr ""
+"Şifrenizi mi unuttunuz? E-posta adresinizi girin ve yeni bir ayarlama "
+"yönergeleri e-posta göndereceğiz."
+
+#: theme/templates/account/password_reset.html:12
+msgid "Email address:"
+msgstr "E-posta:"
+
+#: theme/templates/account/password_reset.html:12
+msgid "Reset my password"
+msgstr "Şifreyi yenile"
+
+#: theme/templates/account/password_reset_complete.html:6
+msgid "Password reset complete"
+msgstr "Şifre yenileme tamamlandı"
+
+#: theme/templates/account/password_reset_complete.html:8
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr "Hesabınız kilidi açılmıştır. Şimdi giriş yapabilirsiniz."
+
+#: theme/templates/account/password_reset_complete.html:10
+msgid "Log in"
+msgstr "Giriş"
+
+#: theme/templates/account/password_reset_confirm.html:8
+msgid "Enter new password"
+msgstr "Yeni Parola"
+
+#: theme/templates/account/password_reset_confirm.html:10
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr "Lütfen yeni şifrenizi tekrar girin."
+
+#: theme/templates/account/password_reset_confirm.html:14
+msgid "New password:"
+msgstr "Yeni Şifre:"
+
+#: theme/templates/account/password_reset_confirm.html:16
+msgid "Confirm password:"
+msgstr "Şifre doğrula:"
+
+#: theme/templates/account/password_reset_confirm.html:17
+msgid "Change my password"
+msgstr "Şifremi değiştir"
+
+#: theme/templates/account/password_reset_confirm.html:22
+msgid "Password reset unsuccessful"
+msgstr "Başarısız parola sıfırlama"
+
+#: theme/templates/account/password_reset_confirm.html:24
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+"Parola sıfırlama linki geçersiz görünüyor. Aşağıdaki bağlantıdan yeni bir "
+"link isteyiniz."
+
+#: theme/templates/account/password_reset_done.html:6
+msgid "Password reset successful"
+msgstr "Başarılı parola sıfırlama"
+
+#: theme/templates/account/password_reset_done.html:8
+msgid ""
+"We've emailed you instructions for setting your password. You should be "
+"receiving them shortly."
+msgstr "Şifrenizi ayarlamanız için talimatları içeren bir e-posta gönderildi."
+
+#: theme/templates/account/password_reset_done.html:10
+msgid ""
+"If you don't receive an email, please make sure you've entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+"Bir iş günü içinde e-posta almazsanız lütfen ilk olarak istenmeyen e-posta "
+"klasörünüzü kontrol edin."
+
+#: theme/templates/base.html:135 theme/templates/clean_base.html:84
+msgid "Logout"
+msgstr "Çıkış"
+
+#: theme/templates/base.html:160 theme/templates/box_create.html:6
+#: theme/templates/box_delete_confirm.html:5 theme/templates/box_list.html:6
+#: theme/templates/box_update.html:7 theme/templates/category_create.html:6
+#: theme/templates/category_delete_confirm.html:5
+#: theme/templates/category_detail.html:6 theme/templates/category_list.html:6
+#: theme/templates/category_update.html:6 theme/templates/change_pass.html:6
+#: theme/templates/clean_base.html:109
+#: theme/templates/custom/quickproductadd.html:6
+#: theme/templates/customer_create.html:6
+#: theme/templates/customer_detail.html:6 theme/templates/customer_list.html:6
+#: theme/templates/customer_update.html:6
+#: theme/templates/customergroup_create.html:6
+#: theme/templates/customergroup_delete_confirm.html:5
+#: theme/templates/customergroup_list.html:6
+#: theme/templates/customergroup_update.html:6
+#: theme/templates/discount_create.html:6
+#: theme/templates/discount_delete_confirm.html:5
+#: theme/templates/discount_detail.html:6 theme/templates/discount_list.html:6
+#: theme/templates/discount_update.html:6
+#: theme/templates/display_create.html:6 theme/templates/display_list.html:6
+#: theme/templates/display_update.html:6 theme/templates/element_create.html:6
+#: theme/templates/element_list.html:6 theme/templates/employee_create.html:6
+#: theme/templates/employee_delete_confirm.html:5
+#: theme/templates/employee_detail.html:6 theme/templates/employee_list.html:6
+#: theme/templates/employee_update.html:6
+#: theme/templates/modifier_create.html:6
+#: theme/templates/modifier_delete_confirm.html:5
+#: theme/templates/modifier_detail.html:6 theme/templates/modifier_list.html:8
+#: theme/templates/modifier_update.html:6
+#: theme/templates/modifiergroup_create.html:6
+#: theme/templates/modifiergroup_delete_confirm.html:5
+#: theme/templates/modifiergroup_list.html:9
+#: theme/templates/modifiergroup_update.html:6
+#: theme/templates/order_create.html:6 theme/templates/order_detail.html:8
+#: theme/templates/order_list.html:14 theme/templates/printer_list.html:6
+#: theme/templates/printer_update.html:6 theme/templates/product_create.html:6
+#: theme/templates/product_delete_confirm.html:5
+#: theme/templates/product_detail.html:6 theme/templates/product_list.html:7
+#: theme/templates/product_list_stock.html:7
+#: theme/templates/product_update.html:7
+#: theme/templates/reports/accountant_summary.html:9
+#: theme/templates/reports/accountant_summary_test.html:9
+#: theme/templates/reports/checkorders.html:8
+#: theme/templates/reports/checkordersandpayments.html:8
+#: theme/templates/reports/customer-report.html:11
+#: theme/templates/reports/customer_payment.html:6
+#: theme/templates/reports/discount_summary.html:10
+#: theme/templates/reports/discounted_orders.html:9
+#: theme/templates/reports/edit_employee_total_hour.html:11
+#: theme/templates/reports/employee_sales_summary.html:10
+#: theme/templates/reports/employee_total_hour.html:13
+#: theme/templates/reports/home.html:7
+#: theme/templates/reports/hourly_sales.html:10
+#: theme/templates/reports/item_sales.html:11
+#: theme/templates/reports/order_gross_profit.html:10
+#: theme/templates/reports/order_types.html:9
+#: theme/templates/reports/payments.html:9
+#: theme/templates/reports/payouts.html:9
+#: theme/templates/reports/price_adjustments.html:9
+#: theme/templates/reports/product_order_views.html:14
+#: theme/templates/reports/sales_summary.html:9
+#: theme/templates/reports/staff_sale.html:8
+#: theme/templates/reports/time_card_weekly.html:12
+#: theme/templates/reports/top_customer.html:10
+#: theme/templates/reports/top_item_sales.html:10
+#: theme/templates/reward_create.html:6
+#: theme/templates/reward_delete_confirm.html:5
+#: theme/templates/reward_list.html:6 theme/templates/reward_update.html:6
+#: theme/templates/specialprices_create.html:6
+#: theme/templates/specialprices_list.html:6
+#: theme/templates/specialprices_update.html:6
+#: theme/templates/store_create.html:6
+#: theme/templates/store_delete_confirm.html:5
+#: theme/templates/store_detail.html:6 theme/templates/store_list.html:6
+#: theme/templates/store_update.html:6 theme/templates/success.html:5
+#: theme/templates/table_create.html:6
+#: theme/templates/table_delete_confirm.html:5
+#: theme/templates/table_detail.html:6 theme/templates/table_list.html:6
+#: theme/templates/table_update.html:6
+#: theme/templates/tablesection_create.html:6
+#: theme/templates/tablesection_delete_confirm.html:5
+#: theme/templates/tablesection_detail.html:6
+#: theme/templates/tablesection_list.html:6
+#: theme/templates/tablesection_update.html:6
+#: theme/templates/taxrate_create.html:6
+#: theme/templates/taxrate_delete_confirm.html:5
+#: theme/templates/taxrate_detail.html:6 theme/templates/taxrate_list.html:6
+#: theme/templates/taxrate_update.html:6
+#: theme/templates/terminal_create.html:6
+#: theme/templates/terminal_delete_confirm.html:5
+#: theme/templates/terminal_detail.html:6 theme/templates/terminal_list.html:6
+#: theme/templates/terminal_update.html:6
+#: theme/templates/timeclock_create.html:6
+#: theme/templates/timeclock_delete_confirm.html:5
+#: theme/templates/timeclock_detail.html:13
+#: theme/templates/timeclock_update.html:7
+msgid "Home"
+msgstr "Ana Sayfa"
+
+#: theme/templates/base.html:163 theme/templates/clean_base.html:112
+#: theme/templates/order_create.html:8 theme/templates/order_detail.html:10
+#: theme/templates/order_list.html:16 theme/templates/order_list.html.py:23
+#: theme/templates/reports/product_order_views.html:16
+msgid "Orders"
+msgstr "Siparişler"
+
+#: theme/templates/base.html:166 theme/templates/clean_base.html:115
+#: theme/templates/reports/accountant_summary.html:11
+#: theme/templates/reports/accountant_summary.html:17
+#: theme/templates/reports/accountant_summary_test.html:11
+#: theme/templates/reports/accountant_summary_test.html:17
+#: theme/templates/reports/checkorders.html:10
+#: theme/templates/reports/checkorders.html:15
+#: theme/templates/reports/checkordersandpayments.html:10
+#: theme/templates/reports/checkordersandpayments.html:15
+#: theme/templates/reports/customer-report.html:13
+#: theme/templates/reports/customer-report.html:19
+#: theme/templates/reports/discount_summary.html:12
+#: theme/templates/reports/discount_summary.html:18
+#: theme/templates/reports/discounted_orders.html:11
+#: theme/templates/reports/discounted_orders.html:17
+#: theme/templates/reports/edit_employee_total_hour.html:13
+#: theme/templates/reports/employee_sales_summary.html:12
+#: theme/templates/reports/employee_sales_summary.html:18
+#: theme/templates/reports/employee_total_hour.html:15
+#: theme/templates/reports/employee_total_hour.html:21
+#: theme/templates/reports/home.html:9 theme/templates/reports/home.html:13
+#: theme/templates/reports/hourly_sales.html:12
+#: theme/templates/reports/hourly_sales.html:18
+#: theme/templates/reports/item_sales.html:13
+#: theme/templates/reports/item_sales.html:19
+#: theme/templates/reports/order_gross_profit.html:12
+#: theme/templates/reports/order_gross_profit.html:18
+#: theme/templates/reports/order_types.html:11
+#: theme/templates/reports/order_types.html:17
+#: theme/templates/reports/payments.html:17
+#: theme/templates/reports/payouts.html:11
+#: theme/templates/reports/payouts.html:17
+#: theme/templates/reports/price_adjustments.html:17
+#: theme/templates/reports/sales_summary.html:11
+#: theme/templates/reports/sales_summary.html:17
+#: theme/templates/reports/staff_sale.html:16
+#: theme/templates/reports/time_card_weekly.html:14
+#: theme/templates/reports/time_card_weekly.html:20
+#: theme/templates/reports/top_customer.html:12
+#: theme/templates/reports/top_customer.html:18
+#: theme/templates/reports/top_item_sales.html:12
+#: theme/templates/reports/top_item_sales.html:18
+#: theme/templates/timeclock_create.html:8
+#: theme/templates/timeclock_delete_confirm.html:7
+#: theme/templates/timeclock_detail.html:15
+#: theme/templates/timeclock_detail.html:22
+#: theme/templates/timeclock_update.html:9
+msgid "Reports"
+msgstr "Raporlar"
+
+#: theme/templates/base.html:169 theme/templates/clean_base.html:118
+#: theme/templates/product_list.html:13
+#: theme/templates/product_list_stock.html:13
+msgid "Products"
+msgstr "Ürünler"
+
+#: theme/templates/base.html:172 theme/templates/clean_base.html:121
+msgid "Modifier groups"
+msgstr "Ekleme Grouplar"
+
+#: theme/templates/base.html:175 theme/templates/category_create.html:8
+#: theme/templates/category_delete_confirm.html:7
+#: theme/templates/category_detail.html:8
+#: theme/templates/category_list.html:12 theme/templates/clean_base.html:124
+msgid "Categories"
+msgstr "Kategoriler"
+
+#: theme/templates/base.html:178 theme/templates/clean_base.html:127
+#: theme/templates/taxrate_create.html:8 theme/templates/taxrate_detail.html:8
+#: theme/templates/taxrate_update.html:8
+msgid "Tax rates"
+msgstr "Vergi Oranları"
+
+#: theme/templates/base.html:181 theme/templates/clean_base.html:130
+#: theme/templates/discount_create.html:8
+#: theme/templates/discount_delete_confirm.html:7
+#: theme/templates/discount_update.html:8
+#: theme/templates/reports/employee_sales_summary.html:47
+#: theme/templates/reports/pdf/sales_summary.html:30
+#: theme/templates/reports/sales_summary.html:41
+msgid "Discounts"
+msgstr "İndirimler"
+
+#: theme/templates/base.html:184 theme/templates/clean_base.html:133
+#: theme/templates/employee_create.html:8
+#: theme/templates/employee_detail.html:8 theme/templates/employee_list.html:8
+#: theme/templates/employee_list.html:12
+#: theme/templates/employee_update.html:8
+msgid "Employees"
+msgstr "Çalışanlar"
+
+#: theme/templates/base.html:187 theme/templates/clean_base.html:136
+#: theme/templates/customer_create.html:8
+#: theme/templates/customer_detail.html:8 theme/templates/customer_list.html:8
+#: theme/templates/customer_list.html:12
+#: theme/templates/customer_update.html:8
+#: theme/templates/reports/customer_payment.html:8
+msgid "Customers"
+msgstr "Müşteriler"
+
+#: theme/templates/base.html:194 theme/templates/clean_base.html:143
+msgid "Rewards"
+msgstr "Ödüller"
+
+#: theme/templates/base.html:201 theme/templates/clean_base.html:149
+msgid "Table Sections"
+msgstr "Tablo bölümleri"
+
+#: theme/templates/base.html:207 theme/templates/clean_base.html:155
+#: theme/templates/display_create.html:8 theme/templates/display_list.html:16
+msgid "Displays"
+msgstr "Ekranlar"
+
+#: theme/templates/base.html:216 theme/templates/clean_base.html:164
+#: theme/templates/table_create.html:8 theme/templates/table_detail.html:8
+#: theme/templates/table_list.html:8 theme/templates/table_update.html:8
+msgid "Tables"
+msgstr "Masalar"
+
+#: theme/templates/box_create.html:8 theme/templates/box_list.html:12
+#: theme/templates/box_update.html:9
+msgid "Boxes"
+msgstr "Kutular"
+
+#: theme/templates/box_create.html:10 theme/templates/box_create.html.py:14
+msgid "Add new box"
+msgstr "Yeni Kutu Ekle"
+
+#: theme/templates/box_list.html:8
+msgid "Box"
+msgstr "Kutu"
+
+#: theme/templates/box_list.html:27 theme/templates/element_list.html:27
+#: theme/templates/store_list.html:26 theme/templates/table_list.html:26
+msgid "Id"
+msgstr "ID"
+
+#: theme/templates/box_list.html:28 theme/templates/category_list.html:29
+#: theme/templates/customer_list.html:42
+#: theme/templates/customergroup_list.html:30
+#: theme/templates/discount_list.html:29 theme/templates/employee_list.html:29
+#: theme/templates/modifier_list.html:33
+#: theme/templates/modifiergroup_detail.html:16
+#: theme/templates/modifiergroup_list.html:36
+#: theme/templates/modifiergroup_list.html:74
+#: theme/templates/specialprices_list.html:32
+#: theme/templates/tablesection_list.html:28
+#: theme/templates/taxrate_list.html:29
+msgid "Action"
+msgstr "Aksiyon"
+
+#: theme/templates/box_update.html:13 theme/templates/box_update.html.py:21
+#: theme/templates/category_update.html:12
+#: theme/templates/category_update.html:16
+#: theme/templates/customer_update.html:12
+#: theme/templates/customergroup_update.html:10
+#: theme/templates/customergroup_update.html:14
+#: theme/templates/discount_update.html:12
+#: theme/templates/discount_update.html:16
+#: theme/templates/display_update.html:12
+#: theme/templates/display_update.html:16
+#: theme/templates/employee_update.html:12
+#: theme/templates/employee_update.html:16
+#: theme/templates/modifier_update.html:12
+#: theme/templates/modifier_update.html:16
+#: theme/templates/modifiergroup_update.html:12
+#: theme/templates/modifiergroup_update.html:16
+#: theme/templates/printer_update.html:10
+#: theme/templates/printer_update.html:14
+#: theme/templates/product_update.html:13
+#: theme/templates/product_update.html:17
+#: theme/templates/reward_update.html:12
+#: theme/templates/specialprices_update.html:10
+#: theme/templates/specialprices_update.html:14
+#: theme/templates/store_update.html:12 theme/templates/store_update.html:16
+#: theme/templates/table_update.html:12 theme/templates/table_update.html:16
+#: theme/templates/tablesection_update.html:12
+#: theme/templates/tablesection_update.html:16
+#: theme/templates/taxrate_update.html:12
+#: theme/templates/taxrate_update.html:16
+#: theme/templates/terminal_update.html:12
+#: theme/templates/terminal_update.html:16
+#: theme/templates/timeclock_update.html:16
+msgid "Update"
+msgstr "Güncelleştirme"
+
+#: theme/templates/box_update.html:15 theme/templates/display_list.html:10
+msgid "Create new box"
+msgstr "Yeni Kutu Ekle"
+
+#: theme/templates/category_create.html:10
+#: theme/templates/category_create.html:14
+msgid "Add new category"
+msgstr "Yeni kategori ekle"
+
+#: theme/templates/category_delete_confirm.html:11
+#: theme/templates/category_delete_confirm.html:15
+#: theme/templates/customergroup_delete_confirm.html:11
+#: theme/templates/customergroup_delete_confirm.html:15
+#: theme/templates/discount_delete_confirm.html:11
+#: theme/templates/discount_delete_confirm.html:15
+#: theme/templates/discount_delete_confirm.html:25
+#: theme/templates/modifier_delete_confirm.html:11
+#: theme/templates/modifier_delete_confirm.html:15
+#: theme/templates/modifiergroup_delete_confirm.html:11
+#: theme/templates/modifiergroup_delete_confirm.html:15
+#: theme/templates/store_delete_confirm.html:11
+#: theme/templates/store_delete_confirm.html:15
+#: theme/templates/table_delete_confirm.html:11
+#: theme/templates/table_delete_confirm.html:15
+#: theme/templates/tablesection_delete_confirm.html:11
+#: theme/templates/tablesection_delete_confirm.html:15
+#: theme/templates/taxrate_delete_confirm.html:11
+#: theme/templates/taxrate_delete_confirm.html:15
+#: theme/templates/terminal_delete_confirm.html:11
+#: theme/templates/terminal_delete_confirm.html:15
+msgid "Delete"
+msgstr "Silmek"
+
+#: theme/templates/category_list.html:8 theme/templates/category_update.html:8
+#: theme/templates/product_list.html:54
+#: theme/templates/reports/accountant_summary.html:35
+#: theme/templates/reports/accountant_summary_test.html:68
+msgid "Category"
+msgstr "Kategori"
+
+#: theme/templates/category_list.html:19
+msgid "Add category"
+msgstr "Kategori Ekle"
+
+#: theme/templates/category_list.html:27
+msgid "Parent"
+msgstr "Temel"
+
+#: theme/templates/custom/quickproductadd.html:8
+#: theme/templates/product_create.html:8 theme/templates/product_detail.html:8
+#: theme/templates/product_list.html:9
+#: theme/templates/product_list_stock.html:9
+#: theme/templates/product_update.html:9
+#: theme/templates/specialprices_list.html:29
+msgid "Product"
+msgstr "Ürün"
+
+#: theme/templates/custom/quickproductadd.html:10
+#: theme/templates/customergroup_create.html:10
+#: theme/templates/product_create.html:10
+msgid "Add new product"
+msgstr "Yeni Ürün Ekle"
+
+#: theme/templates/custom/quickproductadd.html:14
+msgid "New product"
+msgstr "Yeni Ürün"
+
+#: theme/templates/customer_create.html:10
+#: theme/templates/customer_create.html:14
+msgid "Add New Customer"
+msgstr "Yeni Müşteri Ekle"
+
+#: theme/templates/customer_list.html:37
+msgid "First Name"
+msgstr "Adınız"
+
+#: theme/templates/customer_list.html:38
+msgid "Last Name"
+msgstr "Soyadınız"
+
+#: theme/templates/customer_list.html:39
+#: theme/templates/specialprices_list.html:30
+msgid "Group"
+msgstr "Grup"
+
+#: theme/templates/customergroup_create.html:8
+msgid "Customers Groups"
+msgstr "Müşteri grupları"
+
+#: theme/templates/customergroup_create.html:14
+#: theme/templates/product_create.html:14
+msgid "Create product"
+msgstr "Yeni Ürün"
+
+#: theme/templates/customergroup_list.html:8
+#: theme/templates/customergroup_list.html:12
+#: theme/templates/customergroup_update.html:8
+#: theme/templates/specialprices_list.html:12
+msgid "Customer Groups"
+msgstr "Müşteri grupları"
+
+#: theme/templates/discount_create.html:10
+msgid "Add new discount"
+msgstr "Yeni indirim Ekle"
+
+#: theme/templates/discount_create.html:14
+msgid "New discount"
+msgstr "Yeni indirim"
+
+#: theme/templates/discount_delete_confirm.html:21
+msgid "Are you sure you want to delete"
+msgstr "Silmek istediğinize emin misiniz?"
+
+#: theme/templates/discount_delete_confirm.html:24
+msgid "Cancel"
+msgstr "İptal"
+
+#: theme/templates/discount_detail.html:8 theme/templates/discount_list.html:8
+#: theme/templates/discount_list.html:12 theme/templates/order_detail.html:78
+#: theme/templates/order_detail.html:112 theme/templates/order_items.html:16
+#: theme/templates/reports/item_sales.html:38
+#: theme/templates/reports/pdf/item_sales.html:29
+msgid "Discount"
+msgstr "İskonto"
+
+#: theme/templates/discount_detail.html:20
+msgid "Info about discount"
+msgstr "İndirim hakkında bilgi:"
+
+#: theme/templates/display_create.html:10
+#: theme/templates/display_create.html:14
+msgid "Add new display"
+msgstr "Yeni görüntü ekleme"
+
+#: theme/templates/display_list.html:8 theme/templates/display_update.html:8
+msgid "Display"
+msgstr "Göster"
+
+#: theme/templates/display_list.html:12
+msgid "Create new element"
+msgstr "Yeni öğe oluşturmak"
+
+#: theme/templates/display_list.html:33
+msgid "Manage Boxes"
+msgstr "Kutuları Yönetin"
+
+#: theme/templates/display_list.html:34
+msgid "Action for Display"
+msgstr "Eylem görüntülemek için"
+
+#: theme/templates/element_create.html:8 theme/templates/element_list.html:12
+msgid "Elements"
+msgstr "Element Düzenle"
+
+#: theme/templates/element_create.html:10
+#: theme/templates/element_create.html:14
+msgid "Add new element"
+msgstr "Yeni element ekle"
+
+#: theme/templates/element_list.html:8
+msgid "Element"
+msgstr "element"
+
+#: theme/templates/employee_create.html:10
+#: theme/templates/employee_create.html:14
+msgid "Add new employee"
+msgstr "Yeni çalışanı ekleyin"
+
+#: theme/templates/includes/paginator.html:7
+#: theme/templates/includes/paginator.html:9
+msgid "← Previous"
+msgstr "← Önceki"
+
+#: theme/templates/includes/paginator.html:16
+msgid "of"
+msgstr "arasında"
+
+#: theme/templates/includes/paginator.html:24
+#: theme/templates/includes/paginator.html:26
+msgid "Next → "
+msgstr "Sonraki →"
+
+#: theme/templates/modifier_create.html:8
+#: theme/templates/modifier_detail.html:8
+#: theme/templates/modifier_list.html:10
+#: theme/templates/modifier_update.html:8
+msgid "Modifier"
+msgstr "Değiştirici"
+
+#: theme/templates/modifier_create.html:10
+#: theme/templates/modifier_create.html:14
+msgid "Add new modifier"
+msgstr "Yeni değiştirici Ekle"
+
+#: theme/templates/modifier_list.html:14
+#: theme/templates/modifiergroup_list.html:65
+msgid "Modifiers"
+msgstr "Değiştiriciler"
+
+#: theme/templates/modifier_list.html:21
+#: theme/templates/modifiergroup_list.html:22
+msgid "Add modifier"
+msgstr "Değiştirici Ekle"
+
+#: theme/templates/modifiergroup_create.html:8
+msgid "Modifier Group"
+msgstr "Değiştirici grup"
+
+#: theme/templates/modifiergroup_create.html:10
+#: theme/templates/modifiergroup_create.html:14
+msgid "Add new modifier group"
+msgstr "Yeni değiştirici grup ekleyin"
+
+#: theme/templates/modifiergroup_list.html:11
+#: theme/templates/modifiergroup_list.html:29
+#: theme/templates/modifiergroup_update.html:8
+msgid "Modifier group"
+msgstr "Değiştirici grup"
+
+#: theme/templates/modifiergroup_list.html:21
+msgid "Add modifier group"
+msgstr "Değiştirici grup ekleme"
+
+#: theme/templates/order_create.html:10 theme/templates/order_create.html:14
+msgid "Add new order"
+msgstr "Yeni Sipariş Ekle"
+
+#: theme/templates/order_create.html:15
+msgid "Edit order"
+msgstr "Siparişi düzenle"
+
+#: theme/templates/order_create.html:45
+msgid "Cancel Order"
+msgstr "Siparişi İptal Et"
+
+#: theme/templates/order_create.html:47
+msgid "Close Order"
+msgstr "Siparişi Tamamla"
+
+#: theme/templates/order_create.html:47
+msgid "Leave As Open"
+msgstr "Açık olarak bırak"
+
+#: theme/templates/order_create.html:49
+msgid "Hold Order"
+msgstr "Sipariş Beklet"
+
+#: theme/templates/order_create.html:52
+msgid "Refund Order"
+msgstr "İade siparişi"
+
+#: theme/templates/order_create.html:53
+msgid "Add New Order"
+msgstr "Yeni Sipariş Ekle"
+
+#: theme/templates/order_create.html:104
+msgid "Select modifiers"
+msgstr "Düzenleyiciler seçin"
+
+#: theme/templates/order_detail.html:79 theme/templates/order_detail.html:113
+#: theme/templates/order_items.html:18
+#: theme/templates/reports/product_order_views.html:59
+msgid "Quantity"
+msgstr "Adeti"
+
+#: theme/templates/order_detail.html:81 theme/templates/order_detail.html:115
+#: theme/templates/order_items.html:19
+msgid "Subtotal"
+msgstr "Alt Toplam"
+
+#: theme/templates/order_detail.html:114 theme/templates/order_items.html:17
+#: theme/templates/reports/employee_sales_summary.html:48
+#: theme/templates/reports/pdf/sales_summary.html:31
+#: theme/templates/reports/sales_summary.html:42
+msgid "Tax"
+msgstr "Vergi"
+
+#: theme/templates/order_detail.html:143
+#: theme/templates/reports/accountant_summary.html:36
+#: theme/templates/reports/accountant_summary_test.html:69
+#: theme/templates/reports/hourly_sales.html:35
+msgid "Amount"
+msgstr "Miktar"
+
+#: theme/templates/order_detail.html:144
+msgid "Amount Paid"
+msgstr "Ödenen miktar"
+
+#: theme/templates/order_detail.html:145
+msgid "Change Amount"
+msgstr "Para üstü"
+
+#: theme/templates/order_detail.html:146
+msgid "Payment Type"
+msgstr "Ödeme Türü"
+
+#: theme/templates/order_detail.html:147
+msgid "Payment Date"
+msgstr "Ödeme Tarihi"
+
+#: theme/templates/order_detail.html:148
+msgid "Transaction Type"
+msgstr "İşlem Tipi"
+
+#: theme/templates/order_detail.html:149
+msgid "Signature"
+msgstr "İmza"
+
+#: theme/templates/order_items.html:4
+msgid "Order Items"
+msgstr "Ürün Siparişleri"
+
+#: theme/templates/order_list.html:32
+msgid "Add Order"
+msgstr "Sipariş Ekle"
+
+#: theme/templates/order_list.html:51 theme/templates/timeclock_detail.html:36
+msgid "Filter"
+msgstr "Filtreleme"
+
+#: theme/templates/order_list.html:52
+msgid "Clear Filter"
+msgstr "Temizleme Filtresi"
+
+#: theme/templates/order_list.html:64
+#: theme/templates/reports/product_order_views.html:56
+msgid "Order #"
+msgstr "Sipariş #"
+
+#: theme/templates/order_list.html:65
+#: theme/templates/reports/product_order_views.html:57
+msgid "Order Total"
+msgstr "Sipariş Toplamı"
+
+#: theme/templates/order_list.html:66
+#: theme/templates/reports/product_order_views.html:61
+msgid "Sold By"
+msgstr "Kasiyer"
+
+#: theme/templates/order_list.html:67
+#: theme/templates/reports/product_order_views.html:66
+msgid "Open Date"
+msgstr "Açılış Tarihi"
+
+#: theme/templates/order_list.html:68
+#: theme/templates/reports/product_order_views.html:67
+msgid "Close Date"
+msgstr "Kapanış tarihi"
+
+#: theme/templates/order_list.html:69
+#: theme/templates/reports/product_order_views.html:68
+msgid "Order Status"
+msgstr "Sipariş Durumu"
+
+#: theme/templates/order_list.html:70
+#: theme/templates/reports/product_order_views.html:70
+msgid "Actions"
+msgstr "Aksiyon"
+
+#: theme/templates/printer_list.html:8 theme/templates/printer_list.html:12
+msgid "Printers"
+msgstr "Yazıcılar"
+
+#: theme/templates/printer_list.html:28
+msgid "IP"
+msgstr "IP"
+
+#: theme/templates/printer_update.html:8
+msgid "Printer"
+msgstr "Yazıcı"
+
+#: theme/templates/product_list.html:59
+msgid "Tax Status"
+msgstr "Vergi Durumu"
+
+#: theme/templates/reports/accountant_summary.html:13
+#: theme/templates/reports/accountant_summary_test.html:13
+msgid "Accountant summary"
+msgstr "Muhasebeci Özet"
+
+#: theme/templates/reports/accountant_summary.html:37
+#: theme/templates/reports/accountant_summary_test.html:70
+#: theme/templates/reports/employee_sales_summary.html:37
+#: theme/templates/reports/pdf/sales_summary.html:19
+#: theme/templates/reports/sales_summary.html:31
+msgid "Sales"
+msgstr "Satış"
+
+#: theme/templates/reports/accountant_summary.html:38
+#, python-format
+msgid "%% Percentage"
+msgstr "%% Yüzde"
+
+#: theme/templates/reports/accountant_summary.html:60
+#: theme/templates/reports/accountant_summary_test.html:86
+msgid "Total before Discounts"
+msgstr "Toplam iskontoları önce"
+
+#: theme/templates/reports/accountant_summary.html:66
+#: theme/templates/reports/accountant_summary_test.html:92
+msgid "Order Discounts"
+msgstr "Sipariş indirimler"
+
+#: theme/templates/reports/accountant_summary.html:72
+#: theme/templates/reports/accountant_summary_test.html:98
+msgid "Total After Discounts"
+msgstr "Toplam iskontoları sonra"
+
+#: theme/templates/reports/accountant_summary_test.html:71
+#, python-format
+msgid "%%Percentage"
+msgstr "%% Yüzde"
+
+#: theme/templates/reports/checkorders.html:38
+#: theme/templates/reports/checkorders.html:114
+#: theme/templates/reports/checkordersandpayments.html:35
+#: theme/templates/reports/discounted_orders.html:37
+#: theme/templates/reports/discounted_orders.html:49
+msgid "Order"
+msgstr "Sipariş"
+
+#: theme/templates/reports/checkorders.html:39
+msgid "Order Item SUMM"
+msgstr "Sipariş maddesi SUMM"
+
+#: theme/templates/reports/checkorders.html:40
+#: theme/templates/reports/checkorders.html:116
+msgid "Order grand_total"
+msgstr "Sipariş grand_total"
+
+#: theme/templates/reports/checkorders.html:41
+msgid "Payments Summ(amount_paid)"
+msgstr "Ödeme Summ(amount_paid)"
+
+#: theme/templates/reports/checkorders.html:115
+msgid "Order subtotal"
+msgstr "Sipariş Ara Toplamı"
+
+#: theme/templates/reports/checkordersandpayments.html:36
+msgid "Status"
+msgstr "Durum"
+
+#: theme/templates/reports/customer-report.html:15
+#: theme/templates/reports/item_sales.html:15
+#: theme/templates/reports/pdf/item_sales.html:21
+#: theme/templates/reports/pdf/payments.html:12
+msgid "Item sales"
+msgstr "Ürun satışları"
+
+#: theme/templates/reports/customer_payment.html:10
+#: theme/templates/reports/customer_payment.html:14
+msgid "Customer Payment"
+msgstr "Müşteri Ödemesi"
+
+#: theme/templates/reports/customer_payment.html:47
+msgid "Customer Balance"
+msgstr "Müşteri bakiyesi"
+
+#: theme/templates/reports/customer_payment.html:82
+msgid "Order ID"
+msgstr "Sipariş #"
+
+#: theme/templates/reports/customer_payment.html:83
+msgid "Grand Total"
+msgstr "Ana Toplam"
+
+#: theme/templates/reports/customer_payment.html:84
+msgid "Balance Remaining"
+msgstr "Kalan bakiye"
+
+#: theme/templates/reports/customer_payment.html:85
+msgid "Payment"
+msgstr "Ödeme"
+
+#: theme/templates/reports/customer_payment.html:112
+msgid "Totals"
+msgstr "Toplamlar"
+
+#: theme/templates/reports/customer_payment.html:126
+msgid "No balance payables."
+msgstr "Bakiye borç hesapları yoktur"
+
+#: theme/templates/reports/customer_payment.html:138
+msgid "AMOUNT FOR SELECTED INVOICES"
+msgstr "SEÇİLİ FATURALAR İÇİN TUTARI"
+
+#: theme/templates/reports/customer_payment.html:141
+msgid "AMOUNT DUE"
+msgstr "TUTARI VADE"
+
+#: theme/templates/reports/customer_payment.html:147
+msgid "APPLIED"
+msgstr "UYGULANAN"
+
+#: theme/templates/reports/customer_payment.html:156
+msgid "Save"
+msgstr "Kaydet"
+
+#: theme/templates/reports/discount_summary.html:14
+#: theme/templates/reports/discounted_orders.html:13
+msgid "Discount summary"
+msgstr "İndirim özeti"
+
+#: theme/templates/reports/discount_summary.html:34
+msgid "Discounted Orders"
+msgstr "İndirimli siparişler"
+
+#: theme/templates/reports/discount_summary.html:35
+msgid "Total Ducted Amount "
+msgstr "Toplam Düsülen Tutar"
+
+#: theme/templates/reports/discounted_orders.html:36
+msgid "Deduction Type"
+msgstr "Kesintisi Türü"
+
+#: theme/templates/reports/discounted_orders.html:38
+#: theme/templates/reports/payouts.html:88
+msgid "Employee"
+msgstr "Çalışan"
+
+#: theme/templates/reports/discounted_orders.html:39
+msgid "Discounted"
+msgstr "İndirimli"
+
+#: theme/templates/reports/discounted_orders.html:40
+msgid "Close date"
+msgstr "Kapanış tarihi"
+
+#: theme/templates/reports/discounted_orders.html:41
+msgid "Terminal #"
+msgstr "Terminal"
+
+#: theme/templates/reports/edit_employee_total_hour.html:15
+#: theme/templates/reports/employee_total_hour.html:17
+msgid "Employee Total Hours Summary"
+msgstr "Çalışan Toplam Saat Özeti"
+
+#: theme/templates/reports/employee_sales_summary.html:14
+msgid "Employee sales summary"
+msgstr "Çalışan Satış Özeti"
+
+#: theme/templates/reports/employee_sales_summary.html:44
+#: theme/templates/reports/pdf/sales_summary.html:27
+#: theme/templates/reports/sales_summary.html:38
+msgid "Gross Sales"
+msgstr "Brüt Satı lar"
+
+#: theme/templates/reports/employee_sales_summary.html:49
+#: theme/templates/reports/pdf/sales_summary.html:32
+#: theme/templates/reports/sales_summary.html:43
+msgid "Total Collected"
+msgstr "Toplanan toplam"
+
+#: theme/templates/reports/employee_sales_summary.html:61
+#: theme/templates/reports/pdf/sales_summary.html:40
+#: theme/templates/reports/sales_summary.html:56
+msgid "Payments"
+msgstr "Ödemeler"
+
+#: theme/templates/reports/hourly_sales.html:14
+msgid "Hourly sales"
+msgstr "Saatlik satışlar"
+
+#: theme/templates/reports/hourly_sales.html:36
+msgid "Total Sales"
+msgstr "Toplam Satış"
+
+#: theme/templates/reports/hourly_sales.html:45
+#: theme/templates/reports/item_sales.html:39
+#: theme/templates/reports/pdf/item_sales.html:30
+#: theme/templates/reports/top_customer.html:33
+msgid "Total"
+msgstr "Toplam"
+
+#: theme/templates/reports/includes/filter.html:53
+msgid "Show All"
+msgstr "Tümünü Göster"
+
+#: theme/templates/reports/includes/filter.html:57
+#: theme/templates/reports/includes/filter.html:62
+#: theme/templates/reports/includes/filter.html:68
+#: theme/templates/reports/staff_sale.html:29
+msgid "Export pdf"
+msgstr "PDF Olarak Kaydet"
+
+#: theme/templates/reports/item_sales.html:33
+#: theme/templates/reports/pdf/item_sales.html:25
+#: theme/templates/reports/pdf/taxes.html:22
+#: theme/templates/reports/staff_sale.html:36
+msgid "Item name"
+msgstr "Ürün Adı"
+
+#: theme/templates/reports/item_sales.html:34
+#: theme/templates/reports/staff_sale.html:37
+msgid "Sku"
+msgstr "SKU"
+
+#: theme/templates/reports/item_sales.html:35
+#: theme/templates/reports/pdf/item_sales.html:26
+#: theme/templates/reports/pdf/taxes.html:23
+#: theme/templates/reports/staff_sale.html:38
+msgid "Item sold"
+msgstr "Satılan ürün"
+
+#: theme/templates/reports/item_sales.html:36
+#: theme/templates/reports/pdf/item_sales.html:27
+#: theme/templates/reports/staff_sale.html:39
+msgid "Gross sales"
+msgstr "Brüt Satışlar"
+
+#: theme/templates/reports/order_gross_profit.html:14
+msgid "Order Gross Profit"
+msgstr "Sipariş Brüt kar"
+
+#: theme/templates/reports/order_types.html:13
+msgid "Order Types"
+msgstr "Emir Türleri"
+
+#: theme/templates/reports/payments.html:11
+#: theme/templates/reports/price_adjustments.html:11
+#: theme/templates/reports/staff_sale.html:10
+msgid "Repots"
+msgstr "Reporlar"
+
+#: theme/templates/reports/payments.html:13
+#: theme/templates/reports/price_adjustments.html:13
+#: theme/templates/reports/staff_sale.html:12
+msgid "Sale items"
+msgstr "Satış madde"
+
+#: theme/templates/reports/payouts.html:13
+#: theme/templates/reports/pdf/sales_summary.html:13
+#: theme/templates/reports/sales_summary.html:13
+#: theme/templates/reports/top_customer.html:14
+#: theme/templates/reports/top_item_sales.html:14
+msgid "Sales summary"
+msgstr "Satış Özeti"
+
+#: theme/templates/reports/payouts.html:83
+#: theme/templates/terminal_list.html:27
+msgid "ID"
+msgstr "ID"
+
+#: theme/templates/reports/payouts.html:84
+msgid "Payout Type"
+msgstr "Ödeme türü"
+
+#: theme/templates/reports/payouts.html:85
+msgid "Payout Value"
+msgstr "Ödeme değeri"
+
+#: theme/templates/reports/payouts.html:86
+msgid "Payout Time"
+msgstr "Ödeme zamanı"
+
+#: theme/templates/reports/payouts.html:87
+msgid "Payout Note"
+msgstr "Ödeme Not"
+
+#: theme/templates/reports/pdf/item_sales.html:28
+#: theme/templates/reports/pdf/taxes.html:24
+msgid "Tax sum"
+msgstr "Vergi toplamı"
+
+#: theme/templates/reports/pdf/taxes.html:18
+msgid "Taxes"
+msgstr "Vergiler"
+
+#: theme/templates/reports/price_adjustments.html:32
+msgid "Qty"
+msgstr "Adet"
+
+#: theme/templates/reports/price_adjustments.html:33
+msgid "Orginal Price"
+msgstr "Orijinal Fiyat"
+
+#: theme/templates/reports/price_adjustments.html:34
+msgid "Adjusted"
+msgstr "Değiştirilmiş"
+
+#: theme/templates/reports/price_adjustments.html:35
+msgid "Difference"
+msgstr "Fark"
+
+#: theme/templates/reports/product_order_views.html:63
+msgid "Item"
+msgstr "Ürün Adı"
+
+#: theme/templates/reports/time_card_weekly.html:16
+msgid "Time Card Weekly Report"
+msgstr "İsçi Zaman Çizelgesi Haftalık Rapor"
+
+#: theme/templates/reports/top_customer.html:32
+msgid "Total Transactions"
+msgstr "Toplam hareketler"
+
+#: theme/templates/reward_create.html:8
+#: theme/templates/reward_delete_confirm.html:7
+#: theme/templates/reward_list.html:8 theme/templates/reward_list.html:13
+#: theme/templates/reward_update.html:8
+msgid "Reward Campaigns"
+msgstr "Ödül kampanyaları"
+
+#: theme/templates/reward_create.html:10
+msgid "Add new reward campaign"
+msgstr "Yeni ödül kampanyası Ekle"
+
+#: theme/templates/reward_create.html:14
+msgid "Create new campaign"
+msgstr "Yeni kampanya oluşturun"
+
+#: theme/templates/reward_list.html:29
+msgid "Points to Reedem"
+msgstr "Kazanmak icin Puan Sayısı"
+
+#: theme/templates/reward_list.html:30
+msgid "Discount  Type"
+msgstr "İndirim Türü"
+
+#: theme/templates/specialprices_create.html:8
+msgid "Speical Prices List"
+msgstr "Speical fiyat listesi"
+
+#: theme/templates/specialprices_create.html:10
+msgid "Add new Speical Price"
+msgstr "Yeni değiştirici grup ekleyin"
+
+#: theme/templates/specialprices_create.html:14
+msgid "Add new"
+msgstr "Yeni ekle"
+
+#: theme/templates/specialprices_list.html:8
+msgid "Product Special Price Groups"
+msgstr "Ürün özel fiyat grupları"
+
+#: theme/templates/specialprices_update.html:8
+msgid "Speical Prices"
+msgstr "Ozel fiyatları"
+
+#: theme/templates/store_create.html:8 theme/templates/store_detail.html:8
+#: theme/templates/store_list.html:8 theme/templates/store_update.html:8
+msgid "Stores"
+msgstr "Mağazalar"
+
+#: theme/templates/store_create.html:10
+msgid "Add new store"
+msgstr "Yeni Mağaza Ekle"
+
+#: theme/templates/store_create.html:14
+msgid "New store"
+msgstr "Yeni mağaza"
+
+#: theme/templates/table_create.html:10
+msgid "Add new table"
+msgstr "Yeni masa ekle"
+
+#: theme/templates/table_create.html:14
+msgid "New table"
+msgstr "Yeni masa"
+
+#: theme/templates/table_list.html:12
+msgid "Table"
+msgstr "Masa"
+
+#: theme/templates/table_list.html:29
+msgid "Number people"
+msgstr "Kişi sayısı"
+
+#: theme/templates/tablesection_create.html:8
+#: theme/templates/tablesection_detail.html:8
+#: theme/templates/tablesection_list.html:8
+#: theme/templates/tablesection_update.html:8
+msgid "Table sections"
+msgstr "Masa bölümleri"
+
+#: theme/templates/tablesection_create.html:10
+msgid "Add new section"
+msgstr "Yeni bölüm ekle"
+
+#: theme/templates/tablesection_create.html:14
+msgid "New section"
+msgstr "Yeni Bölüm"
+
+#: theme/templates/tablesection_list.html:12
+msgid "Table section"
+msgstr "Masa bölümü"
+
+#: theme/templates/taxrate_create.html:10
+msgid "Add new tax rate"
+msgstr "Yeni vergi oranı ekleyin"
+
+#: theme/templates/taxrate_create.html:14
+msgid "New tax rate"
+msgstr "Yeni vergi oranı"
+
+#: theme/templates/taxrate_list.html:8 theme/templates/taxrate_list.html:12
+msgid "Tax rate"
+msgstr "Vergi Oranı (%)"
+
+#: theme/templates/terminal_create.html:8
+#: theme/templates/terminal_detail.html:8 theme/templates/terminal_list.html:8
+#: theme/templates/terminal_list.html:12
+#: theme/templates/terminal_update.html:8
+msgid "Terminals"
+msgstr "Terminal"
+
+#: theme/templates/terminal_create.html:10
+msgid "Add new terminal"
+msgstr "Yeni terminal ekleme"
+
+#: theme/templates/terminal_create.html:14
+msgid "New terminal"
+msgstr "Yeni terminal"
+
+#: theme/templates/terminal_list.html:29
+msgid "MAC"
+msgstr "MAC"
+
+#: theme/templates/terminal_list.html:30
+msgid "Mode"
+msgstr "Mod"
+
+#: theme/templates/timeclock_create.html:10
+#: theme/templates/timeclock_delete_confirm.html:9
+#: theme/templates/timeclock_detail.html:17
+#: theme/templates/timeclock_update.html:11
+msgid "EMPLOYEE TOTAL HOURS SUMMARY"
+msgstr "Çalışan Toplam Saat Özeti"

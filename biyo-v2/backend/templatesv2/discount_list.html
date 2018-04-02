@@ -1,0 +1,122 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+
+<div class="row clearfix">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">{% trans "Discount" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-5">
+    </div>
+    <div class="hidden-md-up" style="height: 50px;">
+    </div>
+    <div class="col-sm-12 col-md-4">
+
+        <div class="pull-md-right" aria-label="Add Order">
+            <a href="{% url "discount_create" %}"><button type="button" class="btn btn-success waves-effect"><i class="icon md-plus" aria-hidden="true"></i>{% trans "New Discount" %} </button></a>
+        </div>
+
+    </div>
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="m-b-15">
+                </div>
+            </div>
+        </div>
+    {% if object_list %}
+        <table class="table table-hover table-striped" cellspacing="0" id="exampleFixedHeader">
+            <thead>
+                <tr>
+                    <th>{% trans "Name" %}</th>
+                    <th>{% trans "Value" %}</th>
+                    <th>{% trans "Type" %}</th>
+                    <th>{% trans "Row for Edit " %}</th>
+                    <th>{% trans "Row for Delete " %}</th>
+                </tr>
+
+
+            </thead>
+            <tbody>
+                {% for object in object_list %}
+                    <tr>
+                        <td class="center">
+                            <a href="{% url 'discount_detail' pk=object.pk %}">{{ object.name }}</a>
+                        </td>
+
+                        <td>
+                            <span class="x-editable" data-url="{% url 'discount_update' pk=object.pk %}" data-name="value" data-pk="{{ object.pk}}" data-type="text">
+                                {{ object.value }}
+                            </span>
+                        </td>
+                        {% if object.get_type_display == "Percentage Off" %}
+                            <td class="tag  tag-primary w-100px">
+                                {{ object.get_type_display }}
+                            </td>
+                            {% else %}
+                            <td class="tag  tag-info w-100px">
+                                {{ object.get_type_display }}
+                            </td>
+                        {% endif %}
+
+                        <td class="center">
+                              <a href="{% url 'discount_update' pk=object.id %}">
+                                <button type="button" class="btn btn-warning waves-effect">{% trans "Edit" %}</button>
+                              </a>
+                        </td>
+                        <td>
+                              <a class="modal-delete" data-toggle="modal" data-target="#delete" data-name="{{object.name}}" data-id="{{object.id}}">
+                                  <button class="btn btn-danger waves-effect"> {% trans "Delete" %}</button>
+                              </a>
+                        </td>
+
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    {% else %}
+        {% include 'reports/includes/empty.html' %}
+    {% endif %}
+        {% include "includes/paginator.html" %}
+    </div>
+</div>
+{% include "includes/modal_delete.html" %}
+{% endblock content %}
+
+{% block scripts %}
+	{{ block.super }}
+		<link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+		<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+		<script type="text/javascript">
+		$.fn.editable.defaults.mode = 'inline';
+		$('.x-editable').editable({send: 'always'});
+		$('.x-editable-select').editable({
+			source: [
+				  {value: 1, text: 'Percentage Off'},
+				  {value: 2, text: 'Dollars Off'}
+			   ]
+    	});
+		$(document).on("click", ".modal-delete", function (ev) {
+			ev.preventDefault();
+			var id = $(this).data('id');
+			var text = $(this).data('name');
+			$(".modal-body p strong").html( text );
+			$('#delete').modal('show');
+			$('#btn-delete').click(function() {
+				var url = '/discount/' + id + '/delete/';
+				$.post(url, function() {
+					location.href = '/discount/'
+				})
+			})
+		});
+		</script>
+{% endblock %}

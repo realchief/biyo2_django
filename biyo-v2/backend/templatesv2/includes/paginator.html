@@ -1,0 +1,32 @@
+{% load i18n %}
+{% load panel_tags %}
+{% if page_obj.has_other_pages %}
+<div class="dataTables_paginate paging_bootstrap pagination" xmlns="http://www.w3.org/1999/html">
+    <td>
+      {%  if page_obj.has_previous%}
+        <a href="?{% url_replace request 'page' page_obj.previous_page_number %}"><button type="button" class="btn btn-success waves-effect">{% trans '← Previous'  %}</button></a>
+      {% else %}
+        <a href="#"><button type="button" class="btn btn-success waves-effect">{% trans '← Previous'  %}</button></a>
+      {% endif %}
+
+      <td class="active">
+        <a href="#">{{ page_obj.number }}</a>
+	  </td>
+
+	  <td class="disabled">
+        {% trans "of" %}
+	  </td>
+
+	  <td>
+        <a href="?{% url_replace request 'page' page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+      </td>
+
+      {% if page_obj.has_next %}
+        <a href="?{% url_replace request 'page' page_obj.next_page_number %}"><button type="button" class="btn btn-success waves-effect">{% trans 'Next → ' %}</button></a>
+      {% else %}
+        <a href="#"><button type="button" class="btn btn-success waves-effect">{% trans 'Next → ' %}</button></a>
+      {% endif %}
+
+    </td>
+  </div>
+{% endif %}

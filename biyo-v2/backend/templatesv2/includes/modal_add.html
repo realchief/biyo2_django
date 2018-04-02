@@ -1,0 +1,22 @@
+<div class="modal fade" id="add">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Add</h4>
+      </div>
+      <div class="modal-body" id="add-modal-body">
+		<form method="post" enctype="multipart/form-data" id="add-form">
+			{% csrf_token %}
+			<table style="margin: 0 auto">
+			</table>
+
+		</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button id="btn-add" type="button" class="btn btn-primary">Add</button>
+      </div>
+    </div>
+  </div>
+</div>

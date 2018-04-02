@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load panel_tags %}
+{% load humanize %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Modifier" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Modifiers" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+        <div class="btn-right">
+            <a class="btn modal-add" data-toggle="modal" data-target="#add" href=""><i class="icon-plus"></i>{% trans "Add modifier" %}</a>
+        </div>
+        <div class="separator bottom"></div>
+        <div class="widget">
+            <table class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+                <thead>
+                    <tr>
+                        <th>{% trans "Name" %}</th>
+                        <th>{% trans "Groups" %}</th>
+                        <th>{% trans "Cost" %}</th>
+                        <th>{% trans "Price" %}</th>
+                        <th>{% trans "Active" %}</th>
+                        <th>{% trans "Action" %}</th>
+                    </tr>
+                </thead>
+                <tbody data-link="row" class="rowlink">
+
+                    {% for object in object_list %}
+                        <tr>
+                            <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="name" data-type="text" data-url="{% url 'modifier_update' pk=object.pk %}" data-title="Enter name">{{ object.name }}</span></td>
+                            <td class="center"><span class="x-editable-choice" data-pk="{{object.pk}}" data-name="group" data-type="checklist" data-url="{% url 'modifier_update' pk=object.pk %}" data-title="Choose groups" data-value="{{object.group|groups_ids}}">{{ object|field_value:"group" }}</span></td>
+                            <td class="right">
+								$<span class="x-editable" data-pk="{{object.pk}}" data-name="cost" data-type="text" data-url="{% url 'modifier_update' pk=object.pk %}" data-title="Enter cost">
+									{{ object.cost|floatformat:2|default:"0.00"|intcomma }}
+								</span>
+							</td>
+                            <td class="right">
+								$<span class="x-editable" data-pk="{{object.pk}}" data-name="price" data-type="text" data-url="{% url 'modifier_update' pk=object.pk %}" data-title="Enter price">
+									{{ object.price|floatformat:2|default:"0.00"|intcomma }}
+								</span>
+							</td>
+                            <td><span class="x-editable-select" data-pk="{{object.pk}}" data-name="active" data-type="select" data-url="{% url 'modifier_update' pk=object.pk %}" data-value="{{object.active}}">{{ object.active }}</span></td>
+							<td class="center">
+                                <a href="{% url 'modifier_update' pk=object.id %}">Edit</a>
+                                <span class="action-separator"></span>
+                                <a class="modal-delete" data-toggle="modal" data-target="#delete" data-name="{{object.name}}" data-id="{{object.id}}">Delete</a>
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include "includes/paginator.html" %}
+        </div>
+    </div>
+	{% include "includes/modal_delete.html" %}
+	{% include "includes/modal_add.html" %}
+	<div id="form-hidden"style="display: none"><table><tbody>{{form.as_table}}</tbody></table></div>
+{% endblock content %}
+
+{% block js %}
+	{{ block.super }}
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+
+	<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+	<script type="text/javascript">
+		var form = $('#form-hidden tbody').clone();
+
+		var source = [];
+		$('#id_group label').each(function() {
+			if ($(this).text() != "---------")
+				source.push({value: parseInt($(this).find('input').val(), 10), text: $(this).text().trim()})
+		});
+		$('.x-editable').editable({send: 'always'});
+		$('.x-editable-choice').editable({
+			source: source
+    	});
+		$('.x-editable-select').editable({
+			source: [
+				{text: 'True', value: 'True'},
+				{text: 'False', value: 'False'}
+			]
+		});
+
+		$(document).on("click", ".modal-add", function (ev) {
+			ev.preventDefault();
+			$("#add-modal-body table").html(form);
+			$('#add-modal-body form').attr('action', '/modifier/add/');
+			$("#btn-add").click(function() {
+				ev.preventDefault();
+				$('#add-form').submit();
+				$('#add').modal('hide');
+			})
+		});
+		$(document).on("click", ".modal-delete", function (ev) {
+			ev.preventDefault();
+			var id = $(this).data('id');
+			var text = $(this).data('name');
+			$(".modal-body p strong").html( text );
+			$('#delete').modal('show');
+			$('#btn-delete').click(function() {
+				var url = '/modifier/' + id + '/delete/';
+				$.post(url, function() {
+					location.href = '/modifier/'
+				})
+			})
+		});
+	</script>
+{% endblock %}

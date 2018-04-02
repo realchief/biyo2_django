@@ -1,0 +1,298 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load tz %}
+
+{% block content %}
+
+
+
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reports_home' %}">{% trans "Reports" %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Employee Total Hours Summary" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{{ employee.name }} - Time Sheet </h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+    <div class="row">
+<div class="offset1">
+{% with 'employee_hour_summary' as active %}
+        {% include "reports/includes/filter.html" %}
+{% endwith %}
+
+
+        <form method="POST" id="add_time" action="{% url 'timeclock_create' %}" style="width: 700px;">
+            {% csrf_token %}
+        <div class="form-group">
+
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                Date:<input type="text" name="id_date" id="id_date" class="form-control" value="" />
+                Start:<input type="text" name="time_in" id="id_time_in" class="form-control" value="" style="width: 60px;" />
+                End:<input type="text" name="time_out" id="id_time_out" class="form-control" value="" style="width: 60px;" />
+                <input type="hidden" name="employee" value="{{ pk }}">
+                <input type="submit" value="Add Time" />
+            </div>
+
+        </div>
+{#            {{ form }}#}
+{#            <input type="submit" value="SUBMIT" /><i class="icon-plus"></i> Add Time#}
+{#            <input type="hidden" name="employee" value="{{ pk }}">#}
+        </form>
+
+
+
+
+
+
+            <table class="table">
+                <thead>
+
+                {% for day in days %}
+                    <th class="center">{{day}}</th>
+                {% endfor %}
+                                <th>Total work hours</th>
+                                <th>Pay Amount</th>
+                </thead>
+                <tbody>
+                {% timezone tz %}
+                {% for employee, value in result.items %}
+                    <tr>
+                        {% for vvalue in value.employee_time_clock  %}
+                            <td>
+                                {% if vvalue %}
+                                    {% for  lastv in vvalue %}
+                                        <div style="width: 100px;  border: 1px inset black; margin-top: 2px" class="center">
+                                            {{ lastv.time_in|date:"P" }} - {{ lastv.time_out|date:"P" }}
+                                            <br/>
+                                            <a href ="{% url 'timeclock_update' pk=lastv.id%}">Edit</a>
+                                            <span class="action-separator"></span>
+                                            <a href ="{% url 'timeclock_delete' pk=lastv.id%}">Delete</a>
+
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div style="width: 100px;">
+
+                                    </div>
+                                {% endif %}
+                            </td>
+
+
+                        {% endfor %}
+
+
+                    </tr>
+                    <tr>
+								{% for time in value.hour_list %}
+									<td class="center">{{ time }}</td>
+								{% endfor %}
+								<td>{{ value.total }}</td>
+								<td>${{ value.pay_amount|default:"0.00"|floatformat:2|intcomma }}</td>
+							</tr>
+
+
+                {% endfor %}
+                {% endtimezone %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="innerLR">
+    </div>
+
+
+{% endblock content %}
+{% block js %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+    <script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+
+    <script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/plugins/calendars/daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/plugins/calendars/daterangepicker/daterangepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}common/theme/scripts/plugins/calendars/daterangepicker/daterangepicker-bs2.css"/>
+
+
+<script type="text/javascript" src="{{ STATIC_URL }}common/datetimepicker/jquery.datetimepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}common/datetimepicker/jquery.datetimepicker.css"/>
+
+
+
+    <script type="text/javascript">
+    var form = $('#form-hidden .form-group');
+        var options = {
+            ranges: {
+                'This Week': [moment().startOf('isoweek'), moment().endOf('isoweek')],
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                'Last 7 Days': [moment().subtract('days', 6), moment()],
+                'Last 30 Days': [moment().subtract('days', 29), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+            },
+            startDate: moment().startOf('isoweek'),
+            endDate: moment().endOf('isoweek')
+        }
+
+        $('#daterange').daterangepicker(options);
+
+
+        $('#filter').click(function(evt){
+            evt.preventDefault();
+            var start = ''
+            var end = ''
+            if ($('#daterange span').html() != 'Today'){
+                var range = $('#daterange span').html().split(' - ')
+                start = range[0].split(" ").join("")
+                end = range[1].split(" ").join("")
+            }
+
+            var option = $('.ranges ul li.active').index();
+            if (start || end || option){
+                path = '?start='+start+'&end='+end+'&option='+option;
+                location.href = location.pathname+path;
+            }
+        })
+        if(location.search){
+            var params = location.search.split('?')[1].split('&')
+            var vals = {}
+            for (i=0; i<params.length; i++){
+                key = params[i].split('=')[0]
+                val = params[i].split('=')[1]
+                vals[key] = val
+            }
+            if ('start' in vals || 'end' in vals){
+                $('#daterange span').html(vals['start']+' - '+vals['end'])
+            }
+            if ('option' in vals){
+                $('.ranges ul li').removeClass('active')
+                $('.ranges ul li').eq(vals['option']).addClass('active')
+
+            }
+        }
+
+
+    $(document).on("click", ".modal-delete", function (ev) {
+
+			ev.preventDefault();
+			var id = $(this).data('id');
+			var text = $(this).data('name');
+			$(".modal-body p strong").html( text );
+			$('#delete').modal('show');
+			$('#btn-delete').click(function() {
+				var url = '/customer/' + id + '/delete/';
+				$.post(url, function() {
+					location.href = '/customer/'
+				})
+			})
+		});
+{#		$(document).on("click", ".modal-add", function (ev) {#}
+    $( "body" ).delegate( ".modal-add", "click", function(ev) {
+			ev.preventDefault();
+        var pk = $('.enp_id').val();
+        $('#id_employee option[value='+pk+']').attr('selected','selected');
+			$("#add-modal-body table").html(form);
+			$('#add-modal-body form').attr('action', '/timeclock/add/');
+			$("#btn-add").click(function() {
+				ev.preventDefault();
+				$('#add-form').submit();
+				$('#add').modal('hide');
+			})
+		});
+
+    $( "body" ).delegate( "#add_time", "submit", function(ev) {
+        var date = $('#id_date').val();
+        var time_in = $('#id_time_in').val();
+        $('#id_time_in').val(date + ' '+ time_in)
+        var time_out = $('#id_time_out').val();
+        if (time_out!=''){
+            $('#id_time_out').val(date + ' '+ time_out);
+        }
+        return true;
+    });
+
+
+		$(document).on("click", ".modal-edit", function(ev) {
+			ev.preventDefault();
+			var id = $(this).data('id');
+			var url = '/terminalapi/sync/customers';
+			$("#edit-modal-body form table").html(form);
+			$.get(url, function(data) {
+				var employee = $.grep(data.results, function(e){return e.id == id})[0];
+				$.each(employee, function(field, value) {
+					$('#edit-modal-body #id_'+field).val(value);
+				});
+			});
+			$('#edit-modal-body form').attr('action', id+'/edit/')
+			$('#btn-edit').click(function(ev) {
+				ev.preventDefault();
+				$('#edit-form').submit();
+				$('#edit').modal('hide');
+			})
+
+
+
+		})
+
+{#    $('#reservationtime_1').daterangepicker({ timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A' });#}
+
+
+
+    jQuery('#id_time_in').datetimepicker({
+        datepicker:false,
+        step:5,
+        hours12:false,
+        format:'h:i A'
+
+    });
+
+
+    jQuery('#id_time_out').datetimepicker({
+        datepicker:false,
+        step:5,
+        hours12:false,
+        format:'h:i A'
+
+    });
+
+
+
+    jQuery('#id_date').datetimepicker({
+        timepicker:false,
+        step:5,
+        hours12:false,
+        format:'Y-m-d'
+
+    });
+
+
+
+Date.prototype.dateFormat = function( format ){
+  //you code for convert date object to format string
+  //for example
+  switch( format ){
+    case 'Y-m-d': return this.getFullYear()+'-'+ (this.getMonth()+ 1)+'-'+ this.getDate();
+    case 'd': return this.getDate();
+    case 'H:i:s': return this.getHours()+':'+this.getMinutes()+':'+this.getSeconds();
+    case 'h:i A': return ((this.getHours() %12) ? this.getHours() % 12 : 12)+':'+(this.getMinutes()<10?'0':'')+this.getMinutes()+(this.getHours() < 12 ? ' AM' : ' PM');
+  }
+  // or default format
+  return ((this.getHours() %12) ? this.getHours() % 12 : 12)+':'+(this.getMinutes()<10?'0':'')+this.getMinutes()+(this.getHours() < 12 ? ' AM' : ' PM');
+{#    return (this.getDate()<0?'0':'')+this.getDate()+'.'+(this.getMonth()+ 1)+'.'+this.getFullYear();#}
+};
+
+
+    </script>
+
+
+
+{#<link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css" />#}
+{% endblock %}
+

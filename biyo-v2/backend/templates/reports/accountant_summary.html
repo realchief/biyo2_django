@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load panel_tags %}
+{% block content %}
+
+
+<ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reports_home' %}">{% trans "Reports" %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Accountant summary" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Reports" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+        <div class="row">
+            <div class="offset1">
+                {% with 'accountant_summary' as active %}
+                    {% include "reports/includes/filter.html" %}
+                {% endwith %}
+
+                <div class="separator bottom"></div>
+    			<div class="span8">
+					{% if categories %}
+                        <table class="table">
+                            <tbody>
+
+        							<thead>
+        								<tr>
+        									<th>{% trans "Category" %}</th>
+        									<th class="right">{% trans "Amount" %}</th>
+        									<th class="right">{% trans "Sales" %}</th>
+                                            <th class="right">{% trans "% Percentage" %}</th>
+        								</tr>
+        							</thead>
+
+                                {% for category in categories %}
+                                    <tr class="category-level-{{ category.level }}">
+                                        <td class="category-level-{{ category.level }}">{{ category.name }}</td>
+                                        <td class="right">{{ category.amount|intcomma }}</td>
+                                        <td class="right">${{ category.sales|floatformat:2|default:"0.00"|intcomma }}</td>
+                                        <td class="right">{{ category.percentage|floatformat:2|default:"0.00"|intcomma }} %</td>
+                                    </tr>
+                                {% endfor %}
+
+                                <tr>
+                                    <td class="fright"><hr/></td>
+                                    <td class="right">&nbsp;</td>
+                                    <td class="right">&nbsp;</td>
+                                    <td class="right">&nbsp;</td>
+                                </tr>
+
+        						<tr>
+        							<td class="font-bold">{% trans "Total before Discounts" %}:</td>
+        							<td class="right">{{total|intcomma}}</td>
+                                    <td class="right">${{total_sales|floatformat:2|default:"0.00"|intcomma}}</td>
+        							<td class="right">&nbsp;</td>
+                                </tr>
+
+                                <tr>
+        							<td class="font-bold">{% trans "Order Discounts" %}:</td>
+        							<td class="right"></td>
+        							<td class="right">(${{discount|floatformat:2|default:"0.00"|intcomma}})</td>
+                                    <td class="right">&nbsp;</td>
+                                </tr>
+
+                                <tr>
+        							<td class="font-bold">{% trans "Total After Discounts" %}:</td>
+        							<td class="right"></td>
+        							<td class="right">${{total_sales|dodeduction:discount|floatformat:2|default:"0.00"|intcomma}}</td>
+                                    <td class="right">&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    {% else %}
+                        {% include 'reports/includes/empty.html' %}
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    <div class="innerLR">
+    </div>
+
+{% endblock %}

@@ -1,0 +1,208 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load humanize %}
+
+
+<div class="row clearfix">
+    <div class="col-sm-12 col-md-1">
+        <h1 class="page-title">{% trans "Products" %}</h1>
+    </div>
+    <div class="col-sm-12 col-md-4">
+        <form method="post" id='sort-form' enctype="multipart/form-data">
+            {% csrf_token %}
+            <input id="search-product-field" type="text" class="search-field product-list-btns form-control" value="" name="filter_tag" placeholder="Search by Name or Barcode" />
+            <button type="submit" class="btn btn-primary product-list-btns">Search</button>
+            <a class="btn btn-secondary" href="{% url 'clearfilterproduct' %}">Clear Filter</a>
+            <input id="sort-input" name="sort_by" type="hidden" value="">
+        </form>
+    </div>
+    <div class="col-sm-12 col-md-4">
+        <form method="post" id="category-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <select name="categories" data-style="btn-secondary" id="cat-filter" class="category-filter selectpicker">
+                <option>All categories</option>
+                {% for category in categories %}
+                    <option {% ifequal selected_category category.id %} selected {% endifequal %} value="{{ category.id }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="hidden-md-up" style="height: 50px;">
+    </div>
+    <div class="col-sm-12 col-md-3">
+        <div class="pull-md-right product-list-btns" aria-label="Add Order">
+            <a href={% url "product_create" %}><button type="button" class="btn btn-success waves-effect"><i class="icon md-plus" aria-hidden="true"></i> {% trans "New Product" %} </button></a>
+        </div>
+        <div class="pull-md-right product-list-btns">
+            <form id="csv-download" action="{% url 'csvdownload' %}" method="post">
+                {% csrf_token %}
+                <button class="btn btn-secondary waves-effect" type="submit">{% trans "Export" %}</button>
+            </form>
+        </div>
+        <div class="pull-md-right product-list-btns">
+            <form id="csv-download" action="{% url 'import_csv' %}" method="get">
+                <button class="btn btn-secondary waves-effect" type="submit">{% trans "Import" %}</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="m-b-15">
+                </div>
+            </div>
+        </div>
+    {% if object_list %}
+        <table class="table table-hover table-striped" cellspacing="0" id="exampleFixedHeader">
+            <thead>
+                <tr>
+                    <th class="table_col">
+                        <button form="sort-form" class="btn btn-link sort-button" data-name="name">{% trans "Name" %}</button>
+                    </th>
+                    <th class="table_col">
+                        {% trans "Categories" %}
+                    </th>
+                    <th class="table_col">
+                        <button form="sort-form" class="btn btn-link sort-button" data-name="cost">{% trans "Cost" %}</button>
+                    </th>
+                    <th class="table_col">
+                        <button form="sort-form" class="btn btn-link sort-button" data-name="price">{% trans "Price" %}</button>
+                    </th>
+                    <th class="table_col">
+                        <button form="sort-form" class="btn btn-link sort-button" data-name="barcode">{% trans "Barcode" %}</button>
+                    </th>
+                    <th class="table_col">
+                        <button form="sort-form" class="btn btn-link sort-button" data-name="stock">{% trans "Stock" %}</button>
+                    </th>
+                    <th class="table_col">
+                        <button form="sort-form" class="btn btn-link sort-button" data-name="tax_status">{% trans "Tax Status" %}</button>
+                    </th>
+                    <th class="table_col">
+                        <button form="sort-form" class="btn btn-link sort-button" data-name="active">{% trans "Active" %}</button>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for object in object_list %}
+                    <tr>
+                        <td>
+                            {% if object.image %}
+                                <a class="avatar avatar-lg" href="{% url 'product_update' pk=object.pk %}">
+                                   <img src="/media/{{ object.image }}" alt="...">
+                                </a>
+                            {% endif %}
+                            <a id="product-name" href="{% url 'product_update' pk=object.pk %}">{{ object.name }}</a>
+                        </td>
+                        <td>
+                            <select class="categories_data_select selectpicker" data-style="btn-secondary"  data-size="5" data-pk="{{ object.pk }}" multiple>
+                                {% for opt in categories %}
+                                    {% if opt in object.categories.all %}
+                                        <option class="opt" selected value="{{ opt.pk }}">{{ opt.name }}</option>
+                                    {% else %}
+                                        <option class="opt" value="{{ opt.pk }}">{{ opt.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td class="right">${{ object.cost|floatformat:2|default:"0.00"|intcomma }}</td>
+                        <td class="right">${{ object.price|floatformat:2|default:"0.00"|intcomma }}</td>
+                        <td>{{ object.barcode }}</td>
+                        {% if object.stock > 0 %}
+                            <td class="right"><span class="tag tag-pill tag-success">{{ object.stock|default_if_none:"Out of Stock"|intcomma }}</span></td>
+                        {% else %}
+                            <td class="right"><span class="tag tag-pill tag-danger">{{ object.stock|default_if_none:"Out of Stock"|intcomma }}</span></td>
+                        {% endif %}
+                        {% if object.tax_status == 1 %}
+                            <td class="right"><input data="{{ object.id }}" class="tax-status" data-plugin="switchery" data-color="#5ac766" type="checkbox"></td>
+                        {% else %}
+                            <td class="right"><input data="{{ object.id }}" class="tax-status" data-plugin="switchery" checked="" data-color="#5ac766" type="checkbox"></td>
+                        {% endif %}
+                        {% if object.active %}
+                            <td class="right"><input data="{{ object.id }}" class="active-status" data-plugin="switchery" checked="" data-color="#5ac766" type="checkbox"></td>
+                        {% else %}
+                            <td class="right"><input data="{{ object.id }}" class="active-status" data-plugin="switchery" data-color="#5ac766" type="checkbox"></td>
+                        {% endif %}
+                        <td>
+                            <a href="{% url 'product_update' pk=object.pk %}" style="text-decoration: none">
+                                <button type="button" class="btn btn-warning waves-effect">{% trans "Edit" %}</button>
+                            </a>
+                            <a href="{% url 'product_delete' pk=object.pk %}">
+                                <button type="button" class="btn btn-danger waves-effect"> {% trans "Delete" %}</button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {% include 'reports/includes/empty.html' %}
+    {% endif %}
+    </div>
+</div>
+{% include "includes/paginator.html" %}
+
+{% endblock content %}
+{% block style %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/multiple-select/multiple-select.css"/>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}common/multiple-select/multiple-select.js"></script>
+    <script type="text/javascript">
+        $( window ).load(function() {
+               $('.dropdown-menu.inner li').on('click', function (e) {
+                   var select = $(this).parent().parent().parent().find('select');
+                   var selectedId = select.val();
+                   if (selectedId && selectedId.length < 2 && $(this).attr('class') == 'selected') {
+                       e.stopImmediatePropagation();
+                       sweetAlert('Error', 'Must be selected at least one category.');
+                   }
+               });
+
+              $('select.categories_data_select').on('change', function(e){
+                var selectedId = $(this).val();
+                  console.log(selectedId);
+                if (selectedId && selectedId.length >= 1) {
+                  $.post("{% url 'update_prod_list' %}", {
+                      pk: this.dataset['pk'],
+                      category: selectedId.join(';')
+                  });
+                }
+              });
+
+            $('.tax-status').on('change', function () {
+                $.post('/product/' + this.getAttribute('data') + '/edit/', {
+                      tax_status: this.checked,
+                      'switch': 'moved'
+                });
+            });
+
+            $('.active-status').on('change', function () {
+                $.post('/product/' + this.getAttribute('data') + '/edit/', {
+                      active: this.checked,
+                      'switch': 'moved'
+                });
+            });
+
+            $('#cat-filter').on('change', function () {
+            $('#category-form').submit();
+        });
+        $('.sort-button').on('click', function (e) {
+            var button = e.target;
+            var value = button.dataset.name;
+            $('#sort-input').val(value)
+        });
+        });
+    </script>
+{% endblock %}

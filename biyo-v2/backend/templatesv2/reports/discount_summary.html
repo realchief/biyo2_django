@@ -1,0 +1,142 @@
+{% extends "base.html" %} {% block content %}
+{% load humanize %}
+{% load i18n %}
+
+
+<div class="row ">
+    <div class="col-sm-12 col-md-6 col-lg-3">
+        <h1 class="page-title">{% trans "Discounts Summary" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-5">
+        {% with 'discount_summary' as active %}
+            {% include "reports/includes/filter.html" %}
+        {% endwith %}
+    </div>
+
+
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+    {% if number_of_orders and discounts_total and amounts_deducted %}
+        <div class="row">
+
+
+            <div class="col-sm-12">
+                <table class="table">
+                    <tbody>
+
+{#							<tr><td>{% trans 'Orders' %}</td><td class="right">{{ number_of_orders }}</td></tr>#}
+                             {% url 'discounted_orders' as the_url %}
+                            <tr><td><a href="{{ the_url}}{{ saved_url }}">{% trans 'Discounted Orders' %}</a><td class="right">{{ discounts_total }}</td></tr>
+							<tr><td>{% trans 'Total Ducted Amount ' %}</td>
+                                <td class="right">${{ amounts_deducted|floatformat:2|default:"0.00"|intcomma }}</td>
+                            </tr>
+
+                    </tbody>
+                </table>
+
+                <!-- <table class="table">
+                    <tbody>
+
+                        <tr>
+                            <td>December, 10</td>
+                        </tr>
+                        <tr>
+                            <th>Hour</th>
+                            <th class="right">Amount</th>
+                            <th class="right">Total Sales</th>
+
+                        </tr>
+                        <tr>
+                            <td>12:00 AM</td>
+                            <td class="right">6</td>
+                            <td class="right">$55.16</td>
+                        </tr>
+
+                        <tr>
+                            <td>01:00 AM</td>
+                            <td class="right">1</td>
+                            <td class="right">$3.00</td>
+                        </tr>
+
+                        <tr>
+                            <td>02:00 AM</td>
+                            <td class="right">1</td>
+                            <td class="right">$3.00</td>
+                        </tr>
+
+                        <tr>
+                            <td>03:00 AM</td>
+                            <td class="right">2</td>
+                            <td class="right">$14.50</td>
+                        </tr>
+
+                        <tr>
+                            <td>04:00 AM</td>
+                            <td class="right">1</td>
+                            <td class="right">$8.00</td>
+                        </tr>
+
+                        <tr>
+                            <td>05:00 AM</td>
+                            <td class="right">3</td>
+                            <td class="right">$18.00</td>
+                        </tr>
+
+                        <tr>
+                            <td>06:00 AM</td>
+                            <td class="right">10</td>
+                            <td class="right">$94.70</td>
+                        </tr>
+
+                        <tr>
+                            <td>07:00 AM</td>
+                            <td class="right">19</td>
+                            <td class="right">$172.25</td>
+                        </tr>
+
+                        <tr>
+                            <td>08:00 AM</td>
+                            <td class="right">40</td>
+                            <td class="right">$1,178.20</td>
+                        </tr>
+
+                        <tr>
+                            <td>09:00 AM</td>
+                            <td class="right">34</td>
+                            <td class="right">$457.22</td>
+                        </tr>
+
+                        <tr>
+                            <td>10:00 AM</td>
+                            <td class="right">45</td>
+                            <td class="right">$1,001.35</td>
+                        </tr>
+
+                        <tr>
+                            <td>11:00 AM</td>
+                            <td class="right">34</td>
+                            <td class="right">$530.16</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Total: </strong></td>
+                            <td class="right">196</td>
+                            <td class="right">$3,535.54</td>
+                        </tr>
+                    </tbody>
+                </table> -->
+
+            </div>
+        </div>
+        {% else %}
+            {% include 'reports/includes/empty.html' %}
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

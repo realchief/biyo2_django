@@ -1,0 +1,137 @@
+{% extends "base.html" %} {% block content %}
+
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+{% load panel_tags %}
+
+<div class="row ">
+    <div>
+        <h1 class="page-title">{% trans "Customer Report" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-4 offset-md-2">
+        {% with 'item_sales' as active %}
+            {% include "reports/includes/filter.html" with show_all_button=True %}
+        {% endwith %}
+    </div>
+    <div class="hidden-md-up" style="height: 50px;">
+    </div>
+
+
+    <div class="col-sm-12 col-md-2">
+        <select class="form-control select2-hidden-accessible" id="customers" data-plugin="select2" data-placeholder="All Employees" data-allow-clear="true" tabindex="-1" aria-hidden="true">
+            <option value="-1">Select a Customer</option>
+            {% for customer in dropdown_customers %}
+                <option value="{{ customer.id }}"{% if customer.selected %} selected="selected"{% endif %}>{{ customer.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="hidden-sm-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-2">
+        <select class="form-control select2-hidden-accessible" id="terminals" data-plugin="select2" data-placeholder="All Terminals" data-allow-clear="true" tabindex="-1" aria-hidden="true">
+            <option value="-1">Select a Terminal</option>
+            {% for terminal in dropdown_terminals %}
+                <option value="{{ terminal.id }}"{% if terminal.selected %} selected="selected"{% endif %}>{{ terminal.name }}</option>
+            {% endfor %}
+          </select>
+    </div>
+
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+    {% if customers %}
+        {% for customer in customers %}
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <h2 align="center"><strong>{{ customer.get_full_name }}</strong></h2>
+                </tr>
+            </thead>
+            <tbody>
+            <h1></h1>
+            {% for order in customer.report_orders %}
+                <tr>
+                    <td class="text-xs-right"><a href="{% url 'order-detail' pk=order.id %}">{{ order }}</a></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>{% trans "Open date" %}</td>
+                    <td class="text-xs-right">{{ order.open_date }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans "Close date" %}:</td>
+                    <td class="text-xs-right">{{ order.close_date }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans "Grand Total" %}:</td>
+                    <td class="text-xs-right">${{ order.grand_total|floatformat:2 }}</td>
+                </tr>
+            {% endfor %}
+                <tr></tr>
+                <tr>
+                    <td><strong>{% trans "Balance" %}:</strong></td>
+                    <td class="text-xs-right">${{customer.bal|floatformat:2 }}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% endfor %}
+    {% else %}
+        {% include 'reports/includes/empty.html' %}
+    {% endif %}
+    </div>
+</div>
+{% endblock content %}
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function()
+        {
+            $('#customers').on('change', function(event)
+            {
+                var selectedCustomer = $(this).val();
+                if(selectedCustomer != -1) {
+                    if(location.search == "")
+                    {
+                        params = "?customer=" + selectedCustomer;
+                        location.href = location.pathname + params;
+                    }
+                    else
+                    {
+                        params = "&customer=" + selectedCustomer;
+                        location.href = location.pathname + location.search + params;
+                    }
+                }
+                else
+                {
+                    location.href = location.pathname;
+                }
+            });
+
+            $('#terminals').on('change', function(event)
+            {
+                var selectedTerminal = $(this).val();
+                if(selectedTerminal != -1) {
+                    if(location.search == "")
+                    {
+                        params = "?terminal=" + selectedTerminal;
+                        location.href = location.pathname + params;
+                    }
+                    else
+                    {
+                        params = "&terminal=" + selectedTerminal;
+                        location.href = location.pathname + location.search + params;
+                    }
+                }
+                else
+                {
+                    location.href = location.pathname;
+                }
+            });
+        });
+    </script>
+{% endblock %}
+

@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load panel_tags %}
+{% load tz %}
+{% block content %}
+    {% load humanize %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'order-list' %}">{% trans "Orders" %}</a></li>
+        <li class="divider"></li>
+        <li>Order #{{ object.id }}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>Order Details #{{ object.id }}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+
+        <div style="padding-bottom: 30px">
+            <div class="left" style="float: left">
+                <ul>
+                    <li>{{ customer}}</li>
+                    <li>{{ customer.address}}</li>
+                    <li> {{ customer.phone }}</li>
+                </ul>
+
+            </div>
+
+            <div class="right" style="width: 400px;float: right;">
+
+                <ul class="pager" style="width: 300px;margin: 25px">
+                    {% if object.get_prev %}
+                    <li class="previous">
+                        <a href="{% url 'order-detail' pk=object.get_prev.id %}">Previous Order</a>
+                    </li>
+                    {% endif %}
+                    {% if object.get_next %}
+                    <li class="next">
+                        <a href="{% url 'order-detail' pk=object.get_next.id %}">Next Order</a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+                <ul>
+                    <li style="background-color: #E8EDEC">Open date: {{ object.open_date|timezone:tz|date:"m-d-Y h:i A" }}</li>
+                    <li>Hold date: {{ object.hold_date|timezone:tz|date:"m-d-Y h:i A" }}</li>
+                    <li style="background-color: #E8EDEC">Close date: {{ object.close_date|timezone:tz|date:"m-d-Y h:i A"|default:'-' }}</li>
+                    <li>Order status: {{ object.get_status_display }}</li>
+                    {%  if object.emp_open == object.emp_close %}
+                        <li>Employee: <a href="{% url 'employee_detail' pk=object.emp_open.id %}">{{object.emp_open}}</a></li>
+                    {% elif object.emp_open != object.emp_close and object.emp_close != null %}
+                        <li>Employee: <a href="{% url 'employee_detail' pk=object.emp_open.id %}">{{object.emp_open }}</a>, <a href="{% url 'employee_detail' pk=object.emp_close.id %}">{{object.emp_close }}</a></li>
+                    {% elif object.emp_open %}
+                        <li>Employee: <a href="{% url 'employee_detail' pk=object.emp_open.id %}">{{object.emp_open}}</a></li>
+                    {% endif %}
+                    {% if object.terminal_id %}<li>Terminal: <a href="{% url 'terminal_detail' pk=object.terminal_id %}">#{{ object.terminal_id }}</a></li>{% endif %}
+                </ul>
+
+            </div>
+        </div>
+
+    <div style="clear: both"></div>
+
+        {% if order_items %}
+            <br/>
+            <span>Order items:</span>
+            {% if voided_items %}
+                <div id="show-void"><a>Show voided items</a></div>
+            {% endif %}
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>{% trans "Name" %}</th>
+                    <th>{% trans "Price" %}</th>
+                    <th>{% trans "Discount" %}</th>
+                    <th>{% trans "Quantity" %}</th>
+                    {#          <th>{% trans "Tax" %}</th>#}
+                    <th>{% trans "Subtotal" %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in order_items %}
+                    <tr>
+                        <td>
+                            <a href ="{% url 'product_detail' pk=item.product_id %}">{{ item.name }}</a>
+                            <ul>
+                {% for mod in item.get_modifiers %}<li>{{ mod.name }} - ${{ mod.price|floatformat:2 }}</li>{% endfor %}
+                           
+                            </ul>
+                        </td>
+                        <td class="right">${{ item.price|floatformat:2|default:"0.00"|intcomma }}</td>
+                        <td class="right">${{ item.discount|floatformat:2|default:"0.00"|intcomma }}</td>
+                        <td class="right">{{ item.quantity|floatformat:-2|intcomma }}</td>
+                        {#            <td class="right">${{ item.tax|floatformat:2|default:"0.00"|intcomma }}</td>#}
+                        <td class="right">${{ item|subtotal|floatformat:2|default:"0.00"|intcomma }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        {% if voided_items %}
+            <div id="void">
+                <h4>Voided items:</h4>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>{% trans "Name" %}</th>
+                        <th>{% trans "Price" %}</th>
+                        <th>{% trans "Discount" %}</th>
+                        <th>{% trans "Quantity" %}</th>
+                        <th>{% trans "Tax" %}</th>
+                        <th>{% trans "Subtotal" %}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in voided_items %}
+                        <tr>
+                            <td>
+                                {{ item.name }}
+                                <ul>
+                                    {% for mod in item.modifiers.all %}<li>{{ mod.name }} - ${{ mod.price|floatformat:2 }}{% if mod.void_status %} (Removed){% endif %}</li>{% endfor %}
+                                </ul>
+                            </td>
+                            <td class="right">${{ item.price|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td class="right">${{ item.discount|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td class="right">{{ item.quantity|intcomma }}</td>
+                            <td class="right">${{ item.tax|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td class="right">${{ item|subtotal|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+        {% if object.payments.all %}
+            <h4>Payments:</h4>
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>{% trans "Amount" %}</th>
+                    <th>{% trans "Amount Paid" %}</th>
+                    <th>{% trans "Change Amount" %}</th>
+                    <th>{% trans "Payment Type" %}</th>
+                    <th>{% trans "Payment Date" %}</th>
+                    <th>{% trans "Transaction Type" %}</th>
+                    <th>{% trans "Signature" %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for payment in object.payments.all %}
+                    <tr>
+
+                        <td class="left">${{ payment.amount|floatformat:2|default:"0.00"|intcomma }}</td>
+                        <td class="left">${{payment.amount|dodeduction:payment.change_amount|floatformat:2|default:"0.00"|intcomma }}</td>
+                        <td class="left">${{ payment.change_amount|floatformat:2|default:"0.00"|intcomma }}</td>
+                        <td class="left">
+                            {{ payment.payment_type.capitalize }}
+                            {% if  payment.payment_type != "Othercredit" and payment.payment_type != "Cash"%}
+                                    <a class="details" data-toggle="modal" data-target=".modal" data-id="{{payment.id}}"> View Details</a>
+                                    <br/>
+                                    <a href="{% url 'add_tips' pk=payment.id %}"> Add Tips</a>
+                            {% endif %}
+
+                        </td>
+                        <td class="left">{{ payment.payment_date|timezone:tz }}</td>
+                        <td class="left">{{ payment.get_transaction_type_display }}</td>
+                        <td class="left">
+                            {% if payment.signature %}
+                                <img width="200" src="data:image/jpg;base64,{{ payment.signature }}">
+                            {% endif %}
+                        </td>
+                        <td style="display: none" class="payment-data-{{payment.id}}">
+                            <ul>
+                                <li>Transaction ID: {{ payment.transaction_id }}</li>
+                                {% if payment.card_lastfour != None %}
+                                    <li>Card Last Four: {{ payment.card_lastfour }}</li>
+                                {% endif %}
+                                <li>Processor Response: {{ payment.processor_response }}</li>
+                                <li>Batch Number: {{ payment.batch_num }}</li>
+                                <li>Check Number: {{ payment.check_number }}</li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+
+        Order description: {{ object.description }}
+
+        <div class='right' style="width: 300px; float: right">
+
+            <ul class="list-unstyled">
+                <!--li>Number: {{ object.number|intcomma }}</li-->
+                <li style="background-color: #E8EDEC">Subtotal: ${{ object.subtotal|floatformat:"2"|intcomma }}</li>
+                <li>Tax total: ${{ object.tax_total|floatformat:"2"|intcomma }}</li>
+                <li style="background-color: #E8EDEC">Discount Items: ${{ object.discount_items|floatformat:"2"|intcomma }}</li>
+                <li>Discount Orders: ${{ object.discount_orders|default:'0.0'|floatformat:"2"|intcomma }}</li>
+                <li style="background-color: #E8EDEC">Total Discount: ${{ object.discount_total|floatformat:"2"|intcomma }}</li>
+                <li>Grand: ${{ object.grand_total|floatformat:"2"|intcomma }}</li>
+                <li style="background-color: #E8EDEC">Tips: ${{ object.payments.all|get_tips|default:"0.00"|floatformat:"2"|intcomma}}</li>
+                <li >Balance remaining: ${{ object.balance_remaining|floatformat:"2"|default:"0.00"|intcomma }}</li>
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <p>One fine body&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Okay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block js %}
+    {{ block.super }}
+    <script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}common/bootstrap/js/bootstrap.min.js"></script>
+
+
+
+    <script type="text/javascript">
+        $('#void').hide();
+        $('#show-void').click(function(){
+            if ($('#void').css('display') == 'none') {
+                $('#void').show();
+                $('#show-void a').text('Hide voided items')
+            } else {
+                $('#void').hide();
+                $('#show-void a').text('Show voided items')
+
+            }
+
+        });
+        $('.details').click(function() {
+            var id = $(this).data('id');
+            var data = $('.payment-data-' + id + ' ul').clone();
+            $(".modal-title").text('Payment #' + id + ' details');
+            $(".modal-body").html(data)
+        })
+    </script>
+{% endblock %}

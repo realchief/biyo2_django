@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reward_list' %}">{% trans "Reward Campaigns" %}</a></li>
+
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Reward Campaigns" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+
+        <div class="btn-right">
+            <a class="btn modal-add"  href="{% url 'reward_create'%}"><i class="icon-plus"></i>  Add Reward Compaign</a>
+        </div>
+        <div class="separator bottom"></div>
+        <div class="widget">
+            <table class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+                <thead>
+                    <tr>
+                        <th class="center">{% trans "Name" %}</th>
+                        <th class="center">{% trans "Points to Reedem" %}</th>
+                        <th class="center">{% trans "Discount  Type" %}</th>
+
+                    </tr>
+                </thead>
+                <tbody data-link="row" class="rowlink">
+                    {% for object in object_list %}
+                        <tr>
+                            <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="name" data-type="text" data-url="{% url 'reward_update' pk=object.pk %}" data-title="Enter  name">{{ object.name }}</span></td>
+                            <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="points_reedem" data-type="text" data-url="{% url 'reward_update' pk=object.pk %}" data-title="Enter points">{{ object.points_reedem }}</span></td>
+                            <td class="center"><span class="x-editable-select" data-pk="{{object.pk}}" data-name="discount" data-type="select" data-url="{% url 'reward_update' pk=object.pk %}" data-title="Discount type" data-value="{{object.discount_type}}">{{ object.get_discount_display }}</span></td>
+
+							<td class="center">
+								<a class="" href="{% url 'reward_update' pk=object.pk %}">Edit</a>
+								<span class="action-separator"></span>
+                                <a class="" href="{% url 'reward_delete' pk=object.pk %}">Delete</a>
+
+							</td>
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include "includes/paginator.html" %}
+        </div>
+    </div>
+
+
+{% endblock content %}
+
+
+{% block js %}
+	{{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+	<script type="text/javascript">
+		var form = $('#form-hidden tbody').clone();
+
+		$('.x-editable').editable({send: 'always'});
+
+    $('.x-editable-select').editable({
+			source: [
+				  {value: "Discount", text: 'Discount'},
+				  {value: 'Text', text: 'Text'}
+
+			   ]
+    	});
+
+
+	</script>
+{% endblock %}

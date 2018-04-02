@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Employees" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Employees" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+        <div class="btn-right">
+            <a class="btn modal-add" href="{% url 'employee_create' %}"><i class="icon-plus"></i> Add Employee</a>
+        </div>
+        <div class="separator bottom"></div>
+        <div class="widget">
+            <table class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+                <thead>
+                    <tr>
+                        <th class="center">{% trans "Name" %}</th>
+                        <th class="center">{% trans "Phone" %}</th>
+                        <th class="center">{% trans "Role" %}</th>
+                        <th class="center">{% trans "Action" %}</th>
+                    </tr>
+                </thead>
+                <tbody data-link="row" class="rowlink">
+                    {% for object in object_list %}
+                        <tr>
+                            <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="name" data-type="text" data-url="{% url 'employee_update' pk=object.pk %}" data-title="Enter name">{{ object.name }}</span></td>
+                            <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="phone" data-type="text" data-url="{% url 'employee_update' pk=object.pk %}" data-title="Enter phone">{{ object.phone }}</span></td>
+                            <td class="center"><span class="x-editable-select" data-pk="{{object.pk}}" data-name="role" data-type="select" data-url="{% url 'employee_update' pk=object.pk %}" data-title="Select role" data-value="{{object.role}}">{{ object.get_role_display }}</span></td>
+							<td class="center">
+								<a class="" href="{% url 'employee_update' pk=object.pk %}">Edit</a>
+								<span class="action-separator"></span>
+								<a class="" href="{% url 'employee_delete' pk=object.pk %}"> Delete</a>
+							</td>
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include "includes/paginator.html" %}
+        </div>
+    </div>
+
+{#	{% include "includes/modal_delete.html" %}#}
+{#	{% include "includes/modal_add.html" %}#}
+{#	{% include "includes/modal_edit.html" %}#}
+{#			<div id="form-hidden"style="display: none"><table><tbody>{{form.as_table}}</tbody></table></div>#}
+
+
+{% endblock content %}
+
+
+{% block js %}
+	{{ block.super }}
+
+
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+
+	<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+	<script type="text/javascript">
+		var form = $('#form-hidden tbody').clone();
+
+		$('.x-editable').editable({send: 'always'});
+		$('.x-editable-select').editable({
+			source: [
+				  {value: 1, text: 'Owner'},
+				  {value: 2, text: 'Manager'},
+				  {value: 3, text: 'Cashier'},
+				  {value: 4, text: 'Employee'}
+			   ]
+    	});
+{#		$(document).on("click", ".modal-delete", function (ev) {#}
+{#			ev.preventDefault();#}
+{#			var id = $(this).data('id');#}
+{#			var text = $(this).data('name');#}
+{#			$(".modal-body p strong").html( text );#}
+{#			$('#delete').modal('show');#}
+{#			$('#btn-delete').click(function() {#}
+{#				var url = '/employee/' + id + '/delete/';#}
+{#				$.post(url, function() {#}
+{#					location.href = '/employee/'#}
+{#				})#}
+{#			})#}
+{#		});#}
+{#		$(document).on("click", ".modal-add", function (ev) {#}
+{#			ev.preventDefault();#}
+{#			$("#add-modal-body table").html(form);#}
+{#			$('#add-modal-body form').attr('action', '/employee/add/');#}
+{#			$("#btn-add").click(function() {#}
+{#				ev.preventDefault();#}
+{#				$('#add-form').submit();#}
+{#				$('#add').modal('hide');#}
+{#			})#}
+{#		});#}
+{#		$(document).on("click", ".modal-edit", function(ev) {#}
+{#			ev.preventDefault();#}
+{#			var id = $(this).data('id');#}
+{#			var url = '/terminalapi/get/employee/' + id;#}
+{#			$("#edit-modal-body form table").html(form);#}
+{#			$.get(url, function(data) {#}
+{##}
+{#				$.each(data, function(field, value) {#}
+{#					$('#edit-modal-body #id_'+field).val(value);#}
+{#				});#}
+{#			});#}
+{#			$('#edit-modal-body form').attr('action', id+'/edit/')#}
+{#			$('#btn-edit').click(function(ev) {#}
+{#				ev.preventDefault();#}
+{#				$('#edit-form').submit();#}
+{#				$('#edit').modal('hide');#}
+{#			})#}
+{##}
+{##}
+{##}
+{#		})#}
+	</script>
+{% endblock %}

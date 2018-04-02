@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+<thead>
+  <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+  <th class="divider">/</th>
+  <th><a href="{% url 'store_list' %}">{% trans "Stores" %}</a></th>
+  <th class="divider">/</th>
+  <th>{% trans "Add new store" %}</th>
+</thead>
+
+<div class="table-responsive">
+        {% if form.errors %}
+            <div class="alert alert-warning">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+  <form method="post" enctype="multipart/form-data">
+    <div class="panel col-md-6 offset-md-3 create-update-form">
+        <h3 class="panel-title">
+           New Store
+        </h3>
+        {% csrf_token %}
+        <table class="table" id="editableUser">
+            <div class="col-md-4">
+               <tr>
+                 <td>{% bootstrap_field form.name %}</td>
+                 <td>
+                     <div>Logo</div>
+                     <label class="btn btn-secondary btn-file employee-add-photo-button">Browse
+                         <input id="id_logo" name="logo" title="" type="file" hidden>
+                     </label>
+                 </td>
+               </tr>
+               <tr>
+                 <td>{% bootstrap_field form.number %}</td>
+                 <td>{% bootstrap_field form.address %}</td>
+               </tr>
+               <tr>
+                 <td>{% bootstrap_field form.city %}</td>
+                 <td>{% bootstrap_field form.address_2 %}</td>
+               </tr>
+               <tr>
+                 <td>{% bootstrap_field form.state %}</td>
+                 <td>{% bootstrap_field form.zipcode %}</td>
+               </tr>
+               <tr>
+                 <td>{% bootstrap_field form.fax %}</td>
+                 <td>{% bootstrap_field form.email %}</td>
+               </tr>
+               <tr>
+                 <td>{% bootstrap_field form.website %}</td>
+                 <td>{% bootstrap_field form.phone %}</td>
+               </tr>
+               <tr>
+                 <td>{% bootstrap_field form.tax_rate %}</td>
+                 <td>{% bootstrap_field form.package %}</td>
+               </tr>
+               <tr>
+                 <td>{% bootstrap_field form.xweb_url %}</td>
+                 <td>{% bootstrap_field form.xweb_id %}</td>
+               </tr>
+               <tr>
+                 <td>{% bootstrap_field form.xweb_terminal_id %}</td>
+                 <td>{% bootstrap_field form.xweb_auth_key %}</td>
+               </tr>
+               <tr>
+                 <td>{% bootstrap_field form.xweb_industry %}</td>
+                 <td>{% bootstrap_field form.timezone %}</td>
+               </tr>
+            </div>
+        </table>
+        <div>
+            <button type="submit" class="btn btn-success waves-effect form-table-button">Add new tax rate</button>
+        </div>
+    </div>
+  </form>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+{% block content %}
+    <div class=""></div>
+    <form method="post" enctype="multipart/form-data">
+        <div class="page-header page-header-bordered">
+            <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+            <th class="divider">/</th>
+            <th><a href="{% url 'product_list' %}">{% trans "Products" %}</a></th>
+            <th class="divider">/</th>
+            <th>{% trans "Create a Product" %}</th>
+            <th><button type="submit" class="btn btn-success waves-effect form-table-button" id="btn-add">Add Product</button></th>
+            <th><button type="submit" class="btn btn-success waves-effect form-table-button" id="btn-cancel">Cancel</button></th>
+        </div>
+        <div class="separator bottom"></div>
+        <div class="table-responsive">
+            {% if form.errors %}
+                <div class="alert alert-warning">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+            <div class="panel col-md-6 offset-md-3 create-update-form p-0">
+                <div class="panel-heading">
+                    <h2 class="panel-title custom-border" style="border-bottom: solid 1px rgb(224, 224, 224);">
+                       {% trans "Details" %}
+                    </h2>
+                </div>
+                {% csrf_token %}
+                <div class="panel-body p-b-5">
+                    <div class="col-md-8 p-l-0" id="editableUser">
+                         <tr>
+                             <td>{% bootstrap_field form.name show_label=True %}</td>
+                         </tr>
+                         <div class="row">
+                             <div class="col-md-9" style="padding-top: 10px;">Categories<br>{{ form.categories }}</div>
+{#                             <div class="col-md-3">{% bootstrap_field form.sorting show_label=True %}</div>#}
+                             <div class="col-md-3" style="padding-top: 10px;">
+                                <label class="control-label">Sorting</label>
+                                <input type="text" class="form-control" id="id_sorting" name="sorting" data-plugin="asSpinner" value={{ form.sorting.value }} />
+                             </div>
+                         </div>
+
+                        <div class="form-group p-t-15">
+                            <label class="control-label">Description</label>
+                            <textarea class="form-control" id="id_description" name="description" placeholder="Text area" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-4 p-r-0 p-l-15">
+                        <div class="example-wrap m-b-0">
+                            <label class="control-label" for="id_name">Image</label>
+                            <div class="uploader-inline">
+                              <input id="id_image" name="image" title="" type="file"  data-plugin="dropify" data-default-file=""
+                              />
+                            </div>
+                            <div class="p-t-25">{% bootstrap_field form.color show_label=False %}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel col-md-6 offset-md-3 create-update-form p-0">
+                <div class="panel-heading">
+                    <h2 class="panel-title custom-border" style="border-bottom: solid 1px rgb(224, 224, 224);">
+                       {% trans "Price and Inventory" %}
+                    </h2>
+                </div>
+                <div class="panel-body p-30">
+
+                     <div class="row">
+                         <div class="col-lg-6">{% bootstrap_field form.cost show_label=True %}</div>
+                         <div class="col-lg-6">{% bootstrap_field form.price show_label=True %}</div>
+                     </div>
+                     <div class="row">
+                         <div class="col-lg-6">{% bootstrap_field form.stock show_label=True %}</div>
+                         <div class="col-lg-6">{% bootstrap_field form.barcode show_label=True %}</div>
+                     </div>
+                     <div class="row">
+                         <div class="col-lg-6">{% bootstrap_field form.tax_rate show_label=True %}</div>
+{#                         <div class="col-md-6">{% bootstrap_field form.tax_status show_label=True %}</div>#}
+                         <div class="col-lg-6">
+                             <label class="control-label">Price Prompt</label>
+                             <div class="row">
+                                 <div class="col-sm-3">
+                                     <label class="switch">
+                                        <input class="form-control switch-input" name="price_adjust" type="checkbox"/>
+                                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                                        <span class="switch-handle"></span>
+                                     </label>
+                                 </div>
+                                 <div class="col-sm-9">
+                                     <label class="control-label" id="prompt">Enabling Price Prompt will ask for a  price to input everytime you sell this product.</label>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+{#                     <tr>#}
+{#                         <td>{% bootstrap_field form.price_adjust show_label=True %}</td>#}
+{#                         <td>{% bootstrap_field form.print_to show_label=True %}</td>#}
+{#                     </tr>#}
+{#                     <tr>#}
+{#                         <td>{% bootstrap_field form.printer show_label=True %}</td>#}
+{#                         <td>Modifier groups <br>{{ form.modifier_groups }}</td>#}
+{#                     </tr>#}
+
+                </div>
+
+                <div class="separator bottom"></div>
+
+            </div>
+            <div class="panel col-md-6 offset-md-3 create-update-form p-0">
+                <div class="panel-heading">
+                    <h2 class="panel-title custom-border" style="border-bottom: solid 1px rgb(224, 224, 224);">
+                       {% trans "Options" %}
+                    </h2>
+                </div>
+                <div class="panel-body p-30" style="margin-bottom: -15px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <td>Modifier groups <br>{{ form.modifier_groups }}</td>
+                        </div>
+                        <div class="col-md-6">
+                            <td>{% bootstrap_field form.printer show_label=True %}</td>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div id="colorpicker" style="display: none">
+	    <select name="colorpicker">
+	        <option value="#e56d3b">Orange</option>
+	        <option value="#459b99">Aqua</option>
+	        <option value="#744a17">Brown</option>
+	        <option value="#009d13">Green</option>
+	        <option value="#00b2d8">Cyan</option>
+	        <option value="#8f1758">Maroon</option>
+	        <option value="#b93aab">Pink</option>
+	    </select>
+	</div>
+
+{% block scripts %}
+	{{ block.super }}
+
+	<script src="{{ STATIC_URL }}vendor/jquery-simplecolorpicker/jquery.simplecolorpicker.js"></script>
+    <script src="{{ STATIC_URL }}vendor/switchery/switchery.min.js"></script>
+    <script src="{{ STATIC_URL }}vendor/intro-js/intro.js"></script>
+    <script src="{{ STATIC_URL }}vendor/screenfull/screenfull.js"></script>
+    <script src="{{ STATIC_URL }}vendor/slidepanel/jquery-slidePanel.js"></script>
+    <script src="{{ STATIC_URL }}vendor/jquery-ui/jquery-ui.js"></script>
+    <script src="{{ STATIC_URL }}vendor/blueimp-tmpl/tmpl.js"></script>
+    <script src="{{ STATIC_URL }}vendor/blueimp-canvas-to-blob/canvas-to-blob.js"></script>
+    <script src="{{ STATIC_URL }}vendor/blueimp-load-image/load-image.all.min.js"></script>
+    <script src="{{ STATIC_URL }}vendor/blueimp-file-upload/jquery.fileupload.js"></script>
+    <script src="{{ STATIC_URL }}vendor/blueimp-file-upload/jquery.fileupload-image.js"></script>
+    <script src="{{ STATIC_URL }}vendor/blueimp-file-upload/jquery.fileupload-ui.js"></script>
+    <script src="{{ STATIC_URL }}vendor/dropify/dropify.min.js"></script>
+    <script src="{{ STATIC_URL }}vendor/asspinner/jquery-asSpinner.js"></script>
+    <script src="{{ STATIC_URL }}js/Plugin/asspinner.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/jquery-simplecolorpicker/jquery.simplecolorpicker.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/jquery-simplecolorpicker/jquery.simplecolorpicker-glyphicons.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/dropify/dropify.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/blueimp-file-upload/jquery.fileupload.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}vendor/asspinner/asSpinner.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/custom.css">
+	<script type="text/javascript">
+		var colors = {
+			'#e56d3b': 0,
+			'#459b99': 1,
+			'#744a17': 2,
+			'#009d13': 3,
+			'#00b2d8': 4,
+			'#8f1758': 5,
+			'#b93aab': 6
+		};
+		$("#id_color_0").prop("checked", true);
+		$('#colorpicker select').appendTo($('#id_color').parent());
+		$('select[name="colorpicker"]').simplecolorpicker({theme: 'glyphicons'})
+				.on('change', function(){
+					var valT = $('select[name="colorpicker"]').val();
+					id = colors[val];
+					$("#id_color_" + id).prop("checked", true);
+				});
+        $('#id_color').hide();
+	</script>
+{% endblock %}
+
+{% endblock content %}

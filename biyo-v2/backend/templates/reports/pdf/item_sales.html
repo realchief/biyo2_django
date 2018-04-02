@@ -1,0 +1,70 @@
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+
+    <style>
+        *{line-height: 30px; font-size: 20px;}
+        table{
+            border: 1px solid grey;
+        }
+        .right{
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <h1>{% trans "Item sales" %}</h1>
+    <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Item name" %}</th>
+                            <th>{% trans "Item sold" %}</th>
+                            <th>{% trans "Gross sales" %}</th>
+                            <th>{% trans "Tax sum" %}</th>
+                            <th>{% trans "Discount" %}</th>
+                            <th>{% trans "Total" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product, data in products %}
+                            <tr>
+                                <td class="left"><a href='{% url 'product_detail' pk=product.id %}'>{{ product.name }}</a> </td>
+                                <td class="right">{{ data.item_sold|intcomma }}</td>
+                                <td class="right">${{ data.gross_sales|floatformat:2|default:"0.00"|intcomma }}</td>
+                                <td class="right">${{ data.tax_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                                <td class="right">(${{ data.discount|floatformat:2|default:"0.00"|intcomma}})</td>
+                                <td class="right">${{ data.total|floatformat:2|default:"0.00"|intcomma}}</td>
+                            </tr>
+                        {% endfor %}
+
+                            <!-- Total -->
+                             <tr>
+                                <td class="strong">Column Totals</td>
+
+
+                                <td class="right strong">{{ total_items }}</td>
+                                <td class="right strong">${{ total_gross_sales|floatformat:2|default:"0.00"|intcomma }}</td>
+                                <td class="right strong">${{ total_tax_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                                 <td class="right strong">(${{ discount|floatformat:2|default:"0.00"|intcomma }})</td>
+                                <td class="right strong">${{ total_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                            </tr>
+
+                             <tr>
+                                <td class="strong">Total After Discounts:</td>
+                                <td class="right strong"></td>
+                                                                  <td class="right strong"></td>
+
+                                <td class="right strong"></td>
+                                <td class="right strong"></td>
+                                <td class="right strong">${{ total_sum|dodeduction:discount|floatformat:2|default:"0.00"|intcomma }}</td>
+                            </tr>
+
+                    </tbody>
+                </table>
+</body>
+</html>

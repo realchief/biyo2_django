@@ -1,0 +1,88 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load humanize %}
+
+<thead>
+  <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+  <th class="divider">/</th>
+  <th><a href="{% url 'display_list' %}">{% trans "Displays" %}</a></th>
+  <th class="divider">/</th>
+  <th>{% trans "Boxes" %}</th>
+</thead>
+<h3></h3>
+<div class="row clearfix">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">{% trans "Boxes" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+
+    <div class="col-sm-12 col-md-5">
+        <!-- <div class="input-daterange" data-plugin="datepicker">
+            <div class="input-group">
+                <span class="input-group-addon">
+                        <i class="icon md-calendar" aria-hidden="true"></i>
+                      </span>
+                <input type="text" class="form-control" name="start" placeholder="Start Date">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">to</span>
+                <input type="text" class="form-control" name="end" placeholder="End Date">
+            </div>
+        </div> -->
+    </div>
+
+
+<div class="hidden-md-up" style="height: 50px;">
+    </div>
+    <div class="col-sm-12 col-md-4">
+
+        <div class="pull-md-right" aria-label="Add Order">
+            <a href="{% url 'box_create' %}"><button type="button" class="btn btn-success waves-effect"><i class="icon md-plus" aria-hidden="true"></i>{% trans "Add Box" %} </button></a>
+        </div>
+
+    </div>
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="m-b-15">
+                    <!-- <button id="addToTable" class="btn btn-primary" type="button">
+        <i class="icon md-plus" aria-hidden="true"></i> Add row
+      </button> -->
+                </div>
+            </div>
+        </div>
+        <table class="table table-hover table-striped" cellspacing="0" id="exampleFixedHeader">
+            <thead>
+                <tr>
+                    <th>{% trans "Id" %}</th>
+                    <th>{% trans "Display" %}</th>
+                    <th>{% trans "Action" %}</th>
+                </tr>
+
+
+            </thead>
+            <tbody>
+            {% for object in object_list %}
+                <tr>
+                    <td class="center">
+                        {{object.id}}
+                    </td>
+                    <td class="center">
+                        {{object.display}}
+                    </td>
+				    <td class="center">
+				        <a class="modal-edit" href="{% url 'box_update' pk=object.pk %}"><button class="btn btn-warning waves-effect"> {% trans "Edit" %}</button></a>
+				    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}

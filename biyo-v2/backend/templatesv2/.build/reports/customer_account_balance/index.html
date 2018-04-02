@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html class="no-js css-menubar" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>Biyo Point of Sale | Dashboard</title>
+
+    <link rel="apple-touch-icon" href="/static/images/apple-touch-icon.png">
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-extend.min.css">
+    <link rel="stylesheet" href="/static/css/site.min.css">
+    <link rel="stylesheet" href="/static/vendor/bootstrap-datepicker/bootstrap-datepicker.css">
+
+    <!-- Plugins -->
+    <link rel="stylesheet" href="/static/vendor/animsition/animsition.css">
+    <link rel="stylesheet" href="/static/vendor/asscrollable/asScrollable.css">
+    <link rel="stylesheet" href="/static/vendor/switchery/switchery.css">
+    <link rel="stylesheet" href="/static/vendor/intro-js/introjs.css">
+    <link rel="stylesheet" href="/static/vendor/slidepanel/slidePanel.css">
+    <link rel="stylesheet" href="/static/vendor/flag-icon-css/flag-icon.css">
+    <link rel="stylesheet" href="/static/vendor/waves/waves.css">
+    <link rel="stylesheet" href="/static/vendor/chartist/chartist.css">
+    <link rel="stylesheet" href="/static/vendor/jvectormap/jquery-jvectormap.css">
+    <link rel="stylesheet" href="/static/vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.css">
+    <link rel="stylesheet" href="/static/examples/css/dashboard/v1.css">
+
+    <!-- Page Style -->
+
+     
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="/static/fonts/material-design/material-design.min.css">
+    <link rel="stylesheet" href="/static/fonts/brand-icons/brand-icons.min.css">
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+    <!--[if lt IE 9]>
+          <script src="/static/vendor/html5shiv/html5shiv.min.js"></script>
+          <![endif]-->
+    <!--[if lt IE 10]>
+          <script src="/static/vendor/media-match/media.match.min.js"></script>
+          <script src="/static/vendor/respond/respond.min.js"></script>
+          <![endif]-->
+    <!-- Scripts -->
+    <script src="/static/vendor/breakpoints/breakpoints.js"></script>
+    <script>
+        Breakpoints();
+    </script>
+</head>
+
+
+
+<body class="animsition site-navbar-small dashboard">
+    <!--[if lt IE 8]>
+              <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+          <![endif]-->
+    <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega navbar-inverse" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggler hamburger hamburger-close navbar-toggler-left hided" data-toggle="menubar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="hamburger-bar"></span>
+            </button>
+            <button type="button" class="navbar-toggler collapsed" data-target="#site-navbar-collapse" data-toggle="collapse">
+              <i class="icon md-more" aria-hidden="true"></i>
+            </button>
+            <a class="navbar-brand navbar-brand-center" href="/index.html">
+                <img class="navbar-brand-logo navbar-brand-logo-normal" src="/static/images/biyo-logo_white.svg" title="Biyo">
+                <img class="navbar-brand-logo navbar-brand-logo-special" src="/static/images/biyo-logo_white.svg" title="Biyo">
+            </a>
+
+        </div>
+        <div class="navbar-container container-fluid">
+            <!-- Navbar Collapse -->
+            <div class="collapse navbar-collapse navbar-collapse-toolbar" id="site-navbar-collapse">
+                <!-- Navbar Toolbar -->
+                <ul class="nav navbar-toolbar">
+                    <li class="nav-item hidden-float" id="toggleMenubar">
+                        <a class="nav-link" data-toggle="menubar" href="#" role="button">
+                            <i class="icon hamburger hamburger-arrow-left">
+                        <span class="sr-only">Toggle menubar</span>
+                        <span class="hamburger-bar"></span>
+                      </i>
+                        </a>
+                    </li>
+                    <li class="nav-item hidden-sm-down" id="toggleFullscreen">
+                        <a class="nav-link icon icon-fullscreen" data-toggle="fullscreen" href="#" role="button">
+                            <span class="sr-only">Toggle fullscreen</span>
+                        </a>
+                    </li>
+
+
+                </ul>
+                <!-- End Navbar Toolbar -->
+                <!-- Navbar Toolbar Right -->
+                <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" data-animation="scale-up" aria-expanded="false" role="button">
+                            <span class="flag-icon flag-icon-us"></span>
+                        </a>
+                        <div class="dropdown-menu" role="menu">
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                                <span class="flag-icon flag-icon-gb"></span> English</a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                                <span class="flag-icon flag-icon-fr"></span> Français</a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                                <span class="flag-icon flag-icon-es"></span> Español</a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                                <span class="flag-icon flag-icon-de"></span> Deutsche</a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                                <span class="flag-icon flag-icon-tr"></span> Türkçe</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" title="Notifications" aria-expanded="false" data-animation="scale-up" role="button">
+                            <i class="icon md-notifications" aria-hidden="true"></i>
+                            <span class="tag tag-pill tag-danger up">5</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-media" role="menu">
+                            <div class="dropdown-menu-header">
+                                <h5>NOTIFICATIONS</h5>
+                                <span class="tag tag-round tag-danger">New 5</span>
+                            </div>
+                            <div class="list-group">
+                                <div data-role="container">
+                                    <div data-role="content">
+                                        <a class="list-group-item dropdown-item" href="javascript:void(0)" role="menuitem">
+                                            <div class="media">
+                                                <div class="media-left p-r-10">
+                                                    <i class="icon md-receipt bg-red-600 white icon-circle" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">A new order has been placed</h6>
+                                                    <time class="media-meta" datetime="2016-06-12T20:50:48+08:00">5 hours ago</time>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="list-group-item dropdown-item" href="javascript:void(0)" role="menuitem">
+                                            <div class="media">
+                                                <div class="media-left p-r-10">
+                                                    <i class="icon md-account bg-green-600 white icon-circle" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">Completed the task</h6>
+                                                    <time class="media-meta" datetime="2016-06-11T18:29:20+08:00">2 days ago</time>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="list-group-item dropdown-item" href="javascript:void(0)" role="menuitem">
+                                            <div class="media">
+                                                <div class="media-left p-r-10">
+                                                    <i class="icon md-settings bg-red-600 white icon-circle" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">Settings updated</h6>
+                                                    <time class="media-meta" datetime="2016-06-11T14:05:00+08:00">2 days ago</time>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="list-group-item dropdown-item" href="javascript:void(0)" role="menuitem">
+                                            <div class="media">
+                                                <div class="media-left p-r-10">
+                                                    <i class="icon md-calendar bg-blue-600 white icon-circle" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">Event started</h6>
+                                                    <time class="media-meta" datetime="2016-06-10T13:50:18+08:00">3 days ago</time>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="list-group-item dropdown-item" href="javascript:void(0)" role="menuitem">
+                                            <div class="media">
+                                                <div class="media-left p-r-10">
+                                                    <i class="icon md-comment bg-orange-600 white icon-circle" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">Message received</h6>
+                                                    <time class="media-meta" datetime="2016-06-10T12:34:48+08:00">3 days ago</time>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-menu-footer">
+                                <a class="dropdown-menu-footer-btn" href="javascript:void(0)" role="button">
+                                    <i class="icon md-settings" aria-hidden="true"></i>
+                                </a>
+                                <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+                          All notifications
+                        </a>
+                            </div>
+                        </div>
+                    </li>
+
+
+
+
+
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link navbar-avatar" data-toggle="dropdown" href="#" aria-expanded="false" data-animation="scale-up" role="button">
+                            <span class="avatar avatar-online">
+                      <img src="/static/portraits/5.jpg" alt="...">
+                      <i></i>
+                    </span>
+                        </a>
+                        <div class="dropdown-menu" role="menu">
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon md-account" aria-hidden="true"></i> Profile</a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon md-card" aria-hidden="true"></i> Billing</a>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon md-settings" aria-hidden="true"></i> Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon md-power" aria-hidden="true"></i> Logout</a>
+                        </div>
+                    </li>
+
+                </ul>
+                <!-- End Navbar Toolbar Right -->
+            </div>
+            <!-- End Navbar Collapse -->
+            <!-- Site Navbar Seach -->
+            <div class="collapse navbar-search-overlap" id="site-navbar-search">
+                <form role="search">
+                    <div class="form-group">
+                        <div class="input-search">
+                            <i class="input-search-icon md-search" aria-hidden="true"></i>
+                            <input type="text" class="form-control" name="site-search" placeholder="Search...">
+                            <button type="button" class="input-search-close icon md-close" data-target="#site-navbar-search" data-toggle="collapse" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- End Site Navbar Seach -->
+        </div>
+    </nav>
+    <div class="site-menubar hidden-print">
+        <div class="site-menubar-body">
+            <div>
+                <div>
+                    <ul class="site-menu" data-plugin="menu">
+                        <li class="site-menu-category">Sales Performance</li>
+                        <li class="dropdown site-menu-item has-sub ">
+                            <a data-toggle="dropdown" href="index.html" data-dropdown-toggle="false">
+                                <i class="site-menu-icon md-view-compact" aria-hidden="true"></i>
+                                <span class="site-menu-title">Dashboard</span>
+                            </a>
+
+                        </li>
+                        <li class="dropdown site-menu-item has-sub ">
+                            <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
+                                <i class="site-menu-icon md-receipt" aria-hidden="true"></i>
+                                <span class="site-menu-title">Orders</span>
+                                <span class="site-menu-arrow"></span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="site-menu-scroll-wrap is-list">
+                                    <div>
+                                        <div>
+                                            <ul class="site-menu-sub site-menu-normal-list">
+                                                <li class="site-menu-item ">
+                                                    <a class="animsition-link" href="/orders">
+                                                        <span class="site-menu-title">Sales Orders</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="widgets/dat">
+                                                        <span class="site-menu-title">Purchase Orders</span>
+                                                    </a>
+                                                </li>
+
+
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        </li>
+
+                        <li class="dropdown site-menu-item has-sub ">
+                            <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
+                                <i class="site-menu-icon md-chart" aria-hidden="true"></i>
+                                <span class="site-menu-title">Reports</span>
+                                <span class="site-menu-arrow"></span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="site-menu-scroll-wrap is-list">
+                                    <div>
+                                        <div>
+                                            <ul class="site-menu-sub site-menu-normal-list">
+
+                                                <h6 class="dropdown-header text-white">Product Reports</h6>
+
+                                                <li class="site-menu-item ">
+                                                    <a class="animsition-link" href="/reports/item_sales_summary">
+                                                        <span class="site-menu-title">Item Sales</span>
+                                                    </a>
+                                                </li>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/category_summary">
+                                                        <span class="site-menu-title">Category Summary</span>
+                                                    </a>
+                                                </li>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/price_adjustments">
+                                                        <span class="site-menu-title">Price Adjustments</span>
+                                                    </a>
+                                                </li>
+
+
+
+                                                <h6 class="dropdown-header text-white">Sales Reports</h6>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/sales_summary">
+                                                        <span class="site-menu-title">Sales Summary</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/hourly_sales">
+                                                        <span class="site-menu-title">Hourly Sales</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/shifts_payouts">
+                                                        <span class="site-menu-title">Shifts & Payouts</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/discounts_summary">
+                                                        <span class="site-menu-title">Discount Summary</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/order_gross_profit">
+                                                        <span class="site-menu-title">Order Gross Profit</span>
+                                                    </a>
+                                                </li>
+
+
+
+                                                <h6 class="dropdown-header text-white">User Reports</h6>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/employee_hour_summary">
+                                                        <span class="site-menu-title">Employee Hours</span>
+                                                    </a>
+                                                </li>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/time_card_weekly">
+                                                        <span class="site-menu-title">Time Card Weekly</span>
+                                                    </a>
+                                                </li>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/top_customers">
+                                                        <span class="site-menu-title">Top Customers</span>
+                                                    </a>
+                                                </li>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reports/customer_account_balance">
+                                                        <span class="site-menu-title">Customer Account Balance</span>
+                                                    </a>
+                                                </li>
+
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+
+                        <li class="site-menu-category">Management</li>
+                        <li class="dropdown site-menu-item has-sub">
+                            <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
+                                <i class="site-menu-icon md-widgets" aria-hidden="true"></i>
+                                <span class="site-menu-title">Products</span>
+                                <span class="site-menu-arrow"></span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="site-menu-scroll-wrap is-list">
+                                    <div>
+                                        <div>
+                                            <ul class="site-menu-sub site-menu-normal-list">
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/category">
+                                                        <span class="site-menu-title">Categories</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/product">
+                                                        <span class="site-menu-title">Products</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/modifiergroup">
+                                                        <span class="site-menu-title">Modifiers</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/discount">
+                                                        <span class="site-menu-title">Discounts</span>
+                                                    </a>
+                                                </li>
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+
+                        <li class="dropdown site-menu-item has-sub">
+                            <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
+                                <i class="site-menu-icon md-accounts" aria-hidden="true"></i>
+                                <span class="site-menu-title">Users</span>
+                                <span class="site-menu-arrow"></span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="site-menu-scroll-wrap is-list">
+                                    <div>
+                                        <div>
+                                            <ul class="site-menu-sub site-menu-normal-list">
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/employee">
+                                                        <span class="site-menu-title">Employees</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/customer">
+                                                        <span class="site-menu-title">Customers</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/supplier">
+                                                        <span class="site-menu-title">Suppliers</span>
+                                                    </a>
+                                                </li>
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="dropdown site-menu-item has-sub">
+                            <a data-toggle="dropdown" href="/display" data-dropdown-toggle="false">
+                                <i class="site-menu-icon md-image-alt" aria-hidden="true"></i>
+                                <span class="site-menu-title text hidden-md-down">Digital Displays</span>
+                                <span class="site-menu-arrow"></span>
+                            </a>
+
+                        </li>
+                        <li class="dropdown site-menu-item has-sub">
+                            <a data-toggle="dropdown" href="javascript:void(0)" data-dropdown-toggle="false">
+                                <i class="site-menu-icon md-settings-square" aria-hidden="true"></i>
+                                <span class="site-menu-title text hidden-md-down">Configure</span>
+                                <span class="site-menu-arrow"></span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="site-menu-scroll-wrap is-list">
+                                    <div>
+                                        <div>
+                                            <ul class="site-menu-sub site-menu-normal-list">
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/store">
+                                                        <span class="site-menu-title">General</span>
+                                                    </a>
+                                                </li>
+
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/taxrate">
+                                                        <span class="site-menu-title">Sales Taxes</span>
+                                                    </a>
+                                                </li>
+                                                <li class="site-menu-item">
+                                                    <a class="animsition-link" href="/reward">
+                                                        <span class="site-menu-title">Rewards & Loyalty</span>
+                                                    </a>
+                                                </li>
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-content container-fluid">
+
+            
+
+
+
+<div class="row ">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">Customer Report</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-4">
+        <div class="input-daterange" data-plugin="datepicker">
+            <div class="input-group">
+                <span class="input-group-addon">
+                        <i class="icon md-calendar" aria-hidden="true"></i>
+                      </span>
+                <input type="text" class="form-control" name="start" placeholder="Start Date">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">to</span>
+                <input type="text" class="form-control" name="end" placeholder="End Date">
+            </div>
+        </div>
+    </div>
+    <div class="hidden-md-up" style="height: 50px;">
+    </div>
+
+
+    <div class="col-sm-12 col-md-3">
+        <select class="form-control select2-hidden-accessible" data-plugin="select2" data-placeholder="All Employees" data-allow-clear="true" tabindex="-1" aria-hidden="true">
+                <option></option>
+                  <option value="1">Matt Saricicek</option>
+                  <option value="2">Aimann Rasheed</option>
+                  <option value="3">Murat Akgun</option>
+                  <option value="4">Andrey S.</option>
+                  <option value="5">Ivan Shevkenko</option>
+                  <option value="6">Alexey S.</option>
+
+              </select>
+    </div>
+    <div class="hidden-sm-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-2">
+        <select class="form-control select2-hidden-accessible" data-plugin="select2" data-placeholder="All Terminals" data-allow-clear="true" tabindex="-1" aria-hidden="true">
+            <option></option>
+              <option value="1">Front Desk</option>
+              <option value="2">Backoffice</option>
+              <option value="3">Online Dashboard</option>
+
+          </select>
+    </div>
+
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body">
+
+        <div class="row">
+
+
+            <div class="col-sm-12">
+
+
+
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+    <!-- Footer Start -->
+    <footer class="site-footer">
+        <div class="site-footer-legal">© 2017 <a href="http://biyopos.com">Biyo LLC.,</a></div>
+        <div class="site-footer-right">
+            Made with <i class="red-600 icon md-favorite"></i></a>
+        </div>
+    </footer>
+    <!-- Footer End -->
+
+
+    <!-- Core  -->
+    <script src="/static/vendor/babel-external-helpers/babel-external-helpers.js"></script>
+    <script src="/static/vendor/jquery/jquery.js"></script>
+    <script src="/static/vendor/tether/tether.js"></script>
+    <script src="/static/vendor/bootstrap/bootstrap.js"></script>
+    <script src="/static/vendor/animsition/animsition.js"></script>
+    <script src="/static/vendor/mousewheel/jquery.mousewheel.js"></script>
+    <script src="/static/vendor/asscrollbar/jquery-asScrollbar.js"></script>
+    <script src="/static/vendor/asscrollable/jquery-asScrollable.js"></script>
+    <script src="/static/vendor/waves/waves.js"></script>
+    <!-- Plugins -->
+    <script src="/static/vendor/switchery/switchery.min.js"></script>
+    <script src="/static/vendor/intro-js/intro.js"></script>
+    <script src="/static/vendor/screenfull/screenfull.js"></script>
+    <script src="/static/vendor/slidepanel/jquery-slidePanel.js"></script>
+    <script src="/static/vendor/chartist/chartist.min.js"></script>
+    <script src="/static/vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.min.js"></script>
+    <script src="/static/vendor/jvectormap/jquery-jvectormap.min.js"></script>
+    <script src="/static/vendor/jvectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="/static/vendor/matchheight/jquery.matchHeight-min.js"></script>
+    <script src="/static/vendor/peity/jquery.peity.min.js"></script>
+    <!-- Scripts -->
+    <script src="/static/js/State.js"></script>
+    <script src="/static/js/Component.js"></script>
+    <script src="/static/js/Plugin.js"></script>
+    <script src="/static/js/Base.js"></script>
+    <script src="/static/js/Config.js"></script>
+    <script src="/static/js/Section/Menubar.js"></script>
+    <script src="/static/js/Section/Sidebar.js"></script>
+    <script src="/static/js/Section/PageAside.js"></script>
+    <script src="/static/js/Plugin/menu.js"></script>
+    <!-- Config -->
+    <script src="/static/js/config/colors.js"></script>
+    <script src="/static/js/config/tour.js"></script>
+    <script>
+        Config.set('assets', '/static');
+    </script>
+    <!-- Page -->
+    <script src="/static/js/Site.js"></script>
+    <script src="/static/vendor/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+    <script src="/static/js/Plugin/asscrollable.js"></script>
+    <script src="/static/js/Plugin/slidepanel.js"></script>
+    <script src="/static/js/Plugin/switchery.js"></script>
+    <script src="/static/js/Plugin/matchheight.js"></script>
+    <script src="/static/js/Plugin/jvectormap.js"></script>
+    <script src="/static/js/Plugin/peity.js"></script>
+    <script src="/static/examples/js/dashboard/v1.js"></script>
+     
+
+
+
+</body>
+
+</html>

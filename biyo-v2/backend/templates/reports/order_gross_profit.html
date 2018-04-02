@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load panel_tags %}
+{% block content %}
+
+
+
+<ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reports_home' %}">{% trans "Reports" %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Order Gross Profit" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Reports" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="row">
+<div class="offset1">
+{% with 'order_gross_profit' as active %}
+        {% include "reports/includes/filter.html" %}
+{% endwith %}
+            {% if days %}
+                <table class="table">
+                    <tbody>
+						{% for day in days %}
+							<tr><td>{{ day.date }}</td></tr>
+<tr><td><strong>Total Orders: </strong></td><td class="right">{{ day.info.len|intcomma }}</td></tr>
+<tr><td><strong>Cost of Goods Sold: </strong></td><td class="right">${{ day.info.cost_of_goods_sold|floatformat:2|default:"0.00"|intcomma }}</td></tr>
+<tr><td><strong>Total Sale(s) Before Discount: </strong></td><td class="right">${{ day.info.total_sales|floatformat:2|default:"0.00"|intcomma }}</td></tr>
+<tr><td><strong>Total discounts: </strong></td><td class="right">(${{ day.info.discount|floatformat:2|intcomma }})</td></tr>
+<tr><td><strong>Total Sale(s): </strong></td><td class="right">${{ day.info.total_sales|dodeduction:day.info.discount|floatformat:2|intcomma }}</td></tr>
+<tr><td><strong>Gross Profit: </strong></td><td class="right"><strong>${{ day.info.profit|floatformat:2|intcomma }}</strong></td></tr>
+						{% endfor %}
+
+                    </tbody>
+                </table>
+            {% else %}
+                {% include 'reports/includes/empty.html' %}
+            {% endif %}
+
+            </div>
+
+        </div>
+    <div class="innerLR">
+    </div>
+
+{% endblock %}

@@ -1,0 +1,528 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+{% load i18n %}
+
+<div class="row clearfix">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">{% trans "Dashboard" %} </h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-5">
+        {% include "reports/includes/filter.html" %}
+    </div>
+    <div class="hidden-md-up" style="height: 50px;">
+    </div>
+    <div class="col-sm-12 col-md-4">
+
+        <div class="btn-group pull-md-right" aria-label="Range selections" role="group" id="date_range">
+            <button type="button" class="btn btn-dark   waves-effect waves-light" onClick=DatePeriod(0,0,0)>{% trans "Day" %}</button>
+            <button type="button" class="btn btn-dark  waves-effect waves-light hidden-sm" onClick=DatePeriod(7,0,0)>{% trans "Week" %}</button>
+            <button type="button" class="btn btn-dark   waves-effect waves-light"  onClick=DatePeriod(0,1,0)>{% trans "Month" %}</button>
+            <button type="button" class="btn btn-dark   waves-effect waves-light" onClick=DatePeriod(0,0,1)>{% trans "Year" %}</button>
+        </div>
+
+    </div>
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+
+<div class="row" data-plugin="matchHeight" data-by-row="true">
+
+
+    <div class="col-xl-3 col-md-6">
+        <!-- Widget Gross Sales -->
+        <div class="card card-shadow" >
+            <div class="card-block p-20 p-t-10">
+
+                <div class="clearfix">
+                    <div class="grey-600 text-xs-center p-y-10 font-size-16">
+                        <i class="icon md-chart green-600 font-size-24 vertical-align-bottom m-r-5"></i> {% trans "Gross Sales" %}
+                    </div>
+                </div>
+
+                <div class="content-text text-center margin-bottom-0">
+
+                    <div class="font-size-40 grey-700 text-xs-center">${{ todays_sales|floatformat:"2"|default:"0.00"|intcomma }}</div>
+                    <div class="m-b-20 grey-500 text-xs-center  m-t-10">
+                    {% if proc_sales > 0 %}
+                        <i class="icon md-long-arrow-up green-500 font-size-16 "></i> {{ proc_sales|floatformat:"2"|default:"0" }}% {% trans "From this" %} {{ start_date }}-{{ end_date }}
+                    {% else %}
+                        <i class="icon md-long-arrow-down red-500  font-size-16 "></i> {{ proc_sales|floatformat:"2"|default:"0" }}% {% trans "From this" %} {{ start_date }}-{{ end_date }}
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- End Widget Gross Sales -->
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <!-- Widget Transactions-->
+        <div class="card card-shadow" >
+            <div class="card-block p-20 p-t-10">
+
+                <div class="clearfix">
+                    <div class="grey-600 text-xs-center p-y-10 font-size-16">
+                        <i class="icon md-flash yellow-600 font-size-24 vertical-align-bottom m-r-5"></i> {% trans "Transactions" %}
+                    </div>
+                </div>
+
+                <div class="content-text text-center margin-bottom-0">
+
+                    <div class="font-size-40 grey-700 text-xs-center">{{ todays_orders_count|intcomma }}</div>
+                    <div class="m-b-20 grey-500 text-xs-center  m-t-10">
+                    {% if proc_orders > 0 %}
+                        <i class="icon md-long-arrow-up green-500 font-size-16 "></i> {{ proc_orders|floatformat:"2"|default:"0" }}% {% trans "From this" %} {{ start_date }}-{{ end_date }}
+                    {% else %}
+                        <i class="icon md-long-arrow-down red-500  font-size-16 "></i> {{ proc_orders|floatformat:"2"|default:"0" }}% {% trans "From this" %} {{ start_date }}-{{ end_date }}
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- End Widget Transactions -->
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <!-- Widget Average Sale-->
+        <div class="card card-shadow" >
+            <div class="card-block p-20 p-t-10">
+
+                <div class="clearfix">
+                    <div class="grey-600 text-xs-center p-y-10 font-size-16">
+                        <i class="icon md-receipt blue-600 font-size-24 vertical-align-bottom m-r-5"></i> {% trans "Average Sale" %}
+                    </div>
+                </div>
+
+                <div class="content-text text-center margin-bottom-0">
+
+                    <div class="font-size-40 grey-700 text-xs-center">$ {{ todays_average_sales|floatformat:"2"|default:"0.00"|intcomma }}</div>
+                    <div class="m-b-20 grey-500 text-xs-center  m-t-10">
+                    {% if proc_av_sales > 0 %}
+                        <i class="icon md-long-arrow-up green-500 font-size-16 "></i> {{ proc_av_sales|floatformat:"2"|default:"0" }}% {% trans "From this" %} {{ start_date }}-{{ end_date }}
+                    {% else %}
+                        <i class="icon md-long-arrow-down red-500  font-size-16 "></i> {{ proc_av_sales|floatformat:"2"|default:"0" }}% {% trans "From this" %} {{ start_date }}-{{ end_date }}
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- End Widget Average Sale -->
+    </div>
+
+
+    <div class="col-xl-3 col-md-6">
+        <!-- Widget Top Selling-->
+        <div class="card card-shadow" >
+            <div class="card-block p-20 p-t-10">
+
+                <div class="clearfix">
+                    <div class="grey-600 text-xs-center p-y-10 font-size-16">
+                        <i class="icon md-ticket-star orange-600 font-size-24 vertical-align-bottom m-r-5"></i>{% trans "Top Products Selling" %}
+                    </div>
+                    <div class="content-text text-xs-left margin-bottom-0 text-muted">
+                        <table class="table table-condensed ">
+                            <tbody>
+                            {% if top_product %}
+                                {% for product in top_product %}
+                                    <tr>
+                                        <td><span class="tag tag-pill tag-default">{{ forloop.counter }}</span> <a href="{% url 'product_detail' pk=product.product_id %}">{{ product.product__name }}</a></td>
+                                        <td>${{ product.amount|floatformat:"2"|intcomma }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td>No sales were made for this period {{ start_date }} - {{ end_date }}</td>
+                                    <td></td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                        <a href="/reports/item/sales/" style="float: right">View more &gt;&gt;</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <!-- End Widget Top Selling -->
+    </div>
+    <div class="clearfix"></div>
+    </div>
+
+    <div class="row" data-plugin="matchHeight" data-by-row="true">
+
+    <!-- Widget Sales -->
+        <div class="col-xl-12 col-md-12">
+            <div class="card card-shadow">
+                <div class="grey-600 text-xs-center p-y-10 font-size-16">
+                    <i class="icon md-time orange-600 font-size-24 vertical-align-bottom m-r-5"></i>Sales For The Period
+                </div>
+                <div class="ct-chart" style="height: 250px; background-color: #ffffff">
+                <div id="statisticData">
+                    <input type="hidden" value="{{ sale_statistic }}">
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- End Widget Sales -->
+        <div class="clearfix"></div>
+
+    </div>
+
+        <div class="row" data-plugin="matchHeight" data-by-row="true">
+
+    <!-- Widget Days Of The Week -->
+        <div class="col-xl-6 col-md-6">
+            <div class="card card-shadow">
+                <div class="grey-600 text-xs-center p-y-10 font-size-16">
+                    <i class="icon md-calendar orange-600 font-size-24 vertical-align-bottom m-r-5"></i>Days Of The Week
+                </div>
+                <div class="ct-chart-dof" style="height: 250px; background-color: #ffffff">
+                <div id="dofData">
+                    <input type="hidden" value="{{ week_sales_summary }}">
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- End Widget Days Of The Week -->
+
+        <!-- Widget Time Of The Day -->
+        <div class="col-xl-6 col-md-6">
+            <div class="card card-shadow">
+                <div class="grey-600 text-xs-center p-y-10 font-size-16">
+                    <i class="icon md-sun orange-600 font-size-24 vertical-align-bottom m-r-5"></i>Time Of The Day
+                </div>
+                <div class="ct-chart-tod" style="height: 250px; background-color: #ffffff">
+                <div id="todData">
+                    <input type="hidden" value="{{ day_sales_summary }}">
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- End Widget Time Of The Day -->
+        <div class="clearfix"></div>
+
+                <!-- Widget Payment Methods -->
+        <div class="col-xl-6 col-md-6">
+            <div class="card card-shadow">
+                <div class="grey-600 text-xs-center p-y-10 font-size-16">
+                    <i class="icon md-money orange-600 font-size-24 vertical-align-bottom m-r-5"></i>Payment Methods
+                </div>
+                <div class="ct-chart-pm" style="height: 300px; background-color: #ffffff">
+                <div id="pmData">
+                    <input type="hidden" value="{{ payment_methods }}">
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- End Widget Payment Methods -->
+
+        <!-- Widget Top Categories-->
+    <div class="col-xl-6 col-md-6">
+        <div class="card card-shadow" >
+                    <div class="grey-600 text-xs-center text-xs-center p-y-10 font-size-16">
+                        <i class="icon md-money orange-600 font-size-24 vertical-align-bottom m-r-5"></i>{% trans "Top Categories Selling" %}
+                    </div>
+        <div class="d-flex top-categories">
+                            <div class="top-categories__more-link">
+                                <a href="/reports/category_summary/?{{ request.GET.urlencode }}"> View More » </a>
+                            </div>
+                            {% if top_categories %}
+                                {% for category in top_categories %}
+                                    <div class="line">
+                                        <div class="item">
+                                            {% if not category.keys.0 %}
+                                                Without category
+                                            {% else %}
+                                            {{ forloop.counter }}. {{ category.keys.0 }}
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="item">{{ category.values.0|floatformat:2 }}$</div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                    <div style="margin-left: 40%">
+                                        No sales found yet
+                                    </div>
+                            {% endif %}
+        </div>
+            </div>
+        </div>
+        <!-- End Widget Top Categories -->
+    </div>
+
+<script>
+function DatePeriod(day, month, year){
+
+
+    var monthNames = ["January", "February", "March", "April", "May", "June",
+                      "July", "August", "September", "October", "November", "December"];
+    var d = new Date();
+    var endDate = new Date();
+
+    var end = monthNames[d.getMonth()] + d.getDate() + ',' +d.getFullYear();
+
+
+    if(day!=0)
+        var from = d.setDate(d.getDate() - day);
+    if(month!=0)
+        var from = d.setMonth(d.getMonth() - month);
+    if(year!=0)
+        var from = d.setYear(d.getFullYear() - year);
+
+    var start = monthNames[d.getMonth()] + d.getDate() + ',' +d.getFullYear();
+    var path = '?start='+start+'12:00AM&end='+end+'11:59PM&option=-1';
+
+    localStorage.setItem('start', (monthNames[d.getMonth()] +  ' ' + d.getDate()  + ', ' + d.getFullYear()));
+    localStorage.setItem('end', (monthNames[endDate.getMonth()] +  ' ' + endDate.getDate()  + ', ' + endDate.getFullYear()));
+
+    location.href = location.pathname+path;
+}
+</script>
+
+    {% block scripts %}
+
+    <script>
+
+$( window ).load(function() {
+    var statistic_data = $('#statisticData').find('input').val();
+    statistic_data = JSON.parse(statistic_data);
+    var labels = [];
+    var series = [];
+    for (var i = 0; i < statistic_data.length; i++) {
+      var totalSum = Object.entries(statistic_data[i])[0][1]['grand_total__sum'];
+      var croppedSumValue = totalSum ? totalSum.toFixed(2) : 0;
+
+      labels.push(Object.entries(statistic_data[i])[0][0]);
+      series.push(croppedSumValue);
+    }
+    new Chartist.Line('.ct-chart', {
+        labels: labels,
+        series: [series]
+    }, {
+        fullWidth: true,
+        showArea: true,
+        chartPadding: {
+            right: 40,
+            left: 20
+        },
+        plugins: [
+            Chartist.plugins.tooltip({
+              tooltipFnc: function(meta, value) {
+                return `$ ${Number(value).toFixed(2)}`
+              }
+            }),
+            Chartist.plugins.ctAxisTitle({
+                axisX: {
+                  axisTitle: 'Time',
+                  axisClass: 'ct-axis-title',
+                  offset: {
+                    x: 0,
+                    y: 50
+                  },
+                  textAnchor: 'middle'
+                },
+                axisY: {
+                  axisTitle: 'Amount $',
+                  axisClass: 'ct-axis-title',
+                  offset: {
+                    x: 0,
+                    y: -10
+                  },
+                  textAnchor: 'middle',
+                  flipTitle: false
+                }
+            })
+        ]
+    });
+
+    var week_sales_data = $('#dofData').find('input').val();
+    labels = [];
+    series = [];
+    week_sales_data = JSON.parse(week_sales_data);
+    for (i = 0; i < week_sales_data.length; i++) {
+        labels.push(Object.entries(week_sales_data[i])[0][0]);
+        series.push(Object.entries(week_sales_data[i])[0][1]);
+    }
+    var data = {
+      labels: labels,
+      series: [series]
+    };
+
+    var options = {
+      seriesBarDistance: 4,
+        fullWidth: true,
+        chartPadding: {
+            right: 40,
+            left: 20
+        },
+        plugins: [
+            Chartist.plugins.tooltip(),
+            Chartist.plugins.ctAxisTitle({
+        axisX: {
+          axisTitle: 'Time',
+          axisClass: 'ct-axis-title',
+          offset: {
+            x: 0,
+            y: 50
+          },
+          textAnchor: 'middle'
+        },
+        axisY: {
+          axisTitle: 'Amount $',
+          axisClass: 'ct-axis-title',
+          offset: {
+            x: 0,
+            y: -10
+          },
+          textAnchor: 'middle',
+          flipTitle: false
+        }
+      })
+        ]
+    };
+
+    var responsiveOptions = [
+      ['screen and (max-width: 640px)', {
+        seriesBarDistance: 5,
+        axisX: {
+          labelInterpolationFnc: function (value) {
+            return value[0];
+          }
+        }
+      }]
+    ];
+
+    new Chartist.Bar('.ct-chart-dof', data, options, responsiveOptions);
+
+    var day_sales_data = $('#todData').find('input').val();
+    day_sales_data = JSON.parse(day_sales_data);
+    labels = [];
+    series = [];
+    for (i = 0; i < day_sales_data.length; i++) {
+        labels.push(Object.entries(day_sales_data[i])[0][0]);
+        series.push(Object.entries(day_sales_data[i])[0][1]);
+    }
+    new Chartist.Line('.ct-chart-tod', {
+      labels: labels,
+      series: [series]
+    }, {
+      fullWidth: true,
+      chartPadding: {
+          right: 40,
+          left: 20
+      },
+      plugins: [
+          Chartist.plugins.tooltip({
+              tooltipFnc: function(meta, value) {
+                  return `$ ${Number(value).toFixed(2)}`
+              }
+          }),
+          Chartist.plugins.ctAxisTitle({
+            axisX: {
+              axisTitle: 'Time',
+              axisClass: 'ct-axis-title',
+              offset: {
+                x: 0,
+                y: 50
+              },
+              textAnchor: 'middle'
+            },
+            axisY: {
+              axisTitle: 'Amount $',
+              axisClass: 'ct-axis-title',
+              offset: {
+                x: 0,
+                y: -10
+              },
+              textAnchor: 'middle',
+              flipTitle: false
+            }
+          }),
+      ]
+      });
+
+    var pm_data = $('#pmData').find('input').val();
+    pm_data = JSON.parse(pm_data);
+{#    var legend = $('.ct-legend')#}
+    labels = [];
+    series = [];
+    for (i = 0; i < pm_data.length; i++) {
+        labels.push(Object.entries(pm_data[i])[0][0]);
+        series.push({
+          value: Object.entries(pm_data[i])[0][1],
+          className: `ct-series-${String.fromCharCode(97 + i)} pm-data-label`
+        });
+    }
+
+    var sum = function(a, b) {
+      let firstAddition;
+
+      if (typeof a === 'number') {
+        firstAddition = a;
+      } else {
+        firstAddition = a.value;
+      }
+      return firstAddition + b.value
+    };
+
+    data = {'series': series, 'labels': labels};
+
+    options = {
+      plugins: [
+        Chartist.plugins.legend()
+      ],
+
+      // displays label in the center of the pie - change to true for enable
+      showLabel: false,
+      labelPosition: 'center',
+      labelOffset: 80,
+      labelInterpolationFnc: function(value, index) {
+          const percentage = Math.round(data.series[index].value / data.series.reduce(sum) * 100) + '%';
+          return `$ ${data.series[index].value.toFixed(2)} - ${percentage}`;
+      },
+    };
+
+    responsiveOptions = [
+      ['screen and (min-width: 1250px)', {
+        labelOffset: 100,
+        chartPadding: {
+          left: 100,
+          right: 30,
+          top: 30,
+          bottom: 30,
+        },
+      }],
+    ];
+
+    var pmChartPie = new Chartist.Pie('.ct-chart-pm', data, options, responsiveOptions);
+
+
+    pmChartPie.on('draw', function(context) {
+      if(context.type === 'slice') {
+         var $slice = $(context.element._node);
+         var price = Number($slice.attr('ct:value')).toFixed(2);
+         var percentages = Math.round(price / data.series.reduce(sum) * 100) + '%';
+         $slice.tooltip({
+           title: `$ ${price} - ${percentages}`
+         });
+      }
+    });
+});
+</script>
+        {% endblock %}
+{% endblock content %}

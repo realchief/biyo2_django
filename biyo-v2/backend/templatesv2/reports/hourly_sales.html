@@ -1,0 +1,64 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load humanize %}
+
+
+<div class="row ">
+    <div class="col-sm-12 col-md-6 col-lg-3">
+        <h1 class="page-title">{% trans "Hourly Sales" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-5">
+        {% with 'hourly_sales' as active %}
+            {% include "reports/includes/filter.html" %}
+        {% endwith %}
+    </div>
+
+
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+
+        <div class="row">
+
+
+            <div class="col-sm-12">
+                {% if sorted_qs %}
+                <table class="table">
+                    <tbody>
+
+                        {% for day in sorted_qs %}
+
+                            <tr><td>{{ day.date }}</td></tr>
+							<th>{% trans "Hour" %}</th>
+							<th class="right">{% trans 'Amount' %}</th>
+							<th class="right">{% trans 'Total Sales' %}</th>
+							{% for item in day.hours %}
+								<tr>
+									<td>{{ item.hour }}</td>
+									<td class="right">{{ item.amount|intcomma }}</td>
+									<td class="right">${{ item.sales|floatformat:2|default:"0.00"|intcomma }}</td>
+								</tr>
+							{% endfor %}
+							<tr>
+								<td><strong>{% trans 'Total' %}: </strong></td>
+								<td class="right">{{ day.total|intcomma }}</td>
+								<td class="right">${{ day.total_sales|floatformat:2|default:"0.00"|intcomma }}</td>
+							</tr>
+						{% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    {% include 'reports/includes/empty.html' %}
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock content %}

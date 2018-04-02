@@ -1,0 +1,227 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+
+<div class="row clearfix">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">{% trans "Category" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-5">
+    </div>
+    <div class="hidden-md-up" style="height: 50px;">
+    </div>
+    <div class="col-sm-12 col-md-4">
+
+        <div class="pull-md-right" aria-label="Add Order">
+            <a href="{% url 'category_create' %}"><button type="button" class="btn btn-success waves-effect"><i class="icon md-plus" aria-hidden="true"></i>{% trans "New Category" %} </button></a>
+        </div>
+
+    </div>
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="m-b-15">
+                </div>
+            </div>
+        </div>
+    {% if object_list %}
+        <table class="table table-hover table-striped" cellspacing="0" id="exampleFixedHeader">
+            <thead>
+                <tr>
+                    <th>{% trans "Name" %}</th>
+                    <th>{% trans "Parent" %}</th>
+                    <th>{% trans "Active" %}</th>
+                    <th class="center">{% trans "Row for Edit " %}</th>
+                    <th class="center">{% trans "Row for Delete" %}</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                {% for object in object_list %}
+                <td class="center">
+                    {% if object.image %}
+                    <a class="avatar avatar-lg" href="{% url 'category_detail' pk=object.pk %}">
+                       <img src="/media/{{ object.image }}" alt="...">
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'category_detail' pk=object.pk %}">{{ object.name }}</a>
+                </td>
+                <td>
+                {% if object.parent == 'None' %}
+                    <span class="parents_data w300">
+                       -
+                    </span>
+                {% else %}
+                    <span class="parents_data w300">
+                        {{ object.parent }}
+                    </span>
+                {% endif %}
+                </td>
+                <td>
+                    {% if object.active == True %}
+                        <input data="{{ object.id }}" class="active-status" data-plugin="switchery" checked="" data-color="#5ac766" type="checkbox">
+                    {% else %}
+                        <input data="{{ object.id }}" class="active-status" data-plugin="switchery" data-color="#5ac766" type="checkbox">
+                    {% endif %}
+                </td>
+                <td class="center">
+                      <a href="{% url 'category_update' pk=object.pk %}">
+                        <button type="button" class="btn btn-warning waves-effect">{% trans "Edit" %}</button>
+                      </a>
+                </td>
+                <td class="center">
+                      <a class="modal-delete" data-toggle="modal" data-target="#delete" data-name="{{object.name}}" data-id="{{object.id}}">
+                        <button class="btn btn-danger waves-effect"> {% trans "Delete" %}</button>
+                      </a>
+                </td>
+                </tr>
+                    {% endfor %}
+
+            </tbody>
+        </table>
+    {% else %}
+        {% include 'reports/includes/empty.html' %}
+    {% endif %}
+        <div align="center">
+            {% include "includes/paginator.html" %}
+        </div>
+    </div>
+</div>
+
+	{% include "includes/modal_delete.html" %}
+	{% include "includes/modal_add.html" %}
+	{% include "includes/modal_edit.html" %}
+	<div id="form-hidden"style="display: none"><table><tbody>{{form.as_table}}</tbody></table></div>
+	<div id="colorpicker"style="display: none">
+			<select name="colorpicker">
+			  <option value="#e56d3b">Orange</option>
+			  <option value="#459b99">Aqua</option>
+			  <option value="#744a17">Brown</option>
+		  	  <option value="#009d13">Green</option>
+			  <option value="#00b2d8">Cyan</option>
+			  <option value="#8f1758">Maroon</option>
+			  <option value="#b93aab">Pink</option>
+			</select>
+		</div>
+
+
+{% endblock content %}
+
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/multiple-select/multiple-select.css"/>
+        <!-- TODO: Please, put this code in right place -->
+        <!-- NOTE: Fix correct displaying checkbox in categories multiple choice select box -->
+        <style>
+            .ms-drop > ul > li > label > input[type=radio] {
+                margin: 5px 5px 5px 0px;
+            }
+        </style>
+{% endblock %}
+
+{% block scripts %}
+	{{ block.super }}
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker-glyphicons.css"/>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}common/multiple-select/multiple-select.js"></script>
+	<script type="text/javascript">
+        $.fn.editable.defaults.mode = 'inline';
+        $(window).load(function(){
+            $('span.parents_data').each(function(index, el) {
+                var dataset = el.dataset;
+                var multiple_select = $(el).find('select');
+                multiple_select.val(eval(dataset.value));
+                multiple_select.multipleSelect({
+                    selectAll: false,
+                    single: true,
+                    onClick: function(opt) {
+                        var checkbox = opt.instance.$selectItems.filter(':input[value="'+opt.value+'"]');
+                        if (opt.instance.$selectItems.filter(':checked').length == 0) {
+                            checkbox.prop('checked', true);
+                            opt.instance.update();
+                            return;
+                        }
+                        var checked_value = $(opt.instance.$selectItems.filter(':checked')).val()
+
+                        $.post(dataset.url, {
+                            pk: dataset.pk,
+                            name: dataset.name,
+                            value: checked_value
+                        });
+                    }
+                });
+                $(el).show();
+            });
+            $('.active-status').on('change', function () {
+                $.post('/category/' + this.getAttribute('data') + '/edit/', {
+                      'value': this.checked,
+                      'name': 'active'
+                });
+            });
+        });
+
+        $('.x-editable').editable({send: 'always'});
+
+        $('.x-editable-select-bool').editable({
+            source: [
+                {text: 'True', value: 'True'},
+                {text: 'False', value: 'False'}
+            ]
+        });
+
+        $(document).on("click", ".modal-add", function (ev) {
+            ev.preventDefault();
+            $('#form-hidden tbody').appendTo($("#add-modal-body table"));
+            $('#add-modal-body form').attr('action', '/category/add/');
+            $("#btn-add").click(function() {
+                ev.preventDefault();
+                $('#add-form').submit();
+                $('#add').modal('hide');
+            })
+        });
+        $(document).on("click", ".modal-delete", function (ev) {
+            ev.preventDefault();
+            var id = $(this).data('id');
+            var text = $(this).data('name');
+            $(".modal-body p strong").html( text );
+            $('#delete').modal('show');
+            $('#btn-delete').click(function() {
+                var url = '/category/' + id + '/delete/';
+                $.post(url, function() {
+                    location.href = '/category/'
+                })
+            })
+        });
+
+        var colors = {
+            '#e56d3b': 0,
+            '#459b99': 1,
+            '#744a17': 2,
+            '#009d13': 3,
+            '#00b2d8': 4,
+            '#8f1758': 5,
+            '#b93aab': 6
+        };
+
+        $("#id_color_0").prop("checked", true);
+        $('#colorpicker select').appendTo($('#id_color').parent());
+        $('select[name="colorpicker"]').simplecolorpicker({theme: 'glyphicons'})
+                .on('change', function(){
+                    var val = $('select[name="colorpicker"]').val();
+                    id = colors[val];
+                    $("#id_color_" + id).prop("checked", true);
+                });
+    </script>
+{% endblock %}

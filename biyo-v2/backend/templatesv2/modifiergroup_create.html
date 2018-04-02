@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <thead>
+        <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+        <th class="divider">/</th>
+        <th><a href="{% url 'modifiergroup_list' %}">{% trans "Modifier Groups" %}</a></th>
+        <th class="divider">/</th>
+        <th><a href="{% url 'modifiergroup_list' %}">{% trans "Modifier Groups" %}</a></th>
+        <th class="divider">/</th>
+        <th>{% trans "Add new modifier group" %}</th>
+    </thead>
+
+    <div class="table-responsive">
+        {% if form.errors %}
+            <div class="alert alert-warning">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+            <div class="panel col-md-4 offset-md-4">
+                <h2 class="panel-title">
+                   {% trans "Create modifier group" %}
+                </h2>
+                {% csrf_token %}
+                <table class="table" id="editableUser">
+                    <div class="col-md-4">
+                       <tr>
+                         <td>{% bootstrap_field form.name %}</td>
+                       </tr>
+                        <tr>
+                         <td>{% bootstrap_field form.select_multiple %}</td>
+                       </tr>
+                    </div>
+                </table>
+                <div>
+                    <button type="submit" class="btn btn-success waves-effect form-table-button">Add new Modifier Group</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+

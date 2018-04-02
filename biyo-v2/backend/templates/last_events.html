@@ -1,0 +1,16 @@
+{% for event in events %}
+<li>
+    <span class="date">{{ event.add_date|date:"H:i" }}</span>
+    <span class="glyphicons activity-icon ipad"><i></i></span>
+    {% if event.is_order %}
+    <span class="ellipsis"><a href="/tablets/{{ event.get_order.device.id }}/edit">{{ event.get_order.device }}</a>: zamówienie na kwotę {{ event.get_order.value }} zł (<a href="{% url 'order_details' event.get_order.id %}">Zamówienie {{ event.get_order }}</a>)</span>
+    {% endif %}
+    {% ifequal event.type event.EVENT_PAY %}
+    <span class="ellipsis"><a href="/tablets/{{ event.device.id }}/edit">{{ event.device }}</a>: Prosi o rachunek</span>
+    {% endifequal %}
+    {% ifequal event.type event.EVENT_HELP %}
+    <span class="ellipsis"><a href="/tablets/{{ event.device.id }}/edit">{{ event.device }}</a>: Prosi o pomoc</span>
+    {% endifequal %}
+    <div class="clearfix"></div>
+</li>
+{% endfor %}

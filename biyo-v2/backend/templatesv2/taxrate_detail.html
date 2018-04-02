@@ -1,0 +1,63 @@
+{% extends "base.html" %} {% block style %}
+
+{% load static %}
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+{% load panel_tags %}
+<link rel="stylesheet" href="{% static '/static/vendor/select2/select2.css' %}"> {% endblock %} {% block content %}
+<!-- body burdan basliyo -->
+
+<thead>
+    <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+    <th class="divider">/</th>
+    <th><a href="{% url 'taxrate_list' %}">{% trans "Tax rates" %}</a></th>
+    <th class="divider">/</th>
+    <th>{{ object.name }}</th>
+</thead>
+<div class="page-header">
+   <h1>{% trans 'Tax rate' %} "{{ object.name }}"</h1>
+</div>
+<div class="separator bottom"></div>
+<div class="separator bottom"></div>
+
+<div class="table-responsive">
+      <div class="panel">
+          <h3 class="panel-title">
+            <strong>{% trans "Info about tax rate " %}"{{ object.name }}":</strong>
+          </h3>
+          <table class="table table-bordered table-striped" id="editableUser">
+              <tbody>
+                {% for field_name in info_fields %}
+                    <tr>
+                        <th>
+                            <strong>{{ object|field_verbose_name:field_name }}:</strong>
+                        </th>
+                        <th>
+                            {{ object|field_value:field_name }}
+                        </th>
+                    </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+      </div>
+      <div class="separator bottom"></div>
+      <div>
+          <table>
+              <tbody>
+                  <td>
+                      <a href="{% url 'taxrate_update' pk=object.pk %}">
+                          <button type="button" class="btn btn-warning waves-effect">{% trans "Edit" %}</button>
+                      </a>
+                  </td>
+                  <td>
+                      <a href="{% url 'taxrate_delete' pk=object.pk %}">
+                          <button type="button" class="btn btn-danger waves-effect"> {% trans "Delete" %}</button>
+                      </a>
+                  </td>
+              </tbody>
+          </table>
+      </div>
+</div>
+
+{% endblock content %}

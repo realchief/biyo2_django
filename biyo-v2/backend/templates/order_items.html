@@ -1,0 +1,100 @@
+{% load i18n %}
+<div style="overflow: visible;">
+<div class="row-fluid">
+    <h4 class="span3">{% trans "Order Items" %}</h4>
+    <a id="add-order-item-btn" class="btn btn-info btn-block pull-right span2 offset7" style="border-radius: 10px 0 0 0">
+        <span><i class="icon-plus"></i> Add item </span>
+    </a>
+</div>
+<table class="table table-bordered" id="order-items-formset">
+  <thead>
+    <tr>
+        <th class="span1"></th>
+{#        <th class="span2">{% trans "Product" %}</th>#}
+        <th class="span3">{% trans "Name" %}</th>
+        <th class="span1">{% trans "Price" %}</th>
+        <th class="span2">{% trans "Discount" %}</th>
+        <th class="span2">{% trans "Tax" %}</th>
+        <th class="span1">{% trans "Quantity" %}</th>
+        <th class="span1">{% trans "Subtotal" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id="order-item-template" style="display: none;">
+        <td class="span1">
+          <a title="Remove item" class="close large glyphicons remove order-item-remove"> <i></i> </a>
+        </td>
+        <td class="span3">
+            {{ init_form.name }} <!-- Only visible -->
+            {{ init_form.product }}
+            {{ init_form.order_id }}
+            {{ init_form.instance_id }}
+            {{ init_form.void_status }}
+            {{ init_form.cost }}
+            {{ init_form.employee }}
+            <div id="products_list" class="dropdown open" style="display: none;">
+              <ul class="dropdown-menu span3" role="menu" style="margin-top: -10px;margin-left:0;max-height: 210px;overflow: auto;">
+              </ul>
+            </div>
+            <div class="modifiers_list"></div>
+        </td>
+        <td class="span1">{{ init_form.price }}<h3 class="price-label">$0.00</h3></td>
+        <td class="span2">
+            <div class="dropdown span0 pull-right">
+              <a class="glyphicons large show_thumbnails_with_lines add-discount dropdown-toggle" href="#" data-toggle="dropdown" title='Select discount' id="dLabel">
+                <i></i>
+              </a>
+              <ul style="margin-top: 25px;" class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                  <li class="li-preloader">
+                    <img src="{{ STATIC_URL }}assets/img/preloader.gif" style="display: block;margin-left: auto;margin-right: auto;">
+                  </li>
+              </ul>
+            </div>
+
+            {{ init_form.discount }}
+        </td>
+        <td class="span2">{{ init_form.tax }}</td>
+        <td class="span1">{{ init_form.quantity }}</td>
+        <td class="span1"><h3 class="item-subtotal">$0.00</h3></td>
+    </tr>
+    {% for form in forms %}
+      <tr id="order-item-{{ forloop.counter0 }}">
+        <td class="span1">
+          <a title="Remove item" class="close large glyphicons remove order-item-remove"> <i></i> </a>
+        </td>
+        <td class="span3">
+            {{ form.name }} <!-- Only visible -->
+            {{ form.product }}
+            {{ form.order_id }}
+            {{ form.instance_id }}
+            {{ form.void_status }}
+            {{ form.cost }}
+            {{ form.employee }}
+            <div id="products_list" class="dropdown open" style="display: none;">
+              <ul class="dropdown-menu span3" role="menu" style="margin-top: -10px;margin-left:0;max-height: 210px;overflow: auto;">
+              </ul>
+            </div>
+        </td>
+        <td class="span1">{{ form.price }}<h3 class="price-label">{{ form.price.value|default_if_none:"$0.00" }}</h3></td>
+        <td class="span2">
+            <div class="dropdown span0 pull-right">
+              <a class="glyphicons large show_thumbnails_with_lines add-discount dropdown-toggle" href="#" data-toggle="dropdown" title='Select discount' id="dLabel">
+                <i></i>
+              </a>
+              <ul style="margin-top: 25px;" class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li class="li-preloader">
+                  <img src="{{ STATIC_URL }}assets/img/preloader.gif" style="display: block;margin-left: auto;margin-right: auto;">
+                </li>
+              </ul>
+            </div>
+
+            {{ form.discount }}
+        </td>
+        <td class="span2">{{ form.tax }}</td>
+        <td class="span1">{{ form.quantity }}</td>
+        <td class="span1"><h3 class="item-subtotal">$0.00</h3></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+  <ul class="breadcrumb">
+    <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+    <li class="divider"></li>
+    <li>{% trans "Discount" %}</li>
+  </ul>
+  <div class="separator bottom"></div>
+  <div class="heading-buttons">
+    <h3>{% trans "Discount" %}</h3>
+    <div class="clearfix"></div>
+  </div>
+  <div class="separator bottom"></div>
+
+  <div class="innerLR">
+    <div class="btn-right">
+      <a class="btn" href="{% url 'discount_create' %}"><i class="icon-plus"></i> Add discount</a>
+    </div>
+    <div class="separator bottom"></div>
+    <div class="widget">
+      <table class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+        <thead>
+          <tr>
+            <th>{% trans "Name" %}</th>
+            <th>{% trans "Value" %}</th>
+            <th>{% trans "Type" %}</th>
+            <th>{% trans "Action" %}</th>
+          </tr>
+        </thead>
+        <tbody data-link="row" class="rowlink">
+          {% for object in object_list %}
+            <tr>
+              <td class="right"><span class="x-editable" data-url="{% url 'discount_update' pk=object.pk %}" data-name="name" data-pk="{{ object.pk}}" data-type="text">{{ object.name }}</span></td>
+			  <td class="right"><span class="x-editable" data-url="{% url 'discount_update' pk=object.pk %}" data-name="value" data-pk="{{ object.pk}}" data-type="text">{{ object.value }}</span></td>
+			  <td class="center"><span class="x-editable-select" data-pk="{{object.pk}}" data-name="type" data-type="select" data-url="{% url 'discount_update' pk=object.pk %}" data-title="Select type" data-value="{{object.type}}">{{ object.get_type_display }}</span></td>
+
+			  <td class="center">
+                  <a href="{% url 'discount_update' pk=object.id %}">Edit</a>
+                  <span class="action-separator"></span>
+				<a class="modal-delete" data-toggle="modal" data-target="#delete" data-name="{{object.last_name}}  {{object.first_name}}" data-id="{{object.id}}">Delete</a>
+              </td>
+
+			</tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% include "includes/paginator.html" %}
+    </div>
+  </div>
+	{% include "includes/modal_delete.html" %}
+
+{% endblock content %}
+
+{% block js %}
+
+	{{ block.super }}
+
+
+
+		<link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+
+		<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
+		<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+
+		<script type="text/javascript">
+		$('.x-editable').editable({send: 'always'});
+		$('.x-editable-select').editable({
+			source: [
+				  {value: 1, text: 'Percentage Off'},
+				  {value: 2, text: 'Dollars Off'}
+			   ]
+    	});
+		$(document).on("click", ".modal-delete", function (ev) {
+			ev.preventDefault();
+			var id = $(this).data('id');
+			var text = $(this).data('name');
+			$(".modal-body p strong").html( text );
+			$('#delete').modal('show');
+			$('#btn-delete').click(function() {
+				var url = '/discount/' + id + '/delete/';
+				$.post(url, function() {
+					location.href = '/discount/'
+				})
+			})
+		});
+		</script>
+{% endblock %}

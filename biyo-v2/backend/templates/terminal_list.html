@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Terminals" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Terminals" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+        <div class="btn-right">
+            <a class="btn" href="{% url 'terminal_create' %}"><i class="icon-plus"></i> Add Terminal</a>
+
+        </div>
+        <div class="separator bottom"></div>
+        <div class="widget">
+            <table class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+                <thead>
+                    <tr>
+                        <th class="center">{% trans "ID" %}</th>
+                        <th class="center">{% trans "Name" %}</th>
+                        <th class="center">{% trans "MAC" %}</th>
+                        <th class="center">{% trans "Mode" %}</th>
+                    </tr>
+                </thead>
+                <tbody data-link="row" class="rowlink">
+                    {% for object in object_list %}
+                            <td class="center">{{ object.id }}</td>
+                            <td class="center">
+								<span class="x-editable" data-pk="{{object.pk}}" data-name="name" data-type="text" data-url="{% url 'terminal_update' pk=object.pk%}">{{ object.name }}</span>
+							</td>
+
+                            <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="mac_id" data-type="text" data-url="{% url 'terminal_update' pk=object.pk%}">{{ object.mac_id }}</span></td>
+                            <td class="center"><span class="x-editable-select" data-pk="{{object.pk}}" data-name="mode" data-type="select" data-url="{% url 'terminal_update' pk=object.pk %}" data-value="{{object.mode}}">{{ object.get_mode_display }}</span></td>
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include "includes/paginator.html" %}
+        </div>
+    </div>
+
+
+{% endblock content %}
+
+{% block js %}
+	{{ block.super }}
+
+
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+
+	<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+	<script type="text/javascript">
+		$('.x-editable').editable({send: 'always'});
+		$('.x-editable-select').editable({
+			source: [
+				{text: 'Table Service', value: 1},
+				{text: 'Quick Service', value: 2}
+			]
+		});
+
+	</script>
+{% endblock %}

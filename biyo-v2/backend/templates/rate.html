@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<ul class="breadcrumb">
+	<li><a href="index.php" class="glyphicons home"><i></i>Strona główna</a></li>
+	<li class="divider"></li>
+	<li>Wyróżnione potrawy</li>
+</ul>
+<div class="separator bottom"></div>
+<!-- // Breadcrumb END -->
+
+<!-- Heading -->
+<div class="heading-buttons">
+	<h3>Wyróżnione potrawy</h3>
+	<div class="clearfix"></div>
+</div>
+<div class="separator bottom"></div>
+<!-- // Heading END -->
+
+<div class="innerLR">
+
+
+
+	<!-- Widget -->
+	<div class="widget">
+
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h4 class="heading glyphicons list"><i></i>Potrawy oznaczone jako 'Smaczne'</h4>
+		</div>
+		<!-- // Widget heading END -->
+
+		<div class="widget-body">
+
+			
+
+			
+
+			<!-- Products table -->
+			<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs js-table-sortable">
+				<thead>
+					<tr>
+						<th class="left">Nazwa dania</th>
+                        <th class="center">Ilość</th>
+					</tr>
+				</thead>
+				<tbody>
+                    {% for s in rating %}
+                    <tr class="selectable">
+                        <td class="left">{{ s.item_name }}</td>
+                        <td class="left">{{ s.cc }}</td>
+					</tr>
+                    {% endfor %}
+				</tbody>
+			</table>
+			<!-- // Products table END -->
+
+			<!-- Options -->
+			<div class="separator top form-inline small">
+
+	
+
+
+			</div>
+			<!-- // Options END -->
+
+		</div>
+	</div>
+	<!-- // Widget END -->
+
+</div>
+{% endblock %}
+
+
+
+
+

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load tz %}
+{% load bootstrap3 %}
+
+{% block content %}
+<thead>
+  <th><a href="{% url 'dashboard' %}"><i></i>{% trans 'Home' %}</a></th>
+  <th class="divider">/</th>
+  <th><a href="{% url 'employee_hour_summary' %}{{ saved_url }}">{% trans "Eployee Total Hours Summary" %}</a></th>
+  <th class="divider">/</th>
+  <th>{% trans "Update time" %} {{ object.name }}</th>
+</thead>
+<div class="page-header">
+  <h3>{% trans 'Update' %}</h3>
+</div>
+<div class="separator bottom"></div>
+<div class="separator bottom"></div>
+
+<div class="table-responsive">
+      {% if form.errors %}
+          <div class="alert alert-warning">
+              {% bootstrap_form_errors form %}
+          </div>
+      {% endif %}
+      <form method="post" enctype="multipart/form-data">
+        <div class="panel">
+            <h3 class="panel-title">
+               {{ object.name }}
+            </h3>
+            {% csrf_token %}
+            <table class="table table-bordered table-striped" id="editableUser">
+                <div class="col-md-4">
+                   <tr>
+                     <td>
+                        {% timezone tz %}
+                            {% bootstrap_form form layout='horizontal' %}
+                        {% endtimezone %}
+                     </td>
+                   </tr>
+                </div>
+            </table>
+            <h3 class="panel-title"></h3>
+        </div>
+        <div class="separator bottom"></div>
+        <div>
+          <button type="submit" class="btn btn-success waves-effect">Save changes</button>
+        </div>
+      </form>
+  </div>
+{% endblock content %}
+
+{% block scripts %}
+	{{ block.super }}
+<script type="text/javascript" src="{{ STATIC_URL }}common/datetimepicker/jquery.datetimepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}common/datetimepicker/jquery.datetimepicker.css"/>
+    <script type="text/javascript">
+
+        jQuery('#id_time_in').datetimepicker({
+        datepicker:true,
+        step:5,
+        hours12:false,
+        format:'Y-m-d h:i A'
+
+    });
+
+    jQuery('#id_time_out').datetimepicker({
+        datepicker:true,
+        step:5,
+        hours12:false,
+        format:'Y-m-d h:i A'
+
+    });
+
+    Date.prototype.dateFormat = function( format ){
+  //you code for convert date object to format string
+  //for example
+  switch( format ){
+    case 'Y-m-d h:i A': return this.getFullYear()+'-'+ (this.getMonth()+ 1)+'-'+ this.getDate() +' '+ ((this.getHours() %12) ? this.getHours() % 12 : 12)+':'+(this.getMinutes()<10?'0':'')+this.getMinutes()+(this.getHours() < 12 ? ' AM' : ' PM');
+    case 'd': return this.getDate();
+    case 'H:i:s': return this.getHours()+':'+this.getMinutes()+':'+this.getSeconds();
+    case 'h:i A': return ((this.getHours() %12) ? this.getHours() % 12 : 12)+':'+(this.getMinutes()<10?'0':'')+this.getMinutes()+(this.getHours() < 12 ? ' AM' : ' PM');
+  }
+  // or default format
+  return ((this.getHours() %12) ? this.getHours() % 12 : 12)+':'+(this.getMinutes()<10?'0':'')+this.getMinutes()+(this.getHours() < 12 ? ' AM' : ' PM');
+{#    return (this.getDate()<0?'0':'')+this.getDate()+'.'+(this.getMonth()+ 1)+'.'+this.getFullYear();#}
+};
+
+    </script>
+
+{% endblock %}

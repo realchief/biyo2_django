@@ -1,0 +1,235 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+
+<div class="row clearfix">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">{% trans "Customers" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-5">
+        <!-- <div class="input-daterange" data-plugin="datepicker">
+            <div class="input-group">
+                <span class="input-group-addon">
+                        <i class="icon md-calendar" aria-hidden="true"></i>
+                      </span>
+                <input type="text" class="form-control" name="start" placeholder="Start Date">
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">to</span>
+                <input type="text" class="form-control" name="end" placeholder="End Date">
+            </div>
+        </div> -->
+    </div>
+    <div class="hidden-md-up" style="height: 50px;">
+    </div>
+    <div class="col-sm-12 col-md-4">
+
+        <div class="pull-md-right" aria-label="Add Order">
+            <a href="{% url 'customergroup_list' %}"><button type="button" class="btn btn-success waves-effect">{% trans "Customer Groups" %} </button></a>
+            <a href="{% url 'customer_create' %}"><button type="button" class="btn btn-success waves-effect"><i class="icon md-plus" aria-hidden="true"></i>{% trans "Add Customers" %} </button></a>
+        </div>
+
+    </div>
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel" style="max-width: 100%; overflow-x: auto">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="m-b-15">
+                    <!-- <button id="addToTable" class="btn btn-primary" type="button">
+        <i class="icon md-plus" aria-hidden="true"></i> Add row
+      </button> -->
+                </div>
+            </div>
+        </div>
+    {% if object_list %}
+        <table class="table table-hover table-striped" cellspacing="0" id="exampleFixedHeader">
+            <thead>
+                <tr>
+                    <th>{% trans "First Name" %}</th>
+                    <th>{% trans "Last Name" %}</th>
+                    <th>{% trans "Group" %}</th>
+                    <th>{% trans "Email" %}</th>
+                    <th>{% trans "Phone" %}</th>
+                    <th>{% trans "Action" %}</th>
+                    <th>{% trans "Row for Edit/Delete " %}</th>
+                </tr>
+
+
+            </thead>
+            <tbody>
+                {% for object in object_list %}
+                <tr>
+                    <td class="center">
+                        <span class="x-editable" data-pk="{{object.pk}}" data-name="first_name" data-type="text" data-url="{% url 'customer_update' pk=object.pk %}" data-title="Enter first name">
+                            {{ object.first_name }}
+                        </span>
+                    </td>
+                    <td class="center">
+                        <span class="x-editable" data-pk="{{object.pk}}" data-name="last_name" data-type="text" data-url="{% url 'customer_update' pk=object.pk %}" data-title="Enter last name">
+                            {{ object.last_name }}
+                        </span>
+                    </td>
+                    <td class="center">
+                        <span class="x-editable-select" data-pk="{{object.pk}}" data-name="group" data-type="select" data-url="{% url 'customer_update' pk=object.pk %}" data-title="Select group">
+                            {{ object.group }}
+                        </span>
+                    </td>
+
+                    <td class="center">
+                        <span class="x-editable" data-pk="{{object.pk}}" data-name="email" data-type="text" data-url="{% url 'customer_update' pk=object.pk %}" data-title="Enter email">
+                            {% if object.email == None or object.email == "" %}
+                                -
+                            {% else %}
+                                {{ object.email }}
+                            {% endif %}
+                        </span>
+                    </td>
+                    <td class="center">
+                        <span class="x-editable" data-pk="{{object.pk}}" data-name="phone" data-type="text" data-url="{% url 'customer_update' pk=object.pk %}" data-title="Enter phone">
+                            {% if object.phone == None or object.phone == "" %}
+                                -
+                            {% else %}
+                                {{ object.phone }}
+                            {% endif %}
+                        </span>
+                    </td>
+                    <td class="center">
+                        <a href="{% url 'customer-payment' object.id %}">
+                        <button type="button" class="btn btn-primary waves-effect">{% trans "Process Payment" %}</button>
+                        </a>
+                    </td>
+                    <td class="center">
+				    	<a class="modal-edit" data-toggle="modal" data-target="#edit" data-name="{{object.last_name}}  {{object.first_name}}" data-id="{{object.id}}">
+				    	    <button type="button" class="btn btn-warning waves-effect">{% trans "Edit" %}</button>
+				    	</a>
+				    	<a class="modal-delete" data-toggle="modal" data-target="#delete" data-name="{{object.last_name}}  {{object.first_name}}" data-id="{{object.id}}">
+				    	    <button type="button" class="btn btn-danger waves-effect"> {% trans "Delete" %}</button>
+				    	</a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    <div class="pull-md-right" aria-label="Export to CSV">
+        <h3></h3>
+        <form id="csv-download" action="{% url 'csvcustomerdownload' %}">
+          <button class="btn btn-primary" type="submit">Export to CSV</button>
+        </form>
+    {% else %}
+        {% include 'reports/includes/empty.html' %}
+    {% endif %}
+    </div>
+    <div align="center">
+        {% include "includes/paginator.html" %}
+    </div>
+</div>
+
+    {% include "includes/modal_delete.html" %}
+	{% include "includes/modal_add.html" %}
+	{% include "includes/modal_edit.html" %}
+	<div id="form-hidden"style="display: none">
+	    <table>
+	        <tbody>
+	            <tr>
+	                <td>{% bootstrap_form form %}</td>
+	            </tr>
+	        </tbody>
+	    </table>
+	</div>
+
+
+
+{% block scripts %}
+	{{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+	<script type="text/javascript">
+		var form = $('#form-hidden tbody').clone();
+        $.fn.editable.defaults.mode = 'inline';
+        $('.x-editable-select').editable({
+        source: function() {
+            var result;
+            $.ajax({
+                url: '/terminalapi/sync/taskingroups',
+{#                data: {t: 'zone'},#}
+                type: 'GET',
+{#                global: false,#}
+                async: false,
+                dataType: 'json',
+                success: function(data) {
+                    result = data.results;
+                }
+            });
+            return result;
+        }
+
+        })
+
+
+
+		$('.x-editable').editable({send: 'always'});
+
+		$(document).on("click", ".modal-delete", function (ev) {
+			ev.preventDefault();
+			var id = $(this).data('id');
+			var text = $(this).data('name');
+			$(".modal-body p strong").html( text );
+			$('#delete').modal('show');
+			$('#btn-delete').click(function() {
+				var url = '/customer/' + id + '/delete/';
+				$.post(url, function() {
+					location.href = '/customer/'
+				})
+			})
+		});
+		$(document).on("click", ".modal-add", function (ev) {
+			ev.preventDefault();
+			$("#add-modal-body table").html(form);
+			$('#add-modal-body form').attr('action', '/customer/add/');
+			$("#btn-add").click(function() {
+				ev.preventDefault();
+				$('#add-form').submit();
+				$('#add').modal('hide');
+			})
+		});
+		$(document).on("click", ".modal-edit", function(ev) {
+			ev.preventDefault();
+			var id = $(this).data('id');
+			var url = '/terminalapi/sync/customers';
+			$("#edit-modal-body form table").html(form);
+			$.get(url, function(data) {
+				var employee = $.grep(data.results, function(e){return e.id == id})[0];
+				$.each(employee, function(field, value) {
+                    if(field == "customer_group")
+                    {
+                        $('#edit-modal-body #id_group').val(value);
+                    }
+                    else
+                    {
+                        $('#edit-modal-body #id_'+field).val(value);
+                    }
+				});
+			});
+			$('#edit-modal-body form').attr('action', id+'/edit/')
+			$('#btn-edit').click(function(ev) {
+				ev.preventDefault();
+				$('#edit-form').submit();
+				$('#edit').modal('hide');
+			})
+
+
+
+		})
+	</script>
+{% endblock %}
+{% endblock content %}

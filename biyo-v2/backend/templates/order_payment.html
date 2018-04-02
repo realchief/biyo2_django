@@ -1,0 +1,66 @@
+<form id="payment-form-toggle" action="">
+    {% for field in form.hidden_fields %}
+        {{ field }}
+    {% endfor %}
+    <div class="row-fluid"><h3 class="span12">Add payment:</h3></div>
+    <div class="row-fluid">
+        <div class="span8">
+            {{ form.amount }}
+            <div class="row-fluid cash-buttons">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            {% for c in currency %}
+                            <td style="text-align: center; border-radius: 0;" class="span1 btn btn-primary btn-large currency-btn" data-value="{{ c }}">{{ c }}$</td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr/>
+        </div>
+        <div class="span2">
+            <table class="table table-bordered">
+                <tbody>
+                    {% comment "Disabled credit card" %}
+                    <tr><td id="id-pay-with-credit" class="span2 disabled btn" data-toggle="tooltip" title="Under maintenance." style="position: relative;"><span>Credit
+                        <div class="glyphicons credit_card" style="position: absolute; top: 5px; right: 0;"><i></i></div>
+                    </span></td></tr>
+                    {% endcomment %}
+                    <tr><td id="id-pay-with-cash" class="span2 btn btn-primary" style="position: relative;"><span>Cash
+                        <div class="glyphicons usd" style="position: absolute; top: 5px; right: 0;"><i></i></div>
+                    </span></td></tr>
+                    <tr><td class="pay-with-account span2 btn" data-toggle="tooltip" title="" style="position: relative;"><span>Account
+                        <div class="glyphicons user" style="position: absolute; top: 5px; right: 0;"><i></i></div>
+                    </span></td></tr>
+                    <tr><td class="pay-with-check span2 btn" data-toggle="tooltip" title="" style="position: relative;"><span>Check
+                        <div class="glyphicons tag" style="position: absolute; top: 5px; right: 0;"><i></i></div>
+                    </span></td></tr>
+                </tbody>
+            </table>
+            <hr/>
+            <div class="span12 well alert alert-success"><span>Change:</span>
+                <div class="pull-right">$ <span id="id-change-amount-label">0.00</span></div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="checkpay-modal xhidden modal fade modalform" tabindex='-1'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="fa fa-times">Close</span></button>
+                <h4 class="modal-title">Pay by Check</h4>
+            </div>
+            <div class="modal-body">
+                <h4>You are about to pay $<strong><span class="pay-amount text-success"></span></strong> by check</h4>
+                <label>Enter check No: </label>
+                <input type="text" class="form-control check-no" name="checkno" value=""/>
+                <p><small class="text-error">Error Text</small></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success checkpay-btn">Pay by Check</button>
+            </div>
+        </div>
+    </div>
+</div>

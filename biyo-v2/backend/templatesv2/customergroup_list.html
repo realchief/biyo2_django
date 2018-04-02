@@ -1,0 +1,105 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load humanize %}
+
+
+<div class="row clearfix">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">{% trans "Customer Groups" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+
+    <div class="col-sm-12 col-md-5">
+    </div>
+
+    <div class="hidden-md-up" style="height: 50px;"></div>
+    <div class="col-sm-12 col-md-4">
+        <div class="pull-md-right" aria-label="Add Order">
+            <a href="{% url 'customergroup_create' %}">
+                <button type="button" class="btn btn-success waves-effect"><i class="icon md-plus" aria-hidden="true"></i>{% trans "Add Customer Group" %}</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+        <table class="table table-hover table-striped" cellspacing="0" id="exampleFixedHeader">
+            <thead >
+                <tr>
+                    <th></th>
+                    <th class="center">{% trans "Group Name" %}</th>
+                    <th class="center">{% trans "Action" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                {% for object in object_list %}
+                <td></td>
+
+                <td class="center">
+                    <span class="x-editable" data-pk="{{object.pk}}" data-name="name" data-type="text" data-url="{% url 'customergroup_update' pk=object.pk %}" data-title="Enter group name">
+                        {{ object.name }}
+                    </span>
+                </td>
+
+                <td class="center">
+                     <a class="modal-delete" data-toggle="modal" data-target="#delete" data-name="{{object.last_name}}  {{object.first_name}}" data-id="{{object.id}}">
+                        <button class="btn btn-danger waves-effect"> {% trans "Delete" %}</button>
+                     </a>
+                </td>
+            </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        <div align="center">
+            {% include "includes/paginator.html" %}
+        </div>
+    </div>
+</div>
+{% include "includes/modal_delete.html" %}
+{% include "includes/modal_add.html" %}
+{% include "includes/modal_edit.html" %}
+<div id="form-hidden"style="display: none"><table><tbody>{{form.as_table}}</tbody></table></div>
+
+{% endblock content %}
+
+{% block scripts %}
+	{{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+	<script type="text/javascript">
+		var form = $('#form-hidden tbody').clone();
+		$.fn.editable.defaults.mode = 'inline';
+		$('.x-editable').editable({send: 'always'});
+		$(document).on("click", ".modal-delete", function (ev) {
+			ev.preventDefault();
+			var id = $(this).data('id');
+			var text = $(this).data('name');
+			$(".modal-body p strong").html( text );
+			$('#delete').modal('show');
+			$('#btn-delete').click(function() {
+				var url = '/customergroup/' + id + '/delete/';
+				$.post(url, function() {
+					location.href = '/customergroup/'
+				})
+			})
+		});
+
+
+    		$(document).on("click", ".modal-add", function (ev) {
+			ev.preventDefault();
+			$("#add-modal-body table").html(form);
+			$('#add-modal-body form').attr('action', '/customergroup/add/');
+			$("#btn-add").click(function() {
+				ev.preventDefault();
+				$('#add-form').submit();
+				$('#add').modal('hide');
+			})
+		});
+	</script>
+{% endblock  %}

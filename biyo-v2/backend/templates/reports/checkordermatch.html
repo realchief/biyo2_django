@@ -1,0 +1,16 @@
+{% extends "clean_base.html" %}
+{% load i18n %}
+
+{% block content %}
+Total for work: {{ totalforwork }}
+
+    <hr/>
+    Order items without product Match:
+    <br/>
+    {% for items in withoutmatch %}
+         <a href="{% url 'order-detail' items.order_id %}" > {{ items.name }}</a>
+        <br/>
+    {% endfor %}
+
+{% endblock content %}
+

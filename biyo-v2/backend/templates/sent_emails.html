@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+<!-- Breadcrumb -->
+<ul class="breadcrumb">
+	<li><a href="/" class="glyphicons home"><i></i>Strona główna</a></li>
+	<li class="divider"></li>
+	<li>Rekomendacje</li>
+</ul>
+<div class="separator bottom"></div>
+<!-- // Breadcrumb END -->
+
+<!-- Heading -->
+<div class="heading-buttons">
+	<h3>Rekomendacje</h3>
+	<div class="clearfix"></div>
+</div>
+<div class="separator bottom"></div>
+<!-- // Heading END -->
+
+<div class="innerLR">
+
+
+
+	<!-- Widget -->
+	<div class="widget">
+
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h4 class="heading glyphicons list"><i></i>Polecane potrawy</h4>
+		</div>
+		<!-- // Widget heading END -->
+
+		<div class="widget-body">
+
+			
+
+			<!-- Products table -->
+			<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center" id="sent-emails">
+				<thead>
+					<tr>
+						<th style="width: 1%;" class="uniformjs"><input type="checkbox" /></th>
+                        <th class="center">Data wysłania</th>
+						<th class="center">Wysłane do</th>
+                        <th class="center">Autor</th>
+                        <th class="center">Nazwa potrawy</th>
+                        <th class="center">Treść</th>
+                        <th class="center">Zdjęcie</th>
+
+					</tr>
+				</thead>
+				<tbody>
+                    {% for s in subscribers %}
+                    <tr class="selectable">
+						<td class="center uniformjs"><input type="checkbox" /></td>
+                        <td class="left">{{ s.add_date|date:"Y/m/d H:i" }}</td>
+						<td class="left">{{ s.email }}</td>
+                        <td class="left">{{ s.from_name|default:"" }}</td>
+                        <td class="left">{{ s.item_name|default:"" }}</td>
+                        <td class="left">{{ s.body|default:"" }}</td>
+                        <td class="center"><a class="btn-action glyphicons eye_open btn-success moreinfo" title="{{ s.item_name }}" href="#" data-target="{{ s.img }}"><i></i></a></td>
+					</tr>
+                    {% endfor %}
+				</tbody>
+			</table>
+			<!-- // Products table END -->
+
+		
+
+		</div>
+	</div>
+	<!-- // Widget END -->
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3 class="modal-title">Heading</h3>
+	</div>
+	<div class="modal-body">
+		
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal">Zamknij</button>
+	</div>
+</div>
+</div>
+
+{% endblock %}
+
+
+{% block javascript%}
+<script>
+$(document).ready(function() {
+	$('.moreinfo').click(function(){
+		$('.modal-body').empty();
+		var title = $(this).attr("title");
+		$('.modal-title').html(title);
+		img_url = $(this).data("target");
+		$('.modal-body').html("<img src="+img_url+" />");
+		$('#myModal').modal({show:true});
+		return false;
+	});
+});
+
+</script>
+{% endblock %}

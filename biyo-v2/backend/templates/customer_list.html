@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Customers" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Customers" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+
+    <div style="padding-bottom: 15px">
+        <form method="post" enctype="multipart/form-data" class="navbar-form pull-left">
+            {% csrf_token %}
+                <input type="text" value="{{ filter_tag }}" required name="filter_tag" placeholder="Search by Phone, Name or Email" />
+                <input type="submit" class="btn btn-primary" value="Filter"/>
+                <a  class="btn btn-primary" style="margin-top: 5px" href="/customer">Clean</a>
+         </form>
+    </div>
+
+        <div class="btn-right">
+            <a class="btn"  href="{% url 'customergroup_list' %}"><i class="icon-plus"></i>Customer Groups</a>
+            <a class="btn" href="{% url 'customer_create' %}"><i class="icon-plus"></i> Add Customer</a>
+        </div>
+        <div class="separator bottom"></div>
+        <div class="widget">
+            <table class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+                <thead>
+                    <tr>
+                        <th class="center">{% trans "First Name" %}</th>
+                        <th class="center">{% trans "Last Name" %}</th>
+                        <th class="center">{% trans "Group" %}</th>
+                        <th class="center">{% trans "Email" %}</th>
+                        <th class="center">{% trans "Phone" %}</th>
+                        <th class="center">{% trans "Action" %}</th>
+                    </tr>
+                </thead>
+                <tbody data-link="row" class="rowlink">
+                    {% for object in object_list %}
+                        <tr>
+                            <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="first_name" data-type="text" data-url="{% url 'customer_update' pk=object.pk %}" data-title="Enter first name">{{ object.first_name }}</span></td>
+                            <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="last_name" data-type="text" data-url="{% url 'customer_update' pk=object.pk %}" data-title="Enter last name">{{ object.last_name }}</span></td>
+                            <td class="center"><span class="x-editable-select" data-pk="{{object.pk}}" data-name="group" data-type="select" data-url="{% url 'customer_update' pk=object.pk %}" data-title="Select group">{{ object.group }}</span></td>
+                            <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="email" data-type="text" data-url="{% url 'customer_update' pk=object.pk %}" data-title="Enter email">{{ object.email }}</span></td>
+                            <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="phone" data-type="text" data-url="{% url 'customer_update' pk=object.pk %}" data-title="Enter phone">{{ object.phone }}</span></td>
+							<td class="center">
+                                <a href="{% url 'customer-payment' object.id %}">Process Payment</a>
+                                <span class="action-separator"></span>
+								<a class="modal-edit" data-toggle="modal" data-target="#edit" data-name="{{object.last_name}}  {{object.first_name}}" data-id="{{object.id}}">Edit</a>
+								<span class="action-separator"></span>
+								<a class="modal-delete" data-toggle="modal" data-target="#delete" data-name="{{object.last_name}}  {{object.first_name}}" data-id="{{object.id}}">Delete</a>
+							</td>
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include "includes/paginator.html" %}
+        </div>
+      <form id="csv-download" action="{% url 'csvcustomerdownload' %}">
+          <button class="btn btn-primary" type="submit">Export to CSV</button>
+      </form>
+    </div>
+
+	{% include "includes/modal_delete.html" %}
+	{% include "includes/modal_add.html" %}
+	{% include "includes/modal_edit.html" %}
+			<div id="form-hidden"style="display: none"><table><tbody>{{form.as_table}}</tbody></table></div>
+
+
+{% endblock content %}
+
+
+{% block js %}
+	{{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+	<script type="text/javascript">
+		var form = $('#form-hidden tbody').clone();
+
+
+        $('.x-editable-select').editable({
+        source: function() {
+            var result;
+            $.ajax({
+                url: '/terminalapi/sync/taskingroups',
+{#                data: {t: 'zone'},#}
+                type: 'GET',
+{#                global: false,#}
+                async: false,
+                dataType: 'json',
+                success: function(data) {
+                    result = data.results;
+                }
+            });
+            return result;
+        }
+
+        })
+
+
+
+		$('.x-editable').editable({send: 'always'});
+
+		$(document).on("click", ".modal-delete", function (ev) {
+			ev.preventDefault();
+			var id = $(this).data('id');
+			var text = $(this).data('name');
+			$(".modal-body p strong").html( text );
+			$('#delete').modal('show');
+			$('#btn-delete').click(function() {
+				var url = '/customer/' + id + '/delete/';
+				$.post(url, function() {
+					location.href = '/customer/'
+				})
+			})
+		});
+		$(document).on("click", ".modal-add", function (ev) {
+			ev.preventDefault();
+			$("#add-modal-body table").html(form);
+			$('#add-modal-body form').attr('action', '/customer/add/');
+			$("#btn-add").click(function() {
+				ev.preventDefault();
+				$('#add-form').submit();
+				$('#add').modal('hide');
+			})
+		});
+		$(document).on("click", ".modal-edit", function(ev) {
+			ev.preventDefault();
+			var id = $(this).data('id');
+			var url = '/terminalapi/sync/customers';
+			$("#edit-modal-body form table").html(form);
+			$.get(url, function(data) {
+				var employee = $.grep(data.results, function(e){return e.id == id})[0];
+				$.each(employee, function(field, value) {
+                    if(field == "customer_group")
+                    {
+                        $('#edit-modal-body #id_group').val(value);
+                    }
+                    else
+                    {
+                        $('#edit-modal-body #id_'+field).val(value);
+                    }
+				});
+			});
+			$('#edit-modal-body form').attr('action', id+'/edit/')
+			$('#btn-edit').click(function(ev) {
+				ev.preventDefault();
+				$('#edit-form').submit();
+				$('#edit').modal('hide');
+			})
+
+
+
+		})
+	</script>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'table_list' %}">{% trans "Tables" %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'table_detail' pk=object.pk %}">{{ object.table_name }}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Update" %} {{ object.table_name }}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans 'Update' %} {{ object.table_name }}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+        <div class="widget">
+            {% if form.errors %}
+                <div class="alert alert-warning">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    {{ form.as_table }}
+                </table>
+                <div class="separator bottom"></div>
+                <div>
+                    <input type="submit" class="btn btn-primary" value="Save changes"/>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

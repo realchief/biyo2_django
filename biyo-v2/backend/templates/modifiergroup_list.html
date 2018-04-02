@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load panel_tags %}
+{% load humanize %}
+{% load i18n %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Modifier group" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+
+
+
+    <div class="innerLR">
+        <div class="btn-right">
+            {#            <a class="btn modal-add" data-toggle="modal" data-target="#add" href=""><i class="icon-plus"></i>{% trans  "Add modifier group"%}</a>#}
+            {#            <a class="btn modal-add" data-toggle="modal" data-target="#add" href=""><i class="icon-plus"></i>{% trans "Add modifier" %}</a>#}
+            <a  class="btn" href="{% url 'modifiergroup_create' %}"><i class="icon-plus"></i>{% trans  "Add modifier group"%}</a>
+            <a  class="btn" href="{% url 'modifier_create' %}"><i class="icon-plus"></i>{% trans  "Add modifier"%}</a>
+        </div>
+        <div class="separator bottom"></div>
+        <div class="widget ">
+
+            <div class="row">
+                <div class="span5">
+                    <h3>{% trans "Modifier group" %}</h3>
+
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                        <tr>
+                            <th>{% trans "Name" %}</th>
+                            <th>{% trans "Select Multiple" %}</th>
+                            <th>{% trans "Action" %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for object in object_list %}
+                            <tr {% ifequal id object.id|stringformat:"s" %} class="info" {% endifequal %}>
+                                <td class="center">
+                                    <span class="x-editable" data-pk="{{object.pk}}"  data-placement="right" data-type="text" data-name="name" data-url="{% url 'modifiergroup_update' pk=object.pk %}" data-title="Enter name">{{ object.name }}</span>
+
+                                </td>
+                                <td class="center">
+
+                                    <span class="x-editable-select" data-pk="{{object.pk}}" data-name="select_multiple" data-type="select" data-url="{% url 'modifiergroup_update' pk=object.pk %}" data-value="{{object.select_multiple}}">{{ object.select_multiple }}</span>
+
+                                </td>
+                                <td class="center">
+                                    <a href="{% url 'modifiergroup_detail' object.id %}"><i class="icon-list"></i></a>
+
+                                    <a href="{% url 'modifiergroup_update' pk=object.id %}"><i class="icon-edit"></i></a>
+                                    <a href="{% url 'modifiergroup_delete' pk=object.id %}"> <i class="icon-remove-circle"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="span11">
+                    <div class="widget">
+                        <h3>{% trans "Modifiers" %}</h3>
+                        <table class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+                            <thead>
+                            <tr>
+                                <th>{% trans "Name" %}</th>
+                                <th>{% trans "Groups" %}</th>
+                                <th>{% trans "Cost" %}</th>
+                                <th>{% trans "Price" %}</th>
+                                <th>{% trans "Active" %}</th>
+                                <th>{% trans "Action" %}</th>
+                            </tr>
+                            </thead>
+                            <tbody data-link="row" class="rowlink">
+
+                            {% for object in moditems %}
+                                <tr>
+                                    <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="name" data-type="text" data-url="{% url 'modifier_update' pk=object.pk %}" data-title="Enter name">{{ object.name }}</span></td>
+                                    <td class="center">
+
+                                        <span class="x-editable-choice" data-pk="{{object.pk}}" data-name="group" data-type="checklist" data-url="{% url 'update_mods_list'%}" data-title="Choose groups" data-value="{{object.group|groups_ids}}">{{ object|field_value:"group" }}</span></td>
+
+                                    <td class="right">
+                                        $<span class="x-editable" data-pk="{{object.pk}}" data-name="cost" data-type="text" data-url="{% url 'modifier_update' pk=object.pk %}" data-title="Enter cost">
+									{{ object.cost|floatformat:2|default:"0.00"|intcomma }}
+								</span>
+                                    </td>
+                                    <td class="right">
+                                        $<span class="x-editable" data-pk="{{object.pk}}" data-name="price" data-type="text" data-url="{% url 'modifier_update' pk=object.pk %}" data-title="Enter price">
+									{{ object.price|floatformat:2|default:"0.00"|intcomma }}
+								</span>
+                                    </td>
+                                    <td><span class="x-editable-select" data-pk="{{object.pk}}" data-name="active" data-type="select" data-url="{% url 'modifier_update' pk=object.pk %}" data-value="{{object.active}}">{{ object.active }}</span></td>
+                                    <td class="center">
+                                        <a href="{% url 'modifier_update' pk=object.id %}">Edit</a>
+                                        <span class="action-separator"></span>
+                                        <a href="{% url 'modifier_delete' pk=object.id %}">Delete</a>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        {% include "includes/paginator.html" %}
+                    </div>
+                </div>
+            </div>
+
+
+
+            {% include "includes/paginator.html" %}
+        </div>
+    </div>
+    {#    {% include "includes/modal_delete.html" %}#}
+    {#    {% include "includes/modal_add.html" %}#}
+{% endblock content %}
+
+{% block js %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+    <script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+    <script type="text/javascript">
+
+        $('.x-editable').editable({send: 'always'});
+        $('.x-editable-select').editable({
+            source: [
+                {value: "True", text: 'True'},
+                {value: "False", text: 'False'}
+            ]
+        })
+
+
+		$('.x-editable-choice').editable({
+			source: '{% url 'get_modifier_group_list' %}',
+            send: 'always',
+            params: function(params) {
+                //originally params contain pk, name and value
+                var str ='';
+                for (var i=0;i<params.value.length;i++){
+                    str+=params.value[i]
+                }
+                return {"groups":params.value.join(";"),'pk':params.pk};
+            },
+            validate: function(value) {
+                if($.trim(value) == '') {
+                    return 'This field is required';
+    }
+}
+    	});    </script>
+{% endblock %}

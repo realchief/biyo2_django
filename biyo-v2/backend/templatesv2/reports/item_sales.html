@@ -1,0 +1,105 @@
+{% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+{% load panel_tags %}
+
+<div class="row ">
+    <div class="col-sm-12 col-md-6 col-lg-3">
+        <h1 class="page-title">{% trans "Item Sales Summary" %}</h1>
+    </div>
+    <div class="hidden-md-up" style="height: 10px;">
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-5">
+        {% with 'item_sales' as active %}
+            {% include "reports/includes/filter.html" %}
+        {% endwith %}
+    </div>
+
+
+</div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+    <div class="panel-body" style="max-width: 100%; overflow-x: auto">
+
+        <div class="row">
+
+
+            <div class="col-sm-12">
+            {% if object_list  %}
+                <table class="table table-hover  rounded-top">
+
+                    <thead>
+                        <tr>
+                            <th>{% trans "Item name" %}</th>
+                            <th class="hidden-sm-down text-xs-right">{% trans "Sku" %}</th>
+                            <th class="text-xs-right">{% trans "Item sold" %}</th>
+                            <th class="text-xs-right">{% trans "Gross sales" %}</th>
+                            <th class="hidden-sm-down text-xs-right">{% trans "Discount" %}</th>
+                            <th class="text-xs-right">{% trans "Total" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        {% for object in object_list %}
+                        <tr>
+                            <td class="left"><a href='{% url 'product_detail' pk=object.product_id %}'>{{ object.product__name }}</a> </td>
+                            <td class="hidden-sm-down text-xs-right">{{ object.product__barcode|default:'' }}</td>
+                            <td class="text-xs-right">{{ object.amount|intcomma }}</td>
+                            <td class="text-xs-right">${{ object.sales|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td class="hidden-sm-down text-xs-right">(${{ object.discount|floatformat:2|default:"0.00"|intcomma}})</td>
+                            <td class="text-xs-right">${{ object.total|floatformat:2|default:"0.00"|intcomma}}</td>
+                        </tr>
+                        {% endfor %}
+
+                        <tr class="table-active">
+                            <td class="strong"> {% trans "Totals" %}</td>
+                            <td class="hidden-sm-down text-xs-right"></td>
+                            <td class="text-xs-right font-weight-bold">{{ total_items }}</td>
+                            <td class="text-xs-right font-weight-bold">${{ total_gross_sales|floatformat:2|default:"0.00"|intcomma }}</td>
+                            <td class="hidden-sm-down text-xs-right font-weight-bold">(${{ discount|floatformat:2|default:"0.00"|intcomma }})</td>
+                            <td class="text-xs-right font-weight-bold">${{ total_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="strong">{% trans "Discounts" %}:
+
+                                <span>
+                                    <a class="doc-link" data-toggle="tooltip" data-placement="right" data-trigger="hover" data-original-title="Total after item discounts">
+                                    <i class="icon md-help"></i></a>
+                                    </span>
+                            </td>
+                            <td class="hidden-sm-down text-xs-right"></td>
+                            <td class="text-xs-right font-weight-bold"></td>
+                            <td class="text-xs-right font-weight-bold"></td>
+                            <td class="hidden-sm-down text-xs-right"></td>
+                            <td class="text-xs-right font-weight-bold">${{ total_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="strong">{% trans "Final Total" %}:
+
+                                <span>
+                        <a class="doc-link" data-toggle="tooltip" data-placement="right" data-trigger="hover" data-original-title="Total after order discounts">
+                                <i class="icon md-help"></i></a>
+                    </span>
+                            </td>
+                            <td class="hidden-sm-down text-xs-right"></td>
+                            <td class="text-xs-right font-weight-bold"></td>
+                            <td class="text-xs-right font-weight-bold"></td>
+                            <td class="hidden-sm-down text-xs-right"></td>
+                            <td class="text-xs-right font-weight-bold">${{total_after_item_and_order_discount|floatformat:2|default:"0.00"|intcomma }}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                {% else %}
+                    {% include 'reports/includes/empty.html' %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,114 @@
+{% extends "base.html" %} {% block content %}
+{% load static %}
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+{% load panel_tags %}
+
+
+
+  <div class="row ">
+                <div class="col-sm-12 col-md-6 col-lg-3">
+                  <h1 class="page-title">Category Summary</h1>
+                </div>
+                <div class="hidden-md-up" style="height: 10px;">
+                </div>
+                <div class="col-sm-12 col-md-4 offset-md-1">
+                    {% include "reports/includes/filter.html" %}
+                </div>
+
+              </div>
+
+<div class="clearfix" style="height: 20px;"></div>
+<div class="panel">
+<div class="panel-body" style="max-width: 100%; overflow-x: auto">
+
+<div class="row">
+
+
+<div class="col-sm-12">
+  {% if categories %}
+  <table class="table table-hover ">
+                <thead>
+                    <tr>
+                      <th>{% trans "Category" %}</th>
+                      <th class="text-xs-right">{% trans "Amount" %}</th>
+                      <th class="text-xs-right">{% trans "Sales" %}</th>
+                      <th class="text-xs-right">% {% trans "Percentage" %}</th>
+                    </tr>
+                  </thead>
+
+                                {% for category in categories %}
+                                    <tr class="category-level-{{ category.level }}">
+                                        <td class="category-level-{{ category.level }}">{{ category.name }}</td>
+                                        <td class="text-xs-right">${{ category.amount|floatformat:2|default:"0.00"|intcomma }}</td>
+                                        <td class="text-xs-right">${{ category.sales|floatformat:2|default:"0.00"|intcomma }}</td>
+                                        <td class="text-xs-right">{{ category.percentage|floatformat:2|default:"0.00"|intcomma }} %</td>
+                                    </tr>
+                                {% endfor %}
+
+
+                                <tr class="table-active">
+                                   <td class="font-weight-bold">{% trans "Totals" %}</td>
+
+                                   <td class="text-xs-right font-weight-bold">${{total|floatformat:"2"|default:"0.00"|intcomma}}</td>
+                                   <td class="hidden-sm-down text-xs-right font-weight-bold">${{total_sales|floatformat:2|default:"0.00"|intcomma}}</td>
+                                   <td class="text-xs-right font-weight-bold"></td>
+                                </tr>
+
+                                <tr>
+                                   <td class="font-weight-normal">{% trans "Discounts" %}
+
+                                      <span >
+                                      <a class="doc-link" data-toggle="tooltip" data-placement="right" data-trigger="hover" data-original-title="Order discounts">
+                                      <i class="icon md-help"></i></a>
+                                      </span>
+                                   </td>
+                                   <td class="hidden-sm-down text-xs-right"></td>
+                                   <td class="text-xs-right font-weight-normal">(${{discount|floatformat:2|default:"0.00"|intcomma}})</td>
+                                   <td class="hidden-sm-down text-xs-right"></td>
+
+                               </tr>
+
+                                <tr>
+                                   <td class="font-weight-bold">{% trans "Final Total" %}
+
+                                     <span >
+                          <a class="doc-link" data-toggle="tooltip" data-placement="right" data-trigger="hover" data-original-title="Total after order discounts">
+                                  <i class="icon md-help"></i></a>
+                      </span>
+                                   </td>
+                                   <td class="hidden-sm-down text-xs-right"></td>
+                                   <td class="text-xs-right font-weight-bold">${{total_sales|dodeduction:discount|floatformat:2|default:"0.00"|intcomma}}</td>
+
+                                   <td class="hidden-sm-down text-xs-right"></td>
+                               </tr>
+                        </tbody>
+                    </table>
+                    {% else %}
+                        {% include 'reports/includes/empty.html' %}
+                    {% endif %}
+
+
+
+
+
+</div>
+      </div>            <!---->
+
+
+
+
+<!---->
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+{% endblock content %}

@@ -1,0 +1,178 @@
+{% extends base_template %}
+{% load i18n %}
+{% load bootstrap3 %}
+{% block content %}
+<div class="row clearfix">
+    <div class="col-sm-12 col-md-3">
+        <h1 class="page-title">{% trans "Purchase order" %}</h1>
+    </div>
+</div>
+<div class="clearfix" style="height: 20px;"></div>
+
+<div class="panel col-md-4 offset-md-4">
+    <div class="panel-body">
+        {% if order.errors %}
+        <div class="alert alert-warning">
+            {{ order.errors }}
+        </div>
+        {% endif %}
+        <form action="{% url "quick:order_draft_info" pk=object.id %}" id="order_info_form" method="post">
+            {% csrf_token %}
+            <table class="table">
+                <tr><td>{% bootstrap_field  purchase.document_number %}</td></tr>
+                <tr><td>{% bootstrap_field  purchase.note %}</td></tr>
+            </table>
+
+        </form>
+        <div id="order_info_form_status"></div>
+            <hr>
+        <form action="{% url "quick:order_draft_item" pk=object.id %}" id="order_item_form" method="post">
+            {% csrf_token %}
+            <table class="table">
+                <tr><td>{% bootstrap_field purchase_item.product  %}</td></tr>
+                <tr><td>{% bootstrap_field purchase_item.entered_stock  %}</td></tr>
+            </table>
+        </form>
+
+        <div id="order_item_form_status"></div>
+
+        <hr>
+        <form action="{% url "quick:order_draft_items" pk=object.id %}" method="post">
+        {% csrf_token %}
+        {% bootstrap_form purchase_items.management_form %}
+        {{ purchase_items.non_form_errors.as_ul }}
+        <table id="formset" class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+            {% for form in purchase_items.forms %}
+            {% if forloop.first %}
+            <thead>
+            <tr>
+                <th>{% trans "Product name" %}</th>
+                {% for field in form.visible_fields %}
+                <th>{{ field.label|capfirst }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            {% endif %}
+            <tr class="{% cycle row1,row2 %}">
+                <td>{{ form.instance.product.name }}</td>
+                {% for field in form.visible_fields %}
+                <td>
+                    {# Include the hidden fields in the form #}
+                    {% if forloop.first %}
+                    {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                    {% endfor %}
+                    {% endif %}
+                    {{ field.errors.as_ul }}
+                    {{ field }}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+            <div align="center">
+                <button type="submit" class="btn btn-success waves-effect">Save changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+<form class="pull-md-right" action="" method="post">
+    {% csrf_token %}
+    <button name="action" class="btn btn-danger waves-effect" value="delete">Delete order</button>
+    <button name="action" class="btn btn-primary waves-effect" value="ship">Ship order</button>
+</form>
+{% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript">
+        $( window ).load(function() {
+        $('#formset').find('input[name$="-DELETE"]').each(function(index, el){
+            $('<input/>', {
+                "type": "submit",
+                "value": "Delete",
+                on: {
+                    "click": function(){
+                        $(el).attr('checked', 'checked');
+                    }
+                }
+            }).appendTo($(el).parent());
+            $(el).hide();
+        });
+        window.setInterval("$.get('')", 60000); // every 60 seconds
+
+        $('#order_info_form').find('input,textarea')
+                .on('keyup', function(){
+                    $('#order_info_form_status').text('Unsaved changes');
+                })
+                .on('change', function(){
+                    var form = $('#order_info_form');
+                    $('#order_info_form_status').text('Saving');
+                    $(form).find('input,textarea').css('background-color', '');
+
+                    $.ajax({
+                        type: "POST",
+                        url: $(form).attr('action'),
+                        data: $(form).serialize(),
+                        success: function (data) {
+                            if (data.constructor == {}.constructor) {
+                                // take error
+                                for (var key in data) {
+                                    $(form).find('*[name="'+key+'"]').css('background-color', 'red');
+                                }
+                            }
+                            $('#order_info_form_status').text('Saved changes');
+                        }
+                    });
+                    $(form).submit(function(e) {
+                        e.preventDefault();
+                    });
+                });
+        // /DOCUMENT INFO BLOCK
+
+        // ITEM BLOCK
+        var product_event = function(e) {
+            if (e.type == 'keypress') {
+                if (e.which != 13) {
+                    return
+                }
+            }
+            $.ajax({
+                type: 'post',
+                url: '{% url "quick:check_product_exist" %}',
+                data: $('#order_item_form').serialize(),
+                success: function(data) {
+                    if (data.constructor == {}.constructor) {
+                        if (data['product'] == null) {
+                            var msg = $('<div>Product not found</div>');
+                            $('#id_product').after(msg);
+                            msg.fadeOut(3000);
+                        } else {
+                            $('#id_entered_stock').focus();
+                        }
+                    }
+                }
+            })
+        };
+
+        var product_event_qty = function(e) {
+            if (e.type == 'keypress') {
+                if (e.which != 13) {
+                    return
+                }
+            }
+            item_form.unbind().submit();
+        };
+        var item_form = $('#order_item_form')
+                .submit(function(e){
+                    e.preventDefault();
+                });
+
+            item_form.find('#id_product')
+                .on('change', product_event)
+                .keypress(product_event);
+            item_form.find('#id_entered_stock')
+                .keypress(product_event);
+        // /ITEM BLOCK
+    });
+</script>
+{% endblock %}

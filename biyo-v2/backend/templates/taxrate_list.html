@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Tax rate" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Tax rate" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+        <div class="btn-right">
+            <a class="btn modal-add" data-toggle="modal" data-target="#add" href=""><i class="icon-plus"></i> Add tax rate</a>
+
+        </div>
+        <div class="separator bottom"></div>
+        <div class="widget">
+            <table class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+                <thead>
+                    <tr>
+                        <th class="center">{% trans "Name" %}</th>
+                        <th class="center">{% trans "Rate" %}</th>
+                        <th class="center">{% trans "Action" %}</th>
+                    </tr>
+                </thead>
+                <tbody data-link="row" class="rowlink">
+                    {% for object in object_list %}
+                            <td class="center">
+								<span class="x-editable" data-pk="{{object.pk}}"  data-name="name" data-type="text" data-url="{% url 'taxrate_update' pk=object.pk %}" data-title="Enter name">{{ object.name }}</span>
+							</td>
+
+                            <td class="center">
+                                <span class="x-editable" data-pk="{{object.pk}}"  data-name="rate" data-type="text" data-url="{% url 'taxrate_update' pk=object.pk %}" data-title="Enter rate">{{ object.rate|floatformat:2|default:"0.00" }}</span>%
+                            </td>
+
+                            <td class="center">
+                                <a href="{% url 'taxrate_update' pk=object.id %}">Edit</a>
+                                <span class="action-separator"></span>
+                                <a class="modal-delete" data-toggle="modal" data-target="#delete" data-name="{{object.name}}" data-id="{{object.id}}">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include "includes/paginator.html" %}
+        </div>
+    </div>
+
+	{% include "includes/modal_delete.html" %}
+	{% include "includes/modal_add.html" %}
+
+
+
+
+{% endblock content %}
+
+{% block js %}
+	{{ block.super }}
+
+
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+
+	<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+	<script type="text/javascript">
+		$('.x-editable').editable({send: 'always'});
+		$(document).on("click", ".modal-delete", function (ev) {
+			ev.preventDefault();
+			var id = $(this).data('id');
+			var text = $(this).data('name');
+			$(".modal-body p strong").html( text );
+			$('#delete').modal('show');
+			$('#btn-delete').click(function() {
+				var url = '/taxrate/' + id + '/delete/';
+				$.post(url, function() {
+					location.href = '/taxrate/'
+				})
+			})
+		});
+		$(document).on("click", ".modal-add", function (ev) {
+			ev.preventDefault();
+			var form = '\
+			<form method="post" enctype="multipart/form-data"> \
+                <input type="hidden" name="csrfmiddlewaretoken" value="7800wWgZ3r5jr2oNbNfN76aQkjX6wx04">\
+                <table>\
+                    <tbody><tr><th><label for="id_name">Tax Name:</label></th><td><input id="id_name" maxlength="64" name="name" type="text"></td></tr>\
+							<tr><th><label for="id_rate">Rate:</label></th><td><input id="id_rate" name="rate" step="any" type="number"></td></tr>\
+                </tbody></table>\
+			</form>';
+			$("#add-modal-body").html(form);
+			$("#btn-add").click(function() {
+				var url = '/taxrate/add/';
+				var data = {'name': $('#id_name').val(), 'rate': $('#id_rate').val()};
+				$.post(url, data, function(){
+					location.href = '/taxrate/'
+				})
+			})
+		});
+	</script>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load panel_tags %}
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'employee_list' %}">{% trans "Customers" %}</a></li>
+        <li class="divider"></li>
+        <li>{{ object.name }}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{{ object.name }}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+          <ul>
+              {% for field_name in info_fields %}
+                  <li><strong>{{ object|field_verbose_name:field_name }}:</strong> {{ object|field_value:field_name }}</li>
+              {% endfor %}
+          </ul>
+          <div class="separator bottom"></div>
+          <div>
+              <a href="{% url 'customer_update' pk=object.pk %}" class="btn"><i class="icon-pencil"></i> Edit</a>
+              <a href="{% url 'customer_delete' pk=object.pk %}" class="btn"><i class="icon-trash"></i> Delete</a>
+          </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'category_list' %}">{% trans "Category" %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'category_detail' pk=object.pk %}">{{ object.name }}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Update" %} {{ object.name }}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans 'Update' %} {{ object.name }}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+        <div class="widget">
+            {% if form.errors %}
+                <div class="alert alert-warning">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table>
+                    {{ form.as_table }}
+                </table>
+                <div class="separator bottom"></div>
+                <div>
+                    <input type="submit" class="btn btn-primary" value="Save changes"/>
+                </div>
+            </form>
+        </div>
+    </div>
+    		<div id="colorpicker"style="display: none">
+			<select name="colorpicker">
+			  <option value="#e56d3b">Orange</option>
+			  <option value="#459b99">Aqua</option>
+			  <option value="#744a17">Brown</option>
+		  	  <option value="#009d13">Green</option>
+			  <option value="#00b2d8">Cyan</option>
+			  <option value="#8f1758">Maroon</option>
+			  <option value="#b93aab">Pink</option>
+			</select>
+		</div>
+{% endblock content %}
+{% block js %}
+	{{ block.super }}
+
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/jquery-simplecolorpicker/jquery.simplecolorpicker-glyphicons.css"/>
+
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            var colorsreverse = {
+			1:'#e56d3b',
+			2:'#459b99',
+			3:'#744a17',
+			4:'#009d13',
+			5:'#00b2d8',
+			6:'#8f1758',
+			7:'#b93aab'
+		};
+        var predefined = $( "input:checked" ).val()
+        $('select[name="colorpicker"]').simplecolorpicker('selectColor',colorsreverse[predefined]);
+});
+
+		var colors = {
+			'#e56d3b': 1,
+			'#459b99': 2,
+			'#744a17': 3,
+			'#009d13': 4,
+			'#00b2d8': 5,
+			'#8f1758': 6,
+			'#b93aab': 7
+		};
+
+
+		$('#colorpicker select').appendTo($('#id_color').parent());
+
+		$('select[name="colorpicker"]').simplecolorpicker({theme: 'glyphicons'})
+				.on('change', function(){
+					var val = $('select[name="colorpicker"]').val();
+					id = colors[val]-1;
+					$("#id_color_" + id).prop("checked", true);
+				});
+
+
+
+
+	</script>
+{% endblock %}

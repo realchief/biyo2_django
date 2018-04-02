@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Table sections" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Table section" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="innerLR">
+        <div class="btn-right">
+            <a class="btn modal-add" data-toggle="modal" data-target="#add" href=""><i class="icon-plus"></i> Add section</a>
+        </div>
+        <div class="separator bottom"></div>
+        <div class="widget">
+            <table class="table table-bordered table-condensed table-striped table-primary, table-vertical-center">
+                <thead>
+                    <tr>
+                        <th>{% trans "Name" %}</th>
+                        <th>{% trans "Store" %}</th>
+                        <th>{% trans "Action" %}</th>
+                    </tr>
+                </thead>
+                <tbody data-link="row" class="rowlink">
+                    {% for object in object_list %}
+                        <tr>
+                            <td class="center"><span class="x-editable" data-pk="{{object.pk}}" data-name="section_name" data-type="text" data-url="{% url 'tablesection_update' pk=object.pk %}">{{ object.section_name }}</span></td>
+                            <td class="left"><span class="x-editable-select" data-pk="{{object.pk}}" data-name="store" data-type="select" data-url="{% url 'tablesection_update' pk=object.pk %}" data-value="{{object.store.id}}">{{ object.store.name }}</span></td>
+							<td class="center">
+								<a class="modal-edit" href="{% url 'tablesection_detail' pk=object.pk %}">Edit</a>
+								<span class="action-separator"></span>
+								<a class="modal-delete" data-toggle="modal" data-target="#delete" data-name="{{object.section_name}}" data-id="{{object.id}}">Delete</a>
+							</td>
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include "includes/paginator.html" %}
+        </div>
+    </div>
+	{% include "includes/modal_delete.html" %}
+	{% include "includes/modal_add.html" %}
+	<div id="form-hidden"style="display: none"><table><tbody>{{form.as_table}}</tbody></table></div>
+{% endblock content %}
+
+{% block js %}
+	{{ block.super }}
+
+
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/css/bootstrap-editable.css"/>
+
+	<script type="text/javascript" src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+	<script type="text/javascript">
+		var form = $('#form-hidden tbody').clone();
+
+		var source = [];
+		$('#id_store > option').each(function() {
+			if ($(this).text() != "---------")
+				source.push({value: $(this).val(), text: $(this).text()})
+		});
+
+		$('.x-editable').editable({send: 'always'});
+		$('.x-editable-select').editable({
+			source: source
+    	});
+
+		$(document).on("click", ".modal-add", function (ev) {
+			ev.preventDefault();
+			$("#add-modal-body table").html(form);
+			$('#add-modal-body form').attr('action', '/tablesection/add/');
+			$("#btn-add").click(function() {
+				ev.preventDefault();
+				$('#add-form').submit();
+				$('#add').modal('hide');
+			})
+		});
+		$(document).on("click", ".modal-delete", function (ev) {
+			ev.preventDefault();
+			var id = $(this).data('id');
+			var text = $(this).data('name');
+			$(".modal-body p strong").html( text );
+			$('#delete').modal('show');
+			$('#btn-delete').click(function() {
+				var url = '/tablesection/' + id + '/delete/';
+				$.post(url, function() {
+					location.href = '/tablesection/'
+				})
+			})
+		});
+	</script>
+{% endblock %}

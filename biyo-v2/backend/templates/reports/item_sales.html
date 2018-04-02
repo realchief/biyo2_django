@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load report_tags %}
+{% load humanize %}
+{% load panel_tags %}
+
+
+{% block content %}
+
+        <ul class="breadcrumb">
+        <li><a href="{% url 'dashboard' %}" class="glyphonicons home"><i></i>{% trans 'Home' %}</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'reports_home' %}">{% trans "Reports" %}</a></li>
+        <li class="divider"></li>
+        <li>{% trans "Item sales" %}</li>
+    </ul>
+    <div class="separator bottom"></div>
+    <div class="heading-buttons">
+        <h3>{% trans "Reports" %}</h3>
+        <div class="clearfix"></div>
+    </div>
+    <div class="separator bottom"></div>
+
+    <div class="row">
+<div class="offset1">
+{% with 'item_sales' as active %}
+        {% include "reports/includes/filter.html" %}
+{% endwith %}
+            {% if object_list  %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Item name" %}</th>
+                            <th>{% trans "Sku" %}</th>
+                            <th>{% trans "Item sold" %}</th>
+                            <th>{% trans "Gross sales" %}</th>
+                            <th>{% trans "Discount" %}</th>
+                            <th>{% trans "Total" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for object in object_list %}
+                            <tr>
+                                <td class="left"><a href='{% url 'product_detail' pk=object.product_id %}'>{{ object.product__name }}</a> </td>
+                                <td class="right">{{ object.product__barcode|default:'' }}</td>
+                                <td class="right">{{ object.amount|intcomma }}</td>
+                                <td class="right">${{ object.sales|floatformat:2|default:"0.00"|intcomma }}</td>
+                                <td class="right">(${{ object.discount|floatformat:2|default:"0.00"|intcomma}})</td>
+                                <td class="right">${{ object.total|floatformat:2|default:"0.00"|intcomma}}</td>
+                            </tr>
+                        {% endfor %}
+
+                            <!-- Total -->
+                             <tr>
+                                <td class="strong">Column Totals</td>
+                                <td class="right strong"></td>
+                                <td class="right strong">{{ total_items }}</td>
+                                <td class="right strong">${{ total_gross_sales|floatformat:2|default:"0.00"|intcomma }}</td>
+                                 <td class="right strong">(${{ discount|floatformat:2|default:"0.00"|intcomma }})</td>
+                                <td class="right strong">${{ total_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                            </tr>
+
+                             <tr>
+                                <td class="strong">Total After Item Discounts:</td>
+                                <td class="right strong"></td>
+                                <td class="right strong"></td>
+                                <td class="right strong"></td>
+                                <td class="right strong"></td>
+                                <td class="right strong">${{ total_sum|floatformat:2|default:"0.00"|intcomma }}</td>
+                            </tr>
+
+                             <tr>
+                                <td class="strong">Total After Order Discount:</td>
+                                <td class="right strong"></td>
+                                <td class="right strong"></td>
+                                <td class="right strong"></td>
+                                <td class="right strong"></td>
+                                <td class="right strong">${{total_after_item_and_order_discount|floatformat:2|default:"0.00"|intcomma }}</td>
+                            </tr>
+
+                    </tbody>
+                </table>
+            {% else %}
+                {% include 'reports/includes/empty.html' %}
+      {% endif %}
+            </div>
+        </div>
+    <div class="innerLR">
+    </div>
+{% endblock %}

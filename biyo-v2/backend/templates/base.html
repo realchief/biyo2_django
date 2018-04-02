@@ -1,0 +1,449 @@
+{% load i18n %}
+{% load panel_tags %}
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="ie lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="ie lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="ie lt-ie9"> <![endif]-->
+<!--[if gt IE 8]> <html class="ie gt-ie8"> <![endif]-->
+<!--[if !IE]><!--><html><!-- <![endif]-->
+<head>
+	<title>Biyo Point of Sale - Dashboard</title>
+
+	<!-- Meta -->
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+    <link rel="icon" sizes="64x64" type="image/png" href="{{ STATIC_URL }}assets/img/favicon.png">
+
+	<!-- Bootstrap -->
+	<link href="{{ STATIC_URL }}common/bootstrap/css/bootstrap.css" rel="stylesheet" />
+	<link href="{{ STATIC_URL }}common/bootstrap/css/responsive.css" rel="stylesheet" />
+
+	<!-- Glyphicons Font Icons -->
+	<link href="{{ STATIC_URL }}common/theme/css/glyphicons.css" rel="stylesheet" />
+
+	<!-- Uniform Pretty Checkboxes -->
+	<link href="{{ STATIC_URL }}common/theme/scripts/plugins/forms/pixelmatrix-uniform/css/uniform.default.css" rel="stylesheet" />
+
+	<!-- PrettyPhoto -->
+    <link href="{{ STATIC_URL }}common/theme/scripts/plugins/gallery/prettyphoto/css/prettyPhoto.css" rel="stylesheet" />
+
+	<!--[if IE]><!--><script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/excanvas/excanvas.js"></script><!--<![endif]-->
+	<!--[if lt IE 8]><script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/json2.js"></script><![endif]-->
+
+	<!-- Bootstrap Extended -->
+	<link href="{{ STATIC_URL }}common/bootstrap/extend/jasny-bootstrap/css/jasny-bootstrap.min.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}common/bootstrap/extend/jasny-bootstrap/css/jasny-bootstrap-responsive.min.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-wysihtml5/css/bootstrap-wysihtml5-0.0.2.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-select/bootstrap-select.css" rel="stylesheet" />
+	<link href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-toggle-buttons/static/stylesheets/bootstrap-toggle-buttons.css" rel="stylesheet" />
+
+	<!-- Select2 Plugin -->
+	<link href="{{ STATIC_URL }}common/theme/scripts/plugins/forms/select2/select2.css" rel="stylesheet" />
+
+	<!-- DateTimePicker Plugin -->
+	<link href="{{ STATIC_URL }}common/theme/scripts/plugins/forms/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet" />
+
+	<!-- JQueryUI -->
+	<link href="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery-ui/css/smoothness/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" />
+
+	<!-- MiniColors ColorPicker Plugin -->
+	<link href="{{ STATIC_URL }}common/theme/scripts/plugins/color/jquery-miniColors/jquery.miniColors.css" rel="stylesheet" />
+
+	<!-- Notyfy Notifications Plugin -->
+	<link href="{{ STATIC_URL }}common/theme/scripts/plugins/notifications/notyfy/jquery.notyfy.css" rel="stylesheet" />
+	<link href="{{ STATIC_URL }}common/theme/scripts/plugins/notifications/notyfy/themes/default.css" rel="stylesheet" />
+
+	<!-- Gritter Notifications Plugin -->
+	<link href="{{ STATIC_URL }}common/theme/scripts/plugins/notifications/Gritter/css/jquery.gritter.css" rel="stylesheet" />
+
+	<!-- Easy-pie Plugin -->
+	<link href="{{ STATIC_URL }}common/theme/scripts/plugins/charts/easy-pie/jquery.easy-pie-chart.css" rel="stylesheet" />
+
+	<!-- Google Code Prettify Plugin -->
+	<link href="{{ STATIC_URL }}common/theme/scripts/plugins/other/google-code-prettify/prettify.css" rel="stylesheet" />
+
+	<!-- Bootstrap Image Gallery -->
+	<link href="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-image-gallery/css/bootstrap-image-gallery.min.css" rel="stylesheet" />
+
+	<!-- Main Theme Stylesheet :: CSS -->
+	<link href="{{ STATIC_URL }}common/theme/css/style-light.css?1369414386" rel="stylesheet" />
+    {% block extra_css %}
+    {% endblock %}
+
+    <style>
+        #HW_badge_cont {
+          position: absolute !important;
+        }
+    </style>
+
+
+	<!-- LESS.js Library -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/less.min.js"></script>
+</head>
+<body class="">
+		<!-- Main Container Fluid -->
+	<div class="container-fluid fluid menu-left">
+
+		<!-- Top navbar -->
+		<div class="navbar main hidden-print">
+
+			<!-- Brand -->
+			<a href="/" class="appbrand pull-left"><div class="milotab-logo"></div></a>
+
+            {% block header_buttons %}
+						<!-- Menu Toggle Button -->
+			<button type="button" class="btn btn-navbar" style="margin-left:46px;">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+			</button>
+            <div class="changelog-icon pull-left" style="position: inherit; left: 50px;"></div>
+			<!-- // Menu Toggle Button END -->
+
+			<!-- Top Menu Right -->
+			<ul class="topnav pull-right">
+
+				<!-- Language menu -->
+                {% get_current_language as LANGUAGE_CODE %}
+				<li class="hidden-phone" id="lang_nav" data-setlang-url="{% url 'set_language' %}">
+					<a href="#" data-toggle="dropdown"><img src="{{ STATIC_URL }}common/theme/images/lang/{{ LANGUAGE_CODE }}.png" alt="{{ LANGUAGE_CODE }}" /></a>
+			    	<ul class="dropdown-menu pull-left">
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for language in languages %}
+                        <li class="inactive"><a href="#" title="{{ language.name_local }}" data-lang="{{ language.code }}"><img src="{{ STATIC_URL }}common/theme/images/lang/{{ language.code }}.png" alt="{{ language.name_local }}"> {{ language.name_local }}</a></li>
+                        {% endfor %}
+			    	</ul>
+				</li>
+				<!-- // Language menu END -->
+
+
+
+				<!-- Profile / Logout menu -->
+				<li class="account">
+										<a data-toggle="dropdown" href="#" class="glyphicons logout lock"><span class="hidden-phone text">{{ user }}</span><i></i></a>
+					<ul class="dropdown-menu pull-right">
+						<li class="highlight profile">
+							<span>
+								<span class="img"></span>
+								<span class="details">
+									<a href="#">{{ user }}</a>
+                                    {{ user.email }}
+								</span>
+								<span class="clearfix"></span>
+							</span>
+						</li>
+						<li>
+							<span>
+								<a class="btn btn-default btn-mini pull-right" href="{% url 'logout' %}">{% trans 'Logout' %}</a>
+							</span>
+						</li>
+					</ul>
+									</li>
+				<!-- // Profile / Logout menu END -->
+
+			</ul>
+			<!-- // Top Menu Right END -->
+            {% endblock %}
+
+
+		</div>
+		<!-- Top navbar END -->
+
+				<!-- Sidebar menu & content wrapper -->
+		<div id="wrapper">
+
+        {% block menu %}
+		<!-- Sidebar Menu -->
+		<div id="menu" class="hidden-print">
+
+			<!-- Scrollable menu wrapper with Maximum height -->
+
+			<!-- Larger Menu Style -->
+			<ul>
+                {%  url 'dashboard' as the_url %}
+                <li class="large glyphicons home {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Home' %}</span></a></li>
+
+                {% url 'order-list' as the_url %}
+                <li class="large glyphicons notes {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Orders' %}</span></a></li>
+
+                {% url 'sales_summary' as the_url %}
+                <li class="large glyphicons charts {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Reports' %}</span></a></li>
+
+                {% url 'product_list' as the_url %}
+				<li class="large glyphicons pizza {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Products' %}</span></a></li>
+
+                {% url 'modifiergroup_list' as the_url %}
+                <li class="large glyphicons show_big_thumbnails {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Modifier groups' %}</span></a></li>
+
+                {% url 'category_list' as the_url %}
+                <li class="large glyphicons folder_open {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Categories' %}</span></a></li>
+
+                {% url 'taxrate_list' as the_url %}
+                <li class="large glyphicons usd {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Tax rates' %}</span></a></li>
+
+                {% url 'discount_list' as the_url %}
+                <li class="large glyphicons tag {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Discounts' %}</span></a></li>
+
+                {% url 'employee_list' as the_url %}
+                <li class="large glyphicons group {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Employees' %}</span></a></li>
+
+				{% url 'customer_list' as the_url %}
+                <li class="large glyphicons group {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Customers' %}</span></a></li>
+                
+                {% url 'supplier_list' as the_url %}
+                <li class="large glyphicons group {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Suppliers' %}</span></a></li>
+
+{#                {% url 'printer_list' as the_url %}#}
+{#                <li class="large glyphicons print {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Printers' %}</span></a></li>#}
+
+                {% url 'reward_list' as the_url %}
+                <li class="large glyphicons star {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Rewards' %}</span></a></li>
+
+{#                {% url 'store_list' as the_url %}#}
+{#                <li class="large glyphicons building {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Stores' %}</span></a></li>#}
+                {% terminal_tablets_exists as test %}
+                {% if test %}
+                    {% url 'tablesection_list' as the_url %}
+                    <li class="large glyphicons more_windows {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Table Sections' %}</span></a></li>
+                {% endif %}
+{#				{% url 'terminal_list' as the_url %}#}
+{#                <li class="large glyphicons ipad {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Terminals' %}</span></a></li>#}
+
+				{% url 'display_list' as the_url %}
+                <li class="large glyphicons imac {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Displays' %}</span></a></li>
+
+{#				{% url 'box_list' as the_url %}#}
+{#                <li class="large glyphicons show_thumbnails {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Boxes' %}</span></a></li>#}
+{##}
+{#				{% url 'element_list' as the_url %}#}
+{#                <li class="large glyphicons show_thumbnails {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Elements' %}</span></a></li>#}
+
+                {% url 'table_list' as the_url %}
+                <!--li class="large glyphicons unchecked {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Tables' %}</span></a></li-->
+
+
+				{% url 'quick:choice_order' as the_url %}
+                <li class="large glyphicons imac {% if request.get_full_path == the_url %}active{% endif %}"><a href="{{ the_url }}"><i></i><span>{% trans 'Purchase' %}</span></a></li>
+
+			</ul>
+
+			<div class="clearfix"></div>
+			<!-- // Larger Menu Style END -->
+
+			<!-- Sidebar Stats Widgets -->
+			<div class="separator bottom"></div>
+
+
+
+
+			<!-- // Scrollable Menu wrapper with Maximum Height END -->
+
+		</div>
+		<!-- // Sidebar Menu END -->
+        {% endblock %}
+
+<!-- Content -->
+<div id="content">
+            {% if messages %}
+            {% comment %}
+				<script>	
+                    $(document).ready(function() {
+						{% for message in messages %}
+                        notyfy(
+                        {
+                            text: '{{ message }}',
+                            type: '{% if message.tags %}{{ message.tags }}{% else %}information{% endif %}',
+                            timeout: '5000'
+                        });
+						{% endfor %}
+                    });	
+                </script>
+            {% endcomment %}  
+            <div class="milo-notify {% if message.tags %}{{ message.tags }}{% else %}normal{% endif %} bottom-margin">
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+            </div>
+            
+            {% endif %}
+{% block content %}{% endblock %}
+</div>
+<!-- // Content END -->
+
+				</div>
+		<div class="clearfix"></div>
+		<!-- // Sidebar menu & content wrapper END -->
+
+		<div id="footer" class="hidden-print">
+
+			<div class="row-fluid">
+				<div class="span12">
+                	<!--  Copyright Line -->
+                    <div class="copy">&copy; {% now "Y" %} - <a href="/">BIYO</a> - All Rights Reserved.</div>
+                    <!--  End Copyright Line -->
+
+				</div>
+			</div>
+
+
+
+		</div>
+		<!-- // Footer END -->
+
+	</div>
+	<!-- // Main Container Fluid END -->
+
+
+{% block js %}
+
+	<!-- JQuery -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery.min.js"></script>
+
+	<!-- JQueryUI -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery-ui/js/jquery-ui-1.9.2.custom.min.js"></script>
+
+	<!-- JQueryUI Touch Punch -->
+	<!-- small hack that enables the use of touch events on sites using the jQuery UI user interface library -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+	<!-- Modernizr -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/modernizr.js"></script>
+
+	<!-- Bootstrap -->
+	<script src="{{ STATIC_URL }}common/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- SlimScroll Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/jquery-slimScroll/jquery.slimscroll.min.js"></script>
+
+
+
+	<!-- Holder Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/holder/holder.js"></script>
+
+	<!-- Uniform Forms Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/forms/pixelmatrix-uniform/jquery.uniform.min.js"></script>
+
+	<!-- PrettyPhoto -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/gallery/prettyphoto/js/jquery.prettyPhoto.js"></script>
+
+	<!-- Global -->
+	<script>
+	var basePath = '{{ STATIC_URL }}common/';
+	</script>
+
+	<!-- Bootstrap Extended -->
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-select/bootstrap-select.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-toggle-buttons/static/js/jquery.toggle.buttons.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/jasny-bootstrap/js/bootstrap-fileupload.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootbox.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-wysihtml5/js/wysihtml5-0.3.0_rc2.min.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-wysihtml5/js/bootstrap-wysihtml5-0.0.2.js"></script>
+
+	<!-- Google Code Prettify -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/google-code-prettify/prettify.js"></script>
+
+	<!-- Gritter Notifications Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/notifications/Gritter/js/jquery.gritter.min.js"></script>
+
+
+	<!-- MiniColors Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/color/jquery-miniColors/jquery.miniColors.js"></script>
+
+	<!-- DateTimePicker Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/forms/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
+	<!-- Cookie Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/system/jquery.cookie.js"></script>
+
+
+
+	<!-- Colors -->
+	<script>
+	var primaryColor = '#e25f39',
+		dangerColor = '#bd362f',
+		successColor = '#609450',
+		warningColor = '#ab7a4b',
+		inverseColor = '#45484d';
+	</script>
+
+	<!-- Themer -->
+	<script>
+	var themerPrimaryColor = primaryColor;
+	</script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/demo/themer.js"></script>
+
+
+
+	<!-- Easy-pie Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/easy-pie/jquery.easy-pie-chart.js"></script>
+
+    
+
+	<!-- Sparkline Charts Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/sparkline/jquery.sparkline.min.js"></script>
+
+	<!-- Ba-Resize Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/other/jquery.ba-resize.js"></script>
+
+	<!-- Dashboard Demo Script -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/demo/index.js?1369414383"></script>
+
+
+	<!-- Google JSAPI -->
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+	<!--  Flot Charts Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.pie.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.tooltip.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.selection.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.resize.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/charts/flot/jquery.flot.orderBars.js"></script>
+
+	
+    <script>
+      var HW_config = {
+        selector: ".changelog-icon", // CSS selector where to inject the badge
+        account: "ExaE2x" // your account ID
+      };
+    </script>
+    <script async src="//cdn.headwayapp.co/widget.js"></script>
+
+    <script type="text/javascript" src="{{ STATIC_URL }}common/theme/scripts/csrf_ajax.js"></script>
+
+
+	<!-- Charts Page Demo Script -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/demo/charts.js?1369414384"></script>
+
+
+
+	<!-- DataTables Tables Plugin -->
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/tables/DataTables/media/js/jquery.dataTables.min.js"></script>
+    <script src="{{ STATIC_URL }}common/theme/scripts/plugins/tables/DataTables/media/js/ColumnFilterWidgets.js"></script>
+    <script src="{{ STATIC_URL }}common/theme/scripts/plugins/tables/DataTables/media/js/jquery.dataTables.rowGrouping.js"></script>
+	<script src="{{ STATIC_URL }}common/theme/scripts/plugins/tables/DataTables/media/js/DT_bootstrap.js"></script>
+	
+	<!-- Tables Demo Script -->
+    
+	<script src="{{ STATIC_URL }}common/theme/scripts/demo/tables.js"></script>
+
+
+	<!-- Bootstrap Image Gallery -->
+	<script src="{{ STATIC_URL }}common/blueimp/js/load-image.min.js"></script>
+	<script src="{{ STATIC_URL }}common/bootstrap/extend/bootstrap-image-gallery/js/bootstrap-image-gallery.min.js" type="text/javascript"></script>
+
+
+    
+{% endblock %}
+
+{% block javascript%}{% endblock %}
+
+<!-- Common Demo Script -->
+    <script src="{{ STATIC_URL }}common/theme/scripts/demo/common.js?1369414384"></script>
+	<script src="{{ STATIC_URL }}assets/js/app.js?1369414384"></script>
+
+</body>
+</html>

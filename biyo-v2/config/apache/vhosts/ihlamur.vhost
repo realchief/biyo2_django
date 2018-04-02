@@ -1,0 +1,15 @@
+
+# This file was auto-generated
+
+<VirtualHost *>
+    ServerName ihlamur.dashboard.center
+    SetEnv DJANGO_SETTINGS_MODULE settings.store_ihlamur.settings
+
+    CustomLog /home/mys5107/logs/user/ihlamur/apache-access.log combined
+    ErrorLog /home/mys5107/logs/user/ihlamur/apache-error.log
+
+    WSGIDaemonProcess ihlamur_pulsewallet processes=1 threads=2 python-path=/home/mys5107/webapps/pulsewallet/backend:/home/mys5107/webapps/pulsewallet/venv/lib/python2.7:/home/mys5107/webapps/pulsewallet/venv/lib/python2.7/site-packages
+    WSGIProcessGroup ihlamur_pulsewallet
+    WSGIScriptAlias / /home/mys5107/webapps/pulsewallet/backend/wsgi.py
+</VirtualHost>
+
